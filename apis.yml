@@ -1,9 +1,12 @@
+aid: google-analytics-4
 name: Google Analytics 4 API
 description: Google Analytics 4 (GA4) is the latest generation of Analytics that collects event-based data from websites and apps. It provides intelligent insights and predictive analytics powered by machine learning.
+type: Index
 image: https://www.gstatic.com/analytics-suite/header/suite/v2/ic_analytics.svg
-url: https://developers.google.com/analytics
-created: '2024'
-modified: '2024'
+url: https://raw.githubusercontent.com/api-evangelist/google-analytics-4/refs/heads/main/apis.yml
+created: '2024-01-01'
+modified: '2026-03-16'
+specificationVersion: '0.19'
 tags:
 - Analytics
 - Marketing
@@ -13,7 +16,8 @@ tags:
 - Data Collection
 - Reporting
 apis:
-- name: Google Analytics Data API
+- aid: google-analytics-4:google-analytics-data-api
+  name: Google Analytics Data API
   description: The Google Analytics Data API v1 provides programmatic methods to access report data in Google Analytics 4 (GA4) properties.
   image: https://www.gstatic.com/analytics-suite/header/suite/v2/ic_analytics.svg
   humanURL: https://developers.google.com/analytics/devguides/reporting/data/v1
@@ -34,7 +38,8 @@ apis:
     url: https://developers.google.com/analytics/devguides/reporting/data/v1/quickstart-client-libraries
   - type: Rate Limits
     url: https://developers.google.com/analytics/devguides/reporting/data/v1/quotas
-- name: Google Analytics Admin API
+- aid: google-analytics-4:google-analytics-admin-api
+  name: Google Analytics Admin API
   description: The Google Analytics Admin API allows programmatic configuration of Google Analytics 4 properties and data streams.
   image: https://www.gstatic.com/analytics-suite/header/suite/v2/ic_analytics.svg
   humanURL: https://developers.google.com/analytics/devguides/config/admin/v1
@@ -53,7 +58,8 @@ apis:
     url: https://developers.google.com/analytics/devguides/config/admin/v1/rest
   - type: Quickstart
     url: https://developers.google.com/analytics/devguides/config/admin/v1/quickstart-client-libraries
-- name: Google Analytics Measurement Protocol
+- aid: google-analytics-4:google-analytics-measurement-protocol
+  name: Google Analytics Measurement Protocol
   description: The Measurement Protocol for Google Analytics 4 allows developers to send events directly to Google Analytics servers for web and app streams.
   image: https://www.gstatic.com/analytics-suite/header/suite/v2/ic_analytics.svg
   humanURL: https://developers.google.com/analytics/devguides/collection/protocol/ga4
@@ -92,6 +98,5 @@ common:
 - type: Pricing
   url: https://marketingplatform.google.com/about/analytics/compare/
 maintainers:
-- FN: Google
-  email: analytics-api-support@google.com
-  url: https://developers.google.com/analytics
+- FN: Kin Lane
+  email: kin@apievangelist.com
