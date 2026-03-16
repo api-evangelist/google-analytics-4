@@ -1,5 +1,5 @@
 aid: google-analytics-4
-name: Google Analytics 4 API
+name: Google Analytics 4
 description: Google Analytics 4 (GA4) is the latest generation of Analytics that collects event-based data from websites and apps. It provides intelligent insights and predictive analytics powered by machine learning.
 type: Index
 image: https://www.gstatic.com/analytics-suite/header/suite/v2/ic_analytics.svg
