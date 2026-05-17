@@ -36,7 +36,7 @@ apis:
         url: https://developers.google.com/analytics/devguides/reporting/data/v1/basics#authentication
       - type: Quickstart
         url: https://developers.google.com/analytics/devguides/reporting/data/v1/quickstart-client-libraries
-      - type: Rate Limits
+      - type: RateLimits
         url: https://developers.google.com/analytics/devguides/reporting/data/v1/quotas
   - aid: google-analytics-4:google-analytics-admin-api
     name: Google Analytics Admin API
@@ -85,15 +85,15 @@ common:
     url: https://analytics.google.com/
   - type: Authentication
     url: https://developers.google.com/analytics/devguides/reporting/data/v1/basics#authentication
-  - type: Terms of Service
+  - type: TermsOfService
     url: https://developers.google.com/analytics/terms
-  - type: Privacy Policy
+  - type: PrivacyPolicy
     url: https://policies.google.com/privacy
   - type: Support
     url: https://support.google.com/analytics
   - type: SDKs
     url: https://developers.google.com/analytics/devguides/reporting/data/v1/client-libraries
-  - type: Status
+  - type: StatusPage
     url: https://status.cloud.google.com/
   - type: Pricing
     url: https://marketingplatform.google.com/about/analytics/compare/
