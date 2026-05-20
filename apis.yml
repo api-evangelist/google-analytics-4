@@ -79,6 +79,10 @@ apis:
       - type: Events
         url: https://developers.google.com/analytics/devguides/collection/protocol/ga4/sending-events
 common:
+  - type: GitHubOrganization
+    url: https://github.com/googleapis
+  - type: LinkedIn
+    url: https://www.linkedin.com/company/googleanalytics4
   - type: Portal
     url: https://developers.google.com/analytics
   - type: Console
