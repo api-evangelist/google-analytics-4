@@ -1,0 +1,191 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Google Analytics Data API",
+    "version": "v1beta"
+  },
+  "request": {
+    "auth": {
+      "type": "oauth2",
+      "flow": "authorization_code",
+      "authorizationUrl": "https://accounts.google.com/o/oauth2/v2/auth",
+      "accessTokenUrl": "https://oauth2.googleapis.com/token",
+      "credentials": {
+        "clientId": "{{clientId}}",
+        "clientSecret": "{{clientSecret}}"
+      }
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Run report",
+        "type": "http"
+      },
+      "http": {
+        "method": "POST",
+        "url": "https://analyticsdata.googleapis.com/v1beta/:property:runReport",
+        "params": [
+          {
+            "name": "property",
+            "value": "properties/1234567",
+            "type": "path",
+            "description": "GA4 property identifier, e.g. `properties/{propertyId}`."
+          }
+        ],
+        "body": {
+          "type": "json",
+          "data": "{}"
+        }
+      },
+      "docs": "Returns a customized report of Google Analytics event data."
+    },
+    {
+      "info": {
+        "name": "Run pivot report",
+        "type": "http"
+      },
+      "http": {
+        "method": "POST",
+        "url": "https://analyticsdata.googleapis.com/v1beta/:property:runPivotReport",
+        "params": [
+          {
+            "name": "property",
+            "value": "",
+            "type": "path"
+          }
+        ],
+        "body": {
+          "type": "json",
+          "data": "{}"
+        }
+      },
+      "docs": "Returns a customized pivot report of Google Analytics event data."
+    },
+    {
+      "info": {
+        "name": "Batch run reports",
+        "type": "http"
+      },
+      "http": {
+        "method": "POST",
+        "url": "https://analyticsdata.googleapis.com/v1beta/:property:batchRunReports",
+        "params": [
+          {
+            "name": "property",
+            "value": "",
+            "type": "path"
+          }
+        ],
+        "body": {
+          "type": "json",
+          "data": "{}"
+        }
+      },
+      "docs": "Returns multiple reports in a batch."
+    },
+    {
+      "info": {
+        "name": "Batch run pivot reports",
+        "type": "http"
+      },
+      "http": {
+        "method": "POST",
+        "url": "https://analyticsdata.googleapis.com/v1beta/:property:batchRunPivotReports",
+        "params": [
+          {
+            "name": "property",
+            "value": "",
+            "type": "path"
+          }
+        ],
+        "body": {
+          "type": "json",
+          "data": "{}"
+        }
+      },
+      "docs": "Batch run pivot reports"
+    },
+    {
+      "info": {
+        "name": "Run realtime report",
+        "type": "http"
+      },
+      "http": {
+        "method": "POST",
+        "url": "https://analyticsdata.googleapis.com/v1beta/:property:runRealtimeReport",
+        "params": [
+          {
+            "name": "property",
+            "value": "",
+            "type": "path"
+          }
+        ],
+        "body": {
+          "type": "json",
+          "data": "{}"
+        }
+      },
+      "docs": "Returns a customized report of real-time event data."
+    },
+    {
+      "info": {
+        "name": "Get metadata",
+        "type": "http"
+      },
+      "http": {
+        "method": "GET",
+        "url": "https://analyticsdata.googleapis.com/v1beta/:name/metadata",
+        "params": [
+          {
+            "name": "name",
+            "value": "properties/1234567/metadata",
+            "type": "path"
+          }
+        ]
+      },
+      "docs": "Returns metadata for dimensions and metrics available in reporting."
+    },
+    {
+      "info": {
+        "name": "Create audience export",
+        "type": "http"
+      },
+      "http": {
+        "method": "POST",
+        "url": "https://analyticsdata.googleapis.com/v1beta/:parent/audienceExports",
+        "params": [
+          {
+            "name": "parent",
+            "value": "",
+            "type": "path"
+          }
+        ],
+        "body": {
+          "type": "json",
+          "data": "{}"
+        }
+      },
+      "docs": "Creates an audience export for later retrieval."
+    },
+    {
+      "info": {
+        "name": "Get audience export",
+        "type": "http"
+      },
+      "http": {
+        "method": "GET",
+        "url": "https://analyticsdata.googleapis.com/v1beta/:name",
+        "params": [
+          {
+            "name": "name",
+            "value": "properties/1234567/audienceExports/abc123",
+            "type": "path"
+          }
+        ]
+      },
+      "docs": "Get audience export"
+    }
+  ],
+  "bundled": true
+}
