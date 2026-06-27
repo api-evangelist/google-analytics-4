@@ -34,7 +34,7 @@ apis:
         url: https://developers.google.com/analytics/devguides/reporting/data/v1
       - type: Authentication
         url: https://developers.google.com/analytics/devguides/reporting/data/v1/basics#authentication
-      - type: Quickstart
+      - type: GettingStarted
         url: https://developers.google.com/analytics/devguides/reporting/data/v1/quickstart-client-libraries
       - type: RateLimits
         url: https://developers.google.com/analytics/devguides/reporting/data/v1/quotas
@@ -56,7 +56,7 @@ apis:
         url: https://developers.google.com/analytics/devguides/config/admin/v1
       - type: Authentication
         url: https://developers.google.com/analytics/devguides/config/admin/v1/rest
-      - type: Quickstart
+      - type: GettingStarted
         url: https://developers.google.com/analytics/devguides/config/admin/v1/quickstart-client-libraries
   - aid: google-analytics-4:google-analytics-measurement-protocol
     name: Google Analytics Measurement Protocol
