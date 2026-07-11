@@ -79,6 +79,12 @@ apis:
       - type: Events
         url: https://developers.google.com/analytics/devguides/collection/protocol/ga4/sending-events
 common:
+  - type: VulnerabilityDisclosure
+    url: security/google-analytics-4-vulnerability-disclosure.yml
+  - type: DomainSecurity
+    url: security/google-analytics-4-domain-security.yml
+  - type: Authentication
+    url: authentication/google-analytics-4-authentication.yml
   - type: OAuthScopes
     url: scopes/google-analytics-4-scopes.yml
   - type: GitHubOrganization
