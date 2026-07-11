@@ -79,6 +79,8 @@ apis:
       - type: Events
         url: https://developers.google.com/analytics/devguides/collection/protocol/ga4/sending-events
 common:
+  - type: OAuthScopes
+    url: scopes/google-analytics-4-scopes.yml
   - type: GitHubOrganization
     url: https://github.com/googleapis
   - type: LinkedIn
