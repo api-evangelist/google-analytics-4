@@ -79,6 +79,8 @@ apis:
       - type: Events
         url: https://developers.google.com/analytics/devguides/collection/protocol/ga4/sending-events
 common:
+  - type: AgenticAccess
+    url: agentic-access/google-analytics-4-agentic-access.yml
   - type: VulnerabilityDisclosure
     url: security/google-analytics-4-vulnerability-disclosure.yml
   - type: DomainSecurity
