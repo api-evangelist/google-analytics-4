@@ -1,18 +1,26 @@
 openapi: 3.1.0
 info:
-  title: Google Analytics Data API
-  description: |
-    The Google Analytics Data API v1 provides programmatic methods to access
+  title: Google Analytics Data V1beta API
+  description: 'The Google Analytics Data API v1 provides programmatic methods to access
+
     report data in Google Analytics 4 (GA4) properties. Use it to build custom
+
     reports, run pivot reports, batch run reports, query real-time event data,
+
     fetch dimension/metric metadata, and create audience exports.
+
+    '
   version: v1beta
 servers:
-  - url: https://analyticsdata.googleapis.com
-    description: Google Analytics Data API production endpoint
+- url: https://analyticsdata.googleapis.com
+  description: Google Analytics Data API production endpoint
 security:
-  - OAuth2: [analytics.readonly]
-  - OAuth2: [analytics]
+- OAuth2:
+  - analytics.readonly
+- OAuth2:
+  - analytics
+tags:
+- name: V1beta
 paths:
   /v1beta/{property}:runReport:
     post:
@@ -20,13 +28,13 @@ paths:
       description: Returns a customized report of Google Analytics event data.
       operationId: runReport
       parameters:
-        - name: property
-          in: path
-          required: true
-          schema:
-            type: string
-          example: properties/1234567
-          description: GA4 property identifier, e.g. `properties/{propertyId}`.
+      - name: property
+        in: path
+        required: true
+        schema:
+          type: string
+        example: properties/1234567
+        description: GA4 property identifier, e.g. `properties/{propertyId}`.
       requestBody:
         required: true
         content:
@@ -40,17 +48,19 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/RunReportResponse'
+      tags:
+      - V1beta
   /v1beta/{property}:runPivotReport:
     post:
       summary: Run pivot report
       description: Returns a customized pivot report of Google Analytics event data.
       operationId: runPivotReport
       parameters:
-        - name: property
-          in: path
-          required: true
-          schema:
-            type: string
+      - name: property
+        in: path
+        required: true
+        schema:
+          type: string
       requestBody:
         required: true
         content:
@@ -64,17 +74,19 @@ paths:
             application/json:
               schema:
                 type: object
+      tags:
+      - V1beta
   /v1beta/{property}:batchRunReports:
     post:
       summary: Batch run reports
       description: Returns multiple reports in a batch.
       operationId: batchRunReports
       parameters:
-        - name: property
-          in: path
-          required: true
-          schema:
-            type: string
+      - name: property
+        in: path
+        required: true
+        schema:
+          type: string
       requestBody:
         required: true
         content:
@@ -88,16 +100,18 @@ paths:
             application/json:
               schema:
                 type: object
+      tags:
+      - V1beta
   /v1beta/{property}:batchRunPivotReports:
     post:
       summary: Batch run pivot reports
       operationId: batchRunPivotReports
       parameters:
-        - name: property
-          in: path
-          required: true
-          schema:
-            type: string
+      - name: property
+        in: path
+        required: true
+        schema:
+          type: string
       requestBody:
         required: true
         content:
@@ -111,17 +125,19 @@ paths:
             application/json:
               schema:
                 type: object
+      tags:
+      - V1beta
   /v1beta/{property}:runRealtimeReport:
     post:
       summary: Run realtime report
       description: Returns a customized report of real-time event data.
       operationId: runRealtimeReport
       parameters:
-        - name: property
-          in: path
-          required: true
-          schema:
-            type: string
+      - name: property
+        in: path
+        required: true
+        schema:
+          type: string
       requestBody:
         required: true
         content:
@@ -135,18 +151,20 @@ paths:
             application/json:
               schema:
                 type: object
+      tags:
+      - V1beta
   /v1beta/{name}/metadata:
     get:
       summary: Get metadata
       description: Returns metadata for dimensions and metrics available in reporting.
       operationId: getMetadata
       parameters:
-        - name: name
-          in: path
-          required: true
-          schema:
-            type: string
-          example: properties/1234567/metadata
+      - name: name
+        in: path
+        required: true
+        schema:
+          type: string
+        example: properties/1234567/metadata
       responses:
         '200':
           description: Metadata response
@@ -154,17 +172,19 @@ paths:
             application/json:
               schema:
                 type: object
+      tags:
+      - V1beta
   /v1beta/{parent}/audienceExports:
     post:
       summary: Create audience export
       description: Creates an audience export for later retrieval.
       operationId: createAudienceExport
       parameters:
-        - name: parent
-          in: path
-          required: true
-          schema:
-            type: string
+      - name: parent
+        in: path
+        required: true
+        schema:
+          type: string
       requestBody:
         required: true
         content:
@@ -178,17 +198,19 @@ paths:
             application/json:
               schema:
                 type: object
+      tags:
+      - V1beta
   /v1beta/{name}:
     get:
       summary: Get audience export
       operationId: getAudienceExport
       parameters:
-        - name: name
-          in: path
-          required: true
-          schema:
-            type: string
-          example: properties/1234567/audienceExports/abc123
+      - name: name
+        in: path
+        required: true
+        schema:
+          type: string
+        example: properties/1234567/audienceExports/abc123
       responses:
         '200':
           description: Audience export metadata
@@ -196,18 +218,29 @@ paths:
             application/json:
               schema:
                 type: object
+      tags:
+      - V1beta
 components:
-  securitySchemes:
-    OAuth2:
-      type: oauth2
-      flows:
-        authorizationCode:
-          authorizationUrl: https://accounts.google.com/o/oauth2/v2/auth
-          tokenUrl: https://oauth2.googleapis.com/token
-          scopes:
-            analytics: View and manage Google Analytics data
-            analytics.readonly: View Google Analytics data
   schemas:
+    RunReportResponse:
+      type: object
+      properties:
+        dimensionHeaders:
+          type: array
+          items:
+            type: object
+        metricHeaders:
+          type: array
+          items:
+            type: object
+        rows:
+          type: array
+          items:
+            type: object
+        rowCount:
+          type: integer
+        metadata:
+          type: object
     RunReportRequest:
       type: object
       properties:
@@ -238,22 +271,13 @@ components:
           type: string
         offset:
           type: string
-    RunReportResponse:
-      type: object
-      properties:
-        dimensionHeaders:
-          type: array
-          items:
-            type: object
-        metricHeaders:
-          type: array
-          items:
-            type: object
-        rows:
-          type: array
-          items:
-            type: object
-        rowCount:
-          type: integer
-        metadata:
-          type: object
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://accounts.google.com/o/oauth2/v2/auth
+          tokenUrl: https://oauth2.googleapis.com/token
+          scopes:
+            analytics: View and manage Google Analytics data
+            analytics.readonly: View Google Analytics data
