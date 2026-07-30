@@ -2,6 +2,19 @@ aid: google-analytics-4
 name: Google Analytics 4
 description: Google Analytics 4 (GA4) is the latest generation of Analytics that collects event-based data from websites and apps. It provides intelligent insights and predictive analytics powered by machine learning.
 type: Index
+accessModel:
+  pricing: freemium
+  onboarding: self-serve
+  trial: false
+  try_now: true
+  public: false
+  label: Freemium · Self-serve signup
+  confidence: high
+  source:
+  - plans
+  - authentication
+  generated: '2026-07-22'
+  method: derived
 image: https://www.gstatic.com/analytics-suite/header/suite/v2/ic_analytics.svg
 url: https://raw.githubusercontent.com/api-evangelist/google-analytics-4/refs/heads/main/apis.yml
 created: '2024-01-01'
@@ -16,68 +29,56 @@ tags:
   - Reporting
   - Web Analytics
 apis:
-  - aid: google-analytics-4:google-analytics-data-api
-    name: Google Analytics Data API
-    description: The Google Analytics Data API v1 provides programmatic methods to access report data in Google Analytics 4 (GA4) properties.
-    image: https://www.gstatic.com/analytics-suite/header/suite/v2/ic_analytics.svg
-    humanURL: https://developers.google.com/analytics/devguides/reporting/data/v1
-    baseURL: https://analyticsdata.googleapis.com
-    tags:
-      - Data
-      - Dimensions
-      - Metrics
-      - Reports
-    properties:
-      - type: OpenAPI
-        url: https://analyticsdata.googleapis.com/$discovery/rest?version=v1beta
-      - type: Documentation
-        url: https://developers.google.com/analytics/devguides/reporting/data/v1
-      - type: Authentication
-        url: https://developers.google.com/analytics/devguides/reporting/data/v1/basics#authentication
-      - type: GettingStarted
-        url: https://developers.google.com/analytics/devguides/reporting/data/v1/quickstart-client-libraries
-      - type: RateLimits
-        url: https://developers.google.com/analytics/devguides/reporting/data/v1/quotas
-  - aid: google-analytics-4:google-analytics-admin-api
-    name: Google Analytics Admin API
-    description: The Google Analytics Admin API allows programmatic configuration of Google Analytics 4 properties and data streams.
-    image: https://www.gstatic.com/analytics-suite/header/suite/v2/ic_analytics.svg
-    humanURL: https://developers.google.com/analytics/devguides/config/admin/v1
-    baseURL: https://analyticsadmin.googleapis.com
-    tags:
-      - Administration
-      - Configuration
-      - Data Streams
-      - Properties
-    properties:
-      - type: OpenAPI
-        url: https://analyticsadmin.googleapis.com/$discovery/rest?version=v1beta
-      - type: Documentation
-        url: https://developers.google.com/analytics/devguides/config/admin/v1
-      - type: Authentication
-        url: https://developers.google.com/analytics/devguides/config/admin/v1/rest
-      - type: GettingStarted
-        url: https://developers.google.com/analytics/devguides/config/admin/v1/quickstart-client-libraries
-  - aid: google-analytics-4:google-analytics-measurement-protocol
-    name: Google Analytics Measurement Protocol
-    description: The Measurement Protocol for Google Analytics 4 allows developers to send events directly to Google Analytics servers for web and app streams.
-    image: https://www.gstatic.com/analytics-suite/header/suite/v2/ic_analytics.svg
-    humanURL: https://developers.google.com/analytics/devguides/collection/protocol/ga4
-    baseURL: https://www.google-analytics.com/mp/collect
-    tags:
-      - Data Collection
-      - Events
-      - Server-Side
-      - Tracking
-    properties:
-      - type: Documentation
-        url: https://developers.google.com/analytics/devguides/collection/protocol/ga4
-      - type: Reference
-        url: https://developers.google.com/analytics/devguides/collection/protocol/ga4/reference
-      - type: Validation
-        url: https://developers.google.com/analytics/devguides/collection/protocol/ga4/validating-events
-      - type: Events
-        url: https://developers.google.com/analytics/devguides/collection/protocol/ga4/sending-events
+- aid: google-analytics-4:google-analytics-measurement-protocol
+  name: Google Analytics Measurement Protocol
+  description: >-
+    The Measurement Protocol for Google Analytics 4 allows developers to send events directly to Google
+    Analytics servers for web and app streams.
+  image: https://www.gstatic.com/analytics-suite/header/suite/v2/ic_analytics.svg
+  humanURL: https://developers.google.com/analytics/devguides/collection/protocol/ga4
+  baseURL: https://www.google-analytics.com/mp/collect
+  tags:
+  - Data Collection
+  - Events
+  - Server-Side
+  - Tracking
+  properties:
+  - type: Documentation
+    url: https://developers.google.com/analytics/devguides/collection/protocol/ga4
+  - type: Reference
+    url: https://developers.google.com/analytics/devguides/collection/protocol/ga4/reference
+  - type: Validation
+    url: >-
+      https://developers.google.com/analytics/devguides/collection/protocol/ga4/validating-events
+  - type: Events
+    url: https://developers.google.com/analytics/devguides/collection/protocol/ga4/sending-events
+- aid: google-analytics-4:google-analytics-4-v1beta-api
+  name: Google Analytics 4 V1beta API
+  description: The V1beta API from Google Analytics 4 — 8 operation(s) for v1beta.
+  humanURL: https://developers.google.com/analytics/devguides/reporting/data/v1
+  baseURL: https://analyticsdata.googleapis.com
+  tags:
+  - V1beta
+  properties:
+  - type: OpenAPI
+    url: openapi/google-analytics-4-v1beta-api-openapi.yml
+  - type: Documentation
+    url: https://developers.google.com/analytics/devguides/reporting/data/v1
+  - type: Authentication
+    url: >-
+      https://developers.google.com/analytics/devguides/reporting/data/v1/basics#authentication
+  - type: GettingStarted
+    url: >-
+      https://developers.google.com/analytics/devguides/reporting/data/v1/quickstart-client-libraries
+  - type: RateLimits
+    url: https://developers.google.com/analytics/devguides/reporting/data/v1/quotas
+  - type: Documentation
+    url: https://developers.google.com/analytics/devguides/config/admin/v1
+  - type: Authentication
+    url: https://developers.google.com/analytics/devguides/config/admin/v1/rest
+  - type: GettingStarted
+    url: >-
+      https://developers.google.com/analytics/devguides/config/admin/v1/quickstart-client-libraries
 common:
   - type: AgenticAccess
     url: agentic-access/google-analytics-4-agentic-access.yml
