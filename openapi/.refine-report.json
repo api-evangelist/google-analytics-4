@@ -1,0 +1,14 @@
+{
+  "provider": "google-analytics-4",
+  "sources": [
+    "google-analytics-4-v1beta-api-openapi.yml"
+  ],
+  "outputs": [
+    "google-analytics-4-v1beta-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}
