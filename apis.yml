@@ -1,6 +1,17 @@
 aid: google-analytics-4
 name: Google Analytics 4
-description: Google Analytics 4 (GA4) is the latest generation of Analytics that collects event-based data from websites and apps. It provides intelligent insights and predictive analytics powered by machine learning.
+description: >-
+  Google Analytics 4 (GA4) is Google's event-based web and app analytics platform and the
+  successor to Universal Analytics. Its developer surface has three distinct parts: the
+  Analytics Data API (analyticsdata.googleapis.com) for running core, pivot, funnel and
+  realtime reports and for exporting audiences; the Analytics Admin API
+  (analyticsadmin.googleapis.com) for managing accounts, properties, data streams, custom
+  dimensions and metrics, key events, access bindings and product links; and the Measurement
+  Protocol (www.google-analytics.com/mp/collect) for sending server-side events directly into
+  a property. Google publishes no OpenAPI for GA4 — the machine-readable contract is served as
+  Google API Discovery documents on the API hosts themselves, alongside canonical protobuf
+  service definitions in the googleapis repository. Authentication is Google OAuth 2.0 only
+  for the Data and Admin APIs; the Measurement Protocol uses a per-stream shared secret.
 type: Index
 accessModel:
   pricing: freemium
@@ -18,7 +29,7 @@ accessModel:
 image: https://www.gstatic.com/analytics-suite/header/suite/v2/ic_analytics.svg
 url: https://raw.githubusercontent.com/api-evangelist/google-analytics-4/refs/heads/main/apis.yml
 created: '2024-01-01'
-modified: '2026-04-28'
+modified: '2026-08-13'
 specificationVersion: '0.19'
 tags:
   - Analytics
@@ -28,12 +39,17 @@ tags:
   - Mobile Analytics
   - Reporting
   - Web Analytics
+  - Attribution
+  - Audiences
+  - Event Tracking
 apis:
 - aid: google-analytics-4:google-analytics-measurement-protocol
   name: Google Analytics Measurement Protocol
   description: >-
     The Measurement Protocol for Google Analytics 4 allows developers to send events directly to Google
-    Analytics servers for web and app streams.
+    Analytics servers for web and app streams. Fire-and-forget: the production endpoint returns HTTP 204
+    with an empty body and never reports validation errors, so a separate validation endpoint exists.
+    Authenticates with a per-data-stream api_secret rather than OAuth.
   image: https://www.gstatic.com/analytics-suite/header/suite/v2/ic_analytics.svg
   humanURL: https://developers.google.com/analytics/devguides/collection/protocol/ga4
   baseURL: https://www.google-analytics.com/mp/collect
@@ -45,25 +61,44 @@ apis:
   properties:
   - type: Documentation
     url: https://developers.google.com/analytics/devguides/collection/protocol/ga4
-  - type: Reference
+  - type: APIReference
     url: https://developers.google.com/analytics/devguides/collection/protocol/ga4/reference
   - type: Validation
     url: >-
       https://developers.google.com/analytics/devguides/collection/protocol/ga4/validating-events
   - type: Events
     url: https://developers.google.com/analytics/devguides/collection/protocol/ga4/sending-events
-- aid: google-analytics-4:google-analytics-4-v1beta-api
-  name: Google Analytics 4 V1beta API
-  description: The V1beta API from Google Analytics 4 — 8 operation(s) for v1beta.
+  - type: Sandbox
+    url: sandbox/google-analytics-4-sandbox.yml
+- aid: google-analytics-4:google-analytics-data-api
+  name: Google Analytics Data API
+  description: >-
+    Reporting API for GA4 properties — core reports, pivot reports, batched reports, realtime
+    reports, funnel reports, dimension/metric metadata, compatibility checks, audience exports and
+    asynchronous report tasks. 11 operations on the stable v1beta channel and 15 on v1alpha,
+    harvested from Google's own Discovery documents.
   humanURL: https://developers.google.com/analytics/devguides/reporting/data/v1
   baseURL: https://analyticsdata.googleapis.com
   tags:
+  - Reporting
+  - Analytics
   - V1beta
+  - V1alpha
   properties:
   - type: OpenAPI
-    url: openapi/google-analytics-4-v1beta-api-openapi.yml
+    url: openapi/google-analytics-4-data-v1beta-openapi.yml
+  - type: OpenAPI
+    url: openapi/google-analytics-4-data-v1alpha-openapi.yml
+  - type: Protobuf
+    url: grpc/google-analytics-4-data-v1beta-analytics_data_api.proto
+  - type: Overlay
+    url: overlays/google-analytics-4-data-v1beta-overlay.yaml
+  - type: Overlay
+    url: overlays/google-analytics-4-data-v1alpha-overlay.yaml
   - type: Documentation
     url: https://developers.google.com/analytics/devguides/reporting/data/v1
+  - type: APIReference
+    url: https://developers.google.com/analytics/devguides/reporting/data/v1/rest
   - type: Authentication
     url: >-
       https://developers.google.com/analytics/devguides/reporting/data/v1/basics#authentication
@@ -72,46 +107,148 @@ apis:
       https://developers.google.com/analytics/devguides/reporting/data/v1/quickstart-client-libraries
   - type: RateLimits
     url: https://developers.google.com/analytics/devguides/reporting/data/v1/quotas
+  - type: ChangeLog
+    url: https://developers.google.com/analytics/devguides/reporting/data/v1/changelog
+  - type: ErrorCatalog
+    url: https://developers.google.com/analytics/devguides/reporting/data/v1/errors
+  - type: Webhooks
+    url: asyncapi/google-analytics-4-webhooks.yml
+- aid: google-analytics-4:google-analytics-admin-api
+  name: Google Analytics Admin API
+  description: >-
+    Configuration API for GA4 — accounts, properties, data streams, Measurement Protocol secrets,
+    custom dimensions and metrics, key events, data retention and redaction settings, audiences,
+    access bindings, and links to Google Ads, Firebase, BigQuery, AdSense, Display & Video 360 and
+    Search Ads 360. 55 operations on v1beta and 166 on v1alpha, harvested from Google's own
+    Discovery documents.
+  humanURL: https://developers.google.com/analytics/devguides/config/admin/v1
+  baseURL: https://analyticsadmin.googleapis.com
+  tags:
+  - Configuration
+  - Administration
+  - V1beta
+  - V1alpha
+  properties:
+  - type: OpenAPI
+    url: openapi/google-analytics-4-admin-v1beta-openapi.yml
+  - type: OpenAPI
+    url: openapi/google-analytics-4-admin-v1alpha-openapi.yml
+  - type: Protobuf
+    url: grpc/google-analytics-4-admin-v1beta-analytics_admin.proto
+  - type: Overlay
+    url: overlays/google-analytics-4-admin-v1beta-overlay.yaml
+  - type: Overlay
+    url: overlays/google-analytics-4-admin-v1alpha-overlay.yaml
   - type: Documentation
     url: https://developers.google.com/analytics/devguides/config/admin/v1
+  - type: APIReference
+    url: https://developers.google.com/analytics/devguides/config/admin/v1/rest
   - type: Authentication
     url: https://developers.google.com/analytics/devguides/config/admin/v1/rest
   - type: GettingStarted
     url: >-
       https://developers.google.com/analytics/devguides/config/admin/v1/quickstart-client-libraries
+  - type: RateLimits
+    url: https://developers.google.com/analytics/devguides/config/admin/v1/quotas
+  - type: ChangeLog
+    url: https://developers.google.com/analytics/devguides/config/admin/v1/changelog
 common:
   - type: AgenticAccess
     url: agentic-access/google-analytics-4-agentic-access.yml
   - type: VulnerabilityDisclosure
     url: security/google-analytics-4-vulnerability-disclosure.yml
+  - type: Security
+    url: https://g.co/vrp
   - type: DomainSecurity
     url: security/google-analytics-4-domain-security.yml
+  - type: TrustCenter
+    url: security/google-analytics-4-trust-center.yml
+  - type: Compliance
+    url: https://support.google.com/analytics/answer/6004245
   - type: Authentication
     url: authentication/google-analytics-4-authentication.yml
   - type: OAuthScopes
     url: scopes/google-analytics-4-scopes.yml
+  - type: Conventions
+    url: conventions/google-analytics-4-conventions.yml
+  - type: ErrorCatalog
+    url: errors/google-analytics-4-problem-types.yml
+  - type: DataModel
+    url: data-model/google-analytics-4-data-model.yml
+  - type: Conformance
+    url: conformance/google-analytics-4-conformance.yml
+  - type: Lifecycle
+    url: lifecycle/google-analytics-4-lifecycle.yml
+  - type: StatusPage
+    url: https://www.google.com/appsstatus/dashboard/
+  - type: ChangeLog
+    url: changelog/google-analytics-4-changelog.yml
+  - type: RateLimits
+    url: rate-limits/google-analytics-4-rate-limits.yml
+  - type: Plans
+    url: plans/google-analytics-4-plans-pricing.yml
+  - type: FinOps
+    url: finops/google-analytics-4-finops.yml
+  - type: Sandbox
+    url: sandbox/google-analytics-4-sandbox.yml
+  - type: Components
+    url: components/google-analytics-4-components.yml
+  - type: Packages
+    url: packages/google-analytics-4-packages.yml
+  - type: SDKs
+    url: packages/google-analytics-4-packages.yml
+  - type: MCPServer
+    url: mcp/google-analytics-4-mcp.yml
+  - type: ToolCrosswalk
+    url: mcp/google-analytics-4-tool-crosswalk.yml
+  - type: AgentSkill
+    url: skills/_index.yml
+  - type: Webhooks
+    url: asyncapi/google-analytics-4-webhooks.yml
+  - type: WellKnown
+    url: well-known/google-analytics-4-well-known.yml
+  - type: SecurityTxt
+    url: well-known/google-analytics-4-security.txt
+  - type: LLMsTxt
+    url: llms/google-analytics-4-llms.txt
+  - type: Protobuf
+    url: grpc/_index.yml
   - type: GitHubOrganization
-    url: https://github.com/googleapis
+    url: https://github.com/googleanalytics
   - type: LinkedIn
     url: https://www.linkedin.com/company/googleanalytics4
-  - type: Portal
+  - type: DeveloperPortal
     url: https://developers.google.com/analytics
+  - type: Documentation
+    url: https://developers.google.com/analytics/devguides
+  - type: APIReference
+    url: https://developers.google.com/analytics/devguides/reporting/data/v1/rest
+  - type: GettingStarted
+    url: >-
+      https://developers.google.com/analytics/devguides/reporting/data/v1/quickstart-client-libraries
   - type: Console
     url: https://analytics.google.com/
-  - type: Authentication
-    url: https://developers.google.com/analytics/devguides/reporting/data/v1/basics#authentication
+  - type: SignUp
+    url: https://analytics.google.com/analytics/web/provision/
   - type: TermsOfService
     url: https://developers.google.com/analytics/terms
   - type: PrivacyPolicy
     url: https://policies.google.com/privacy
   - type: Support
     url: https://support.google.com/analytics
-  - type: SDKs
-    url: https://developers.google.com/analytics/devguides/reporting/data/v1/client-libraries
-  - type: StatusPage
-    url: https://status.cloud.google.com/
+  - type: Community
+    url: https://developers.google.com/analytics/community
+  - type: Blog
+    url: https://blog.google/products/marketingplatform/analytics/
   - type: Pricing
-    url: https://marketingplatform.google.com/about/analytics/compare/
+    url: https://marketingplatform.google.com/about/analytics/
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com
+x-enrichment:
+  date: '2026-08-13'
+  status: enriched
+  artifacts_added: 30
+  pass: local-v1
+x-coverage:
+  state: covered
