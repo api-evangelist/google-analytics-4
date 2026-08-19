@@ -1,0 +1,168 @@
+generated: '2026-08-13'
+method: searched
+source:
+  - https://developers.google.com/analytics/devguides/reporting/data/v1/changelog
+  - https://developers.google.com/analytics/devguides/config/admin/v1/changelog
+note: >-
+  GA4 publishes two separate dated changelogs, one per API. Both are human HTML pages with
+  no feed and no machine-readable form; the only machine-readable version marker Google ships
+  is the `revision` date stamp inside each Discovery document. Recent window only — the
+  live pages remain the source of truth.
+scheme: dated-entries-per-api
+feeds:
+  rss: null
+  atom: null
+  json: null
+current:
+  data_api:
+    version: v1beta
+    discovery_revision: '20260812'
+  admin_api:
+    version: v1beta
+    discovery_revision: '20260810'
+entries:
+  - api: Google Analytics Admin API
+    date: '2026-08-12'
+    version: v1alpha
+    type: addition
+    breaking: false
+    highlights:
+      - Added UpdateReportingIdentitySettings to modify a property's reporting identity settings.
+  - api: Google Analytics Admin API
+    date: '2026-06-18'
+    version: v1alpha, v1beta
+    type: addition
+    breaking: false
+    highlights:
+      - Added can_edit to PropertySummary, indicating whether the caller may modify the property.
+  - api: Google Analytics Data API
+    date: '2026-04-23'
+    version: v1alpha
+    type: addition
+    breaking: false
+    highlights:
+      - Conversion reporting support on runReport via a new ConversionSpec field.
+      - New Section response field identifying the report type.
+  - api: Google Analytics Admin API
+    date: '2026-04-14'
+    version: v1alpha
+    type: addition
+    breaking: false
+    highlights:
+      - Added GetUserProvidedDataSettings and the UserProvidedDataSettings resource.
+  - api: Google Analytics Admin API
+    date: '2025-08-20'
+    version: v1alpha
+    type: addition-and-removal
+    breaking: true
+    highlights:
+      - Added GetReportingIdentitySettings.
+      - Removed the legacy Universal Analytics methods.
+  - api: Google Analytics Admin API
+    date: '2025-06-12'
+    version: v1alpha
+    type: addition
+    breaking: false
+    highlights:
+      - Subproperty sync configuration - GetSubpropertySyncConfig, ListSubpropertySyncConfig,
+        UpdateSubpropertySyncConfig.
+  - api: Google Analytics Admin API
+    date: '2025-04-16'
+    version: v1alpha
+    type: addition
+    breaking: false
+    highlights:
+      - Reporting data annotation management (create, get, list, update, delete) for the
+        ReportingDataAnnotation resource.
+  - api: Google Analytics Admin API
+    date: '2025-03-07'
+    version: v1beta
+    type: deprecation
+    breaking: false
+    highlights:
+      - sharingWithGoogleAnySalesEnabled deprecated; always returns false, removal announced
+        for June 2025.
+  - api: Google Analytics Admin API
+    date: '2025-01-20'
+    version: v1alpha, v1beta
+    type: addition
+    breaking: false
+    highlights:
+      - Added userDataRetention to DataRetentionSettings.
+  - api: Google Analytics Data API
+    date: '2024-10-20'
+    version: v1beta
+    type: addition
+    breaking: false
+    highlights:
+      - New EmptyFilter dimension filter type for comparing against blank values.
+  - api: Google Analytics Data API
+    date: '2024-10-15'
+    version: v1alpha
+    type: addition
+    breaking: false
+    highlights:
+      - samplingLevel field on reportTasks, with an UNSAMPLED option and access to 1 billion
+        events for Analytics 360 properties.
+  - api: Google Analytics Data API
+    date: '2024-09-18'
+    version: v1alpha
+    type: addition
+    breaking: false
+    highlights:
+      - New properties.getPropertyQuotasSnapshot method returning a snapshot of all property
+        quotas by category.
+  - api: Google Analytics Data API
+    date: '2024-06-28'
+    version: v1beta, v1alpha
+    type: quota-change
+    breaking: false
+    highlights:
+      - Server-error ceiling introduced - 10,000 API server errors per project, per property,
+        per 15-minute window, counting authentication errors.
+  - api: Google Analytics Data API
+    date: '2024-05-14'
+    version: v1beta
+    type: addition
+    breaking: false
+    highlights:
+      - Comparisons support via a comparisons field on core reporting methods; getMetadata
+        now lists saved comparisons.
+  - api: Google Analytics Data API
+    date: '2024-05-08'
+    version: v1alpha
+    type: addition
+    breaking: false
+    highlights:
+      - Asynchronous report tasks - properties.reportTasks create, get, list and query.
+  - api: Google Analytics Data API
+    date: '2024-05-06'
+    version: v1beta, v1alpha
+    type: deprecation
+    breaking: true
+    highlights:
+      - isConversionEvent replaced by isKeyEvent; conversion metrics renamed to key-event
+        equivalents (conversions to keyEvents).
+  - api: Google Analytics Admin API
+    date: '2024-08-01'
+    version: v1alpha
+    type: breaking-rename
+    breaking: true
+    highlights:
+      - createSubproperty renamed to provisionSubproperty.
+      - Added event edit rule management and BigQuery link functionality.
+  - api: Google Analytics Data API
+    date: '2024-01-30'
+    version: v1alpha
+    type: addition
+    breaking: false
+    highlights:
+      - Webhook notification support via AudienceList.webhookNotification and
+        RecurringAudienceList.webhookNotification.
+observations:
+  - >-
+    Cadence has slowed sharply. The Data API shipped ten dated entries in 2024 and one in
+    2026; the Admin API is now the more active of the two.
+  - >-
+    Almost every recent addition lands in v1alpha and does not graduate to v1beta, which is
+    the clearest signal in the record that GA4's stable channel is effectively frozen.

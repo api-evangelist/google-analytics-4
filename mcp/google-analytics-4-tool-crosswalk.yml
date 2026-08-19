@@ -1,0 +1,149 @@
+generated: '2026-08-13'
+method: derived
+source: >-
+  mcp/google-analytics-4-mcp.yml (tool names verbatim from
+  https://github.com/googleanalytics/google-analytics-mcp) bound to operationIds verified by
+  grep against openapi/google-analytics-4-*-openapi.yml
+note: >-
+  The official Google Analytics MCP server is stdio-only and requires local Google
+  Application Default Credentials, so tools/list could not be called anonymously and no
+  inputSchema was harvested. Every binding below was made by name and by the README's own
+  statement of which backing API each tool uses; confidence is recorded honestly per row.
+  The tool's real input contract is the bound operation's parameters + requestBody in the
+  linked OpenAPI file.
+surfaces:
+  openapi:
+    - file: openapi/google-analytics-4-data-v1beta-openapi.yml
+      operations: 11
+      server: https://analyticsdata.googleapis.com
+    - file: openapi/google-analytics-4-data-v1alpha-openapi.yml
+      operations: 15
+      server: https://analyticsdata.googleapis.com
+    - file: openapi/google-analytics-4-admin-v1beta-openapi.yml
+      operations: 55
+      server: https://analyticsadmin.googleapis.com
+    - file: openapi/google-analytics-4-admin-v1alpha-openapi.yml
+      operations: 166
+      server: https://analyticsadmin.googleapis.com
+  graphql: null
+  mcp:
+    server: analytics-mcp
+    transport: stdio
+    gated: true
+    gate: >-
+      Local stdio only; tools/list requires Google ADC on the operator's machine. No hosted
+      endpoint exists to introspect.
+crosswalk:
+  - tool: get_account_summaries
+    category: account-and-property
+    rest:
+      - accountSummaries_list
+    spec: openapi/google-analytics-4-admin-v1beta-openapi.yml
+    binding: rest
+    confidence: high
+    note: >-
+      One-to-one. GET /v1beta/accountSummaries returns the account + property tree the tool
+      describes. The identical operation also exists in admin-v1alpha.
+  - tool: get_property_details
+    category: account-and-property
+    rest:
+      - properties_get
+    spec: openapi/google-analytics-4-admin-v1beta-openapi.yml
+    binding: rest
+    confidence: high
+  - tool: list_google_ads_links
+    category: account-and-property
+    rest:
+      - properties_googleAdsLinks_list
+    spec: openapi/google-analytics-4-admin-v1beta-openapi.yml
+    binding: rest
+    confidence: high
+  - tool: run_report
+    category: core-reporting
+    rest:
+      - properties_runReport
+    spec: openapi/google-analytics-4-data-v1beta-openapi.yml
+    binding: rest
+    confidence: high
+    note: >-
+      Backed by the stable v1beta runReport. A v1alpha properties_runReport also exists and
+      adds the conversion ConversionSpec field added 2026-04-23; the tool does not state
+      which version it calls.
+  - tool: run_funnel_report
+    category: core-reporting
+    rest:
+      - properties_runFunnelReport
+    spec: openapi/google-analytics-4-data-v1alpha-openapi.yml
+    binding: rest
+    confidence: high
+    note: >-
+      Funnel reporting exists only in v1alpha. This tool exposes an alpha surface through a
+      stable-looking tool name — an agent using it inherits alpha stability terms.
+  - tool: get_custom_dimensions_and_metrics
+    category: core-reporting
+    rest:
+      - properties_getMetadata
+      - properties_customDimensions_list
+      - properties_customMetrics_list
+    spec: >-
+      openapi/google-analytics-4-data-v1beta-openapi.yml +
+      openapi/google-analytics-4-admin-v1beta-openapi.yml
+    binding: rest
+    confidence: medium
+    note: >-
+      Fans out. The README describes one tool returning a property's custom dimensions and
+      metrics; that is served either by the Data API getMetadata (which returns the
+      reportable dimension/metric schema) or by the two Admin API list operations. Without
+      an introspectable inputSchema the exact composition cannot be confirmed.
+  - tool: run_realtime_report
+    category: realtime-reporting
+    rest:
+      - properties_runRealtimeReport
+    spec: openapi/google-analytics-4-data-v1beta-openapi.yml
+    binding: rest
+    confidence: high
+mcp_only: []
+rest_only:
+  - capability: Core reporting variants with no MCP tool
+    operations:
+      - properties_runPivotReport
+      - properties_batchRunReports
+      - properties_batchRunPivotReports
+      - properties_checkCompatibility
+    spec: openapi/google-analytics-4-data-v1beta-openapi.yml
+  - capability: Audience export (async list materialisation)
+    operations:
+      - properties_audienceExports_create
+      - properties_audienceExports_list
+      - properties_audienceExports_get
+      - properties_audienceExports_query
+    spec: openapi/google-analytics-4-data-v1beta-openapi.yml
+  - capability: Quota introspection
+    operations:
+      - properties_getPropertyQuotasSnapshot
+    spec: openapi/google-analytics-4-data-v1alpha-openapi.yml
+    note: >-
+      Notable gap: an agent driving the MCP server cannot read its own remaining quota, even
+      though the REST surface exposes it.
+  - capability: Property, stream, account and link administration (all write paths)
+    operations_count: 216
+    spec: >-
+      openapi/google-analytics-4-admin-v1beta-openapi.yml +
+      openapi/google-analytics-4-admin-v1alpha-openapi.yml
+    note: >-
+      The MCP server is read-only by design. Every create/patch/delete/archive operation in
+      the Admin API — custom dimensions, data streams, audiences, access bindings, key
+      events, BigQuery links, Measurement Protocol secrets — has no MCP tool. This is a
+      deliberate blast-radius choice, not an oversight, and it is the single largest surface
+      divergence in this provider.
+coverage:
+  tools_named: 7
+  tools_bound: 7
+  tools_bound_high_confidence: 6
+  mcp_only: 0
+  rest_operations_total: 247
+  rest_operations_with_a_tool: 9
+  rest_coverage_percent: 3.6
+  note: >-
+    247 REST operations, 7 MCP tools. The MCP surface is a narrow read-only projection of
+    the reporting core; the entire configuration/administration surface is REST-only.

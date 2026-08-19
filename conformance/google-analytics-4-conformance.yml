@@ -1,0 +1,126 @@
+generated: '2026-08-13'
+method: derived
+source:
+  - openapi/google-analytics-4-data-v1beta-openapi.yml
+  - openapi/google-analytics-4-admin-v1beta-openapi.yml
+  - well-known/google-analytics-4-openid-configuration.json
+  - well-known/google-analytics-4-oauth-authorization-server.json
+  - errors/google-analytics-4-problem-types.yml
+  - conventions/google-analytics-4-conventions.yml
+note: >-
+  Cross-cutting standards assertions for the GA4 API surface. Each entry is backed by an
+  artifact already in this repo or by a document fetched from a Google-controlled host on
+  2026-08-13. Compliance certifications live in security/google-analytics-4-trust-center.yml;
+  this file covers protocol and interface standards only.
+standards:
+  - id: oauth2
+    conforms: true
+    evidence: >-
+      securitySchemes declare oauth2 authorizationCode across all four specs, with
+      authorizationUrl https://accounts.google.com/o/oauth2/v2/auth and tokenUrl
+      https://oauth2.googleapis.com/token.
+  - id: rfc8414-oauth-authorization-server-metadata
+    conforms: true
+    evidence: >-
+      https://accounts.google.com/.well-known/oauth-authorization-server returns 200 with
+      issuer https://accounts.google.com. Harvested verbatim to well-known/.
+  - id: oidc-discovery
+    conforms: true
+    evidence: >-
+      https://accounts.google.com/.well-known/openid-configuration returns 200. GA4 delegates
+      identity entirely to Google's OIDC provider.
+  - id: rfc6750-bearer-token
+    conforms: true
+    evidence: "Access tokens are presented as Authorization: Bearer on every Data and Admin API call."
+  - id: rfc9116-security-txt
+    conforms: true
+    evidence: >-
+      https://www.google.com/.well-known/security.txt returns 200 with Contact, Policy,
+      Encryption, Acknowledgments and Expires fields. Harvested to
+      well-known/google-analytics-4-security.txt.
+  - id: rfc9457-problem-details
+    conforms: false
+    evidence: >-
+      Errors are google.rpc.Status under a top-level "error" key, served as application/json.
+      No application/problem+json media type appears anywhere in the surface.
+  - id: google-aip-resource-oriented-design
+    conforms: true
+    evidence: >-
+      Relative resource names, AIP-136 custom methods (:runReport), AIP-134 updateMask field
+      masks on 38 patch operations, AIP-158 pageSize/pageToken/nextPageToken on 44 list
+      operations.
+  - id: openapi
+    conforms: partial
+    evidence: >-
+      Google does not publish OpenAPI for GA4. It publishes Discovery documents
+      (discovery#restDescription) at analyticsdata.googleapis.com/$discovery/rest and
+      analyticsadmin.googleapis.com/$discovery/rest, both HTTP 200 and both harvested
+      verbatim to openapi/_original/. The four OpenAPI 3.1 files in openapi/ are faithful
+      mechanical conversions of those documents, not provider-published artifacts.
+  - id: grpc-protobuf
+    conforms: true
+    evidence: >-
+      Canonical .proto service definitions are published in the googleapis/googleapis
+      repository under google/analytics/data and google/analytics/admin. Harvested to grpc/.
+  - id: asyncapi
+    conforms: false
+    evidence: >-
+      No AsyncAPI document is published. A real but narrow webhook surface exists on
+      AudienceList / RecurringAudienceList; captured in asyncapi/google-analytics-4-webhooks.yml.
+  - id: idempotency
+    conforms: false
+    evidence: >-
+      No Idempotency-Key, requestId, validateOnly, dryRun or etag exists anywhere in the four
+      Discovery documents. Write retries are not safe.
+  - id: pagination
+    conforms: true
+    evidence: >-
+      Cursor pagination (pageSize / pageToken / nextPageToken) on 44 list operations; the Data
+      API reporting surface uses limit/offset in the request body instead.
+  - id: rfc8594-sunset-header
+    conforms: false
+    evidence: No Sunset or Deprecation response header is documented or present in any spec.
+  - id: json-schema
+    conforms: partial
+    evidence: >-
+      Discovery schemas are JSON-Schema-shaped and convert cleanly, but Google publishes no
+      standalone JSON Schema documents and declares no $schema dialect.
+  - id: mcp
+    conforms: true
+    evidence: >-
+      Official MCP server published at github.com/googleanalytics/google-analytics-mcp and on
+      PyPI as analytics-mcp 0.7.0. Local stdio transport only, no hosted endpoint.
+  - id: a2a
+    conforms: false
+    evidence: >-
+      /.well-known/agent-card.json and /.well-known/agent.json return 404 on all eight probed
+      hosts.
+  - id: llms-txt
+    conforms: false
+    evidence: >-
+      /llms.txt returns 404 on developers.google.com, developers.google.com/analytics and
+      google.com.
+  - id: rfc9727-api-catalog
+    conforms: false
+    evidence: >-
+      /.well-known/api-catalog returns 404 on every host. Google's machine-readable API index
+      is the proprietary Discovery service instead.
+  - id: fhir-r4
+    conforms: false
+  - id: fapi
+    conforms: false
+  - id: scim
+    conforms: false
+  - id: odata
+    conforms: false
+  - id: json-api
+    conforms: false
+summary:
+  conformant: 9
+  partial: 2
+  non_conformant: 11
+  headline: >-
+    Strong on identity and on Google's own house standards; absent on every open API
+    discovery standard. The contract is real and complete but is published in a proprietary
+    format, and the agent-facing discovery layer (llms.txt, api-catalog, agent card) does not
+    exist.

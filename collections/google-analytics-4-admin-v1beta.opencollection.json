@@ -1,0 +1,2295 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Google Analytics Admin API",
+    "version": "v1beta"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "accountSummaries",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Returns summaries of all accounts accessible by the caller",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://analyticsadmin.googleapis.com/v1beta/accountSummaries",
+            "params": [
+              {
+                "name": "pageToken",
+                "value": "",
+                "type": "query",
+                "description": "Optional. A page token, received from a previous `ListAccountSummaries` call. Provide this to retrieve the subsequent page. When paginating, all other parameters provided to `ListAccountSummaries` must match the call that provided the page token."
+              },
+              {
+                "name": "pageSize",
+                "value": "",
+                "type": "query",
+                "description": "Optional. The maximum number of AccountSummary resources to return. The service may return fewer than this value, even if there are additional pages. If unspecified, at most 50 resources will be returned. The maximum value is 200; (higher values will be coerced to the maximum)"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://accounts.google.com/o/oauth2/v2/auth",
+              "accessTokenUrl": "https://oauth2.googleapis.com/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Returns summaries of all accounts accessible by the caller."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "accounts",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Lookup for a single Account",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://analyticsadmin.googleapis.com/v1beta/accounts/:accountsId",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "query",
+                "description": "Required. The name of the account to lookup. Format: accounts/{account} Example: \"accounts/100\""
+              },
+              {
+                "name": "accountsId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://accounts.google.com/o/oauth2/v2/auth",
+              "accessTokenUrl": "https://oauth2.googleapis.com/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Lookup for a single Account."
+        },
+        {
+          "info": {
+            "name": "Updates an account",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://analyticsadmin.googleapis.com/v1beta/accounts/:accountsId",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "query",
+                "description": "Identifier. Resource name of this account. Format: accounts/{account} Example: \"accounts/100\""
+              },
+              {
+                "name": "updateMask",
+                "value": "",
+                "type": "query",
+                "description": "Required. The list of fields to be updated. Field names must be in snake case (for example, \"field_to_update\"). Omitted fields will not be updated. To replace the entire entity, use one path with the string \"*\" to match all fields."
+              },
+              {
+                "name": "accountsId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://accounts.google.com/o/oauth2/v2/auth",
+              "accessTokenUrl": "https://oauth2.googleapis.com/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Updates an account."
+        },
+        {
+          "info": {
+            "name": "Marks target Account as soft-deleted (ie: \"trashed\") and returns it",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://analyticsadmin.googleapis.com/v1beta/accounts/:accountsId",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "query",
+                "description": "Required. The name of the Account to soft-delete. Format: accounts/{account} Example: \"accounts/100\""
+              },
+              {
+                "name": "accountsId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://accounts.google.com/o/oauth2/v2/auth",
+              "accessTokenUrl": "https://oauth2.googleapis.com/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Marks target Account as soft-deleted (ie: \"trashed\") and returns it. This API does not have a method to restore soft-deleted accounts. However, they can be restored using the Trash Can UI. If the accounts are not restored before the expiration time, the account and all child resources (eg: Properties, GoogleAdsLinks, Streams, AccessBindings) will be permanently purged. https://support.google.com/analytics/answer/6154772 Returns an error if the target is not found."
+        },
+        {
+          "info": {
+            "name": "Get data sharing settings on an account",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://analyticsadmin.googleapis.com/v1beta/accounts/:accountsId/dataSharingSettings",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "query",
+                "description": "Required. The name of the settings to lookup. Format: accounts/{account}/dataSharingSettings Example: `accounts/1000/dataSharingSettings`"
+              },
+              {
+                "name": "accountsId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://accounts.google.com/o/oauth2/v2/auth",
+              "accessTokenUrl": "https://oauth2.googleapis.com/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Get data sharing settings on an account. Data sharing settings are singletons."
+        },
+        {
+          "info": {
+            "name": "Returns all accounts accessible by the caller",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://analyticsadmin.googleapis.com/v1beta/accounts",
+            "params": [
+              {
+                "name": "pageToken",
+                "value": "",
+                "type": "query",
+                "description": "Optional. A page token, received from a previous `ListAccounts` call. Provide this to retrieve the subsequent page. When paginating, all other parameters provided to `ListAccounts` must match the call that provided the page token."
+              },
+              {
+                "name": "showDeleted",
+                "value": "",
+                "type": "query",
+                "description": "Whether to include soft-deleted (ie: \"trashed\") Accounts in the results. Accounts can be inspected to determine whether they are deleted or not."
+              },
+              {
+                "name": "pageSize",
+                "value": "",
+                "type": "query",
+                "description": "Optional. The maximum number of resources to return. The service may return fewer than this value, even if there are additional pages. If unspecified, at most 50 resources will be returned. The maximum value is 200; (higher values will be coerced to the maximum)"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://accounts.google.com/o/oauth2/v2/auth",
+              "accessTokenUrl": "https://oauth2.googleapis.com/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Returns all accounts accessible by the caller. Note that these accounts might not currently have GA properties. Soft-deleted (ie: \"trashed\") accounts are excluded by default. Returns an empty list if no relevant accounts are found. Note: The easiest way to retrieve a list of all properties you have access to is by using `ListAccountSummaries`."
+        },
+        {
+          "info": {
+            "name": "Requests a ticket for creating an account",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://analyticsadmin.googleapis.com/v1beta/accounts:provisionAccountTicket",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://accounts.google.com/o/oauth2/v2/auth",
+              "accessTokenUrl": "https://oauth2.googleapis.com/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Requests a ticket for creating an account."
+        },
+        {
+          "info": {
+            "name": "Returns a customized report of data access records",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://analyticsadmin.googleapis.com/v1beta/accounts/:accountsId:runAccessReport",
+            "params": [
+              {
+                "name": "entity",
+                "value": "",
+                "type": "query",
+                "description": "The Data Access Report supports requesting at the property level or account level. If requested at the account level, Data Access Reports include all access for all properties under that account. To request at the property level, entity should be for example 'properties/123' if \"123\" is your Google Analytics property ID. To request at the account level, entity should be for example 'accounts/1234' if \"1234\" is your Google Analytics Account ID."
+              },
+              {
+                "name": "accountsId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://accounts.google.com/o/oauth2/v2/auth",
+              "accessTokenUrl": "https://oauth2.googleapis.com/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Returns a customized report of data access records. The report provides records of each time a user reads Google Analytics reporting data. Access records are retained for up to 2 years. Data Access Reports can be requested for a property. Reports may be requested for any property, but dimensions that aren't related to quota can only be requested on Google Analytics 360 properties. This method is only available to Administrators. These data access records include GA UI Reporting, GA UI Exploratio"
+        },
+        {
+          "info": {
+            "name": "Searches through all changes to an account or its children given the specified set of filters",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://analyticsadmin.googleapis.com/v1beta/accounts/:accountsId:searchChangeHistoryEvents",
+            "params": [
+              {
+                "name": "account",
+                "value": "",
+                "type": "query",
+                "description": "Required. The account resource for which to return change history resources. Format: accounts/{account} Example: `accounts/100`"
+              },
+              {
+                "name": "accountsId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://accounts.google.com/o/oauth2/v2/auth",
+              "accessTokenUrl": "https://oauth2.googleapis.com/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Searches through all changes to an account or its children given the specified set of filters. Only returns the subset of changes supported by the API. The UI may return additional changes."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "properties",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Acknowledges the terms of user data collection for the specified property",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://analyticsadmin.googleapis.com/v1beta/properties/:propertiesId:acknowledgeUserDataCollection",
+            "params": [
+              {
+                "name": "property",
+                "value": "",
+                "type": "query",
+                "description": "Required. The property for which to acknowledge user data collection."
+              },
+              {
+                "name": "propertiesId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://accounts.google.com/o/oauth2/v2/auth",
+              "accessTokenUrl": "https://oauth2.googleapis.com/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Acknowledges the terms of user data collection for the specified property. This acknowledgement must be completed (either in the Google Analytics UI or through this API) before MeasurementProtocolSecret resources may be created."
+        },
+        {
+          "info": {
+            "name": "Returns child Properties under the specified parent Account",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://analyticsadmin.googleapis.com/v1beta/properties",
+            "params": [
+              {
+                "name": "filter",
+                "value": "",
+                "type": "query",
+                "description": "Required. An expression for filtering the results of the request. Fields eligible for filtering are: `parent:`(The resource name of the parent account/property) or `ancestor:`(The resource name of the parent account) or `firebase_project:`(The id or number of the linked firebase project). Some examples of filters: ``` | Filter | Description | |-----------------------------|-------------------------------------------| | parent:accounts/123 | The account with account id: 123. | | parent:properties/123 | The property with property id: 123. | | ancestor:accounts/123 | The account with account id: 123. | | firebase_project:project-id | The firebase project with id: project-id. | | firebase_project:123 | The firebase project with number: 123. | ```"
+              },
+              {
+                "name": "pageSize",
+                "value": "",
+                "type": "query",
+                "description": "Optional. The maximum number of resources to return. The service may return fewer than this value, even if there are additional pages. If unspecified, at most 50 resources will be returned. The maximum value is 200; (higher values will be coerced to the maximum)"
+              },
+              {
+                "name": "showDeleted",
+                "value": "",
+                "type": "query",
+                "description": "Whether to include soft-deleted (ie: \"trashed\") Properties in the results. Properties can be inspected to determine whether they are deleted or not."
+              },
+              {
+                "name": "pageToken",
+                "value": "",
+                "type": "query",
+                "description": "Optional. A page token, received from a previous `ListProperties` call. Provide this to retrieve the subsequent page. When paginating, all other parameters provided to `ListProperties` must match the call that provided the page token."
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://accounts.google.com/o/oauth2/v2/auth",
+              "accessTokenUrl": "https://oauth2.googleapis.com/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Returns child Properties under the specified parent Account. Properties will be excluded if the caller does not have access. Soft-deleted (ie: \"trashed\") properties are excluded by default. Returns an empty list if no relevant properties are found."
+        },
+        {
+          "info": {
+            "name": "Creates a Google Analytics property with the specified location and attributes",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://analyticsadmin.googleapis.com/v1beta/properties",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://accounts.google.com/o/oauth2/v2/auth",
+              "accessTokenUrl": "https://oauth2.googleapis.com/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Creates a Google Analytics property with the specified location and attributes."
+        },
+        {
+          "info": {
+            "name": "Lookup for a single GA Property",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://analyticsadmin.googleapis.com/v1beta/properties/:propertiesId",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "query",
+                "description": "Required. The name of the property to lookup. Format: properties/{property_id} Example: \"properties/1000\""
+              },
+              {
+                "name": "propertiesId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://accounts.google.com/o/oauth2/v2/auth",
+              "accessTokenUrl": "https://oauth2.googleapis.com/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Lookup for a single GA Property."
+        },
+        {
+          "info": {
+            "name": "Updates a property",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://analyticsadmin.googleapis.com/v1beta/properties/:propertiesId",
+            "params": [
+              {
+                "name": "updateMask",
+                "value": "",
+                "type": "query",
+                "description": "Required. The list of fields to be updated. Field names must be in snake case (e.g., \"field_to_update\"). Omitted fields will not be updated. To replace the entire entity, use one path with the string \"*\" to match all fields."
+              },
+              {
+                "name": "name",
+                "value": "",
+                "type": "query",
+                "description": "Identifier. Resource name of this property. Format: properties/{property_id} Example: \"properties/1000\""
+              },
+              {
+                "name": "propertiesId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://accounts.google.com/o/oauth2/v2/auth",
+              "accessTokenUrl": "https://oauth2.googleapis.com/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Updates a property."
+        },
+        {
+          "info": {
+            "name": "Marks target Property as soft-deleted (ie: \"trashed\") and returns it",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://analyticsadmin.googleapis.com/v1beta/properties/:propertiesId",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "query",
+                "description": "Required. The name of the Property to soft-delete. Format: properties/{property_id} Example: \"properties/1000\""
+              },
+              {
+                "name": "propertiesId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://accounts.google.com/o/oauth2/v2/auth",
+              "accessTokenUrl": "https://oauth2.googleapis.com/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Marks target Property as soft-deleted (ie: \"trashed\") and returns it. This API does not have a method to restore soft-deleted properties. However, they can be restored using the Trash Can UI. If the properties are not restored before the expiration time, the Property and all child resources (eg: GoogleAdsLinks, Streams, AccessBindings) will be permanently purged. https://support.google.com/analytics/answer/6154772 Returns an error if the target is not found."
+        },
+        {
+          "info": {
+            "name": "Returns the singleton data retention settings for this property",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://analyticsadmin.googleapis.com/v1beta/properties/:propertiesId/dataRetentionSettings",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "query",
+                "description": "Required. The name of the settings to lookup. Format: properties/{property}/dataRetentionSettings Example: \"properties/1000/dataRetentionSettings\""
+              },
+              {
+                "name": "propertiesId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://accounts.google.com/o/oauth2/v2/auth",
+              "accessTokenUrl": "https://oauth2.googleapis.com/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Returns the singleton data retention settings for this property."
+        },
+        {
+          "info": {
+            "name": "Updates the singleton data retention settings for this property",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://analyticsadmin.googleapis.com/v1beta/properties/:propertiesId/dataRetentionSettings",
+            "params": [
+              {
+                "name": "updateMask",
+                "value": "",
+                "type": "query",
+                "description": "Required. The list of fields to be updated. Field names must be in snake case (e.g., \"field_to_update\"). Omitted fields will not be updated. To replace the entire entity, use one path with the string \"*\" to match all fields."
+              },
+              {
+                "name": "name",
+                "value": "",
+                "type": "query",
+                "description": "Identifier. Resource name for this DataRetentionSetting resource. Format: properties/{property}/dataRetentionSettings"
+              },
+              {
+                "name": "propertiesId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://accounts.google.com/o/oauth2/v2/auth",
+              "accessTokenUrl": "https://oauth2.googleapis.com/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Updates the singleton data retention settings for this property."
+        },
+        {
+          "info": {
+            "name": "Returns a customized report of data access records",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://analyticsadmin.googleapis.com/v1beta/properties/:propertiesId:runAccessReport",
+            "params": [
+              {
+                "name": "entity",
+                "value": "",
+                "type": "query",
+                "description": "The Data Access Report supports requesting at the property level or account level. If requested at the account level, Data Access Reports include all access for all properties under that account. To request at the property level, entity should be for example 'properties/123' if \"123\" is your Google Analytics property ID. To request at the account level, entity should be for example 'accounts/1234' if \"1234\" is your Google Analytics Account ID."
+              },
+              {
+                "name": "propertiesId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://accounts.google.com/o/oauth2/v2/auth",
+              "accessTokenUrl": "https://oauth2.googleapis.com/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Returns a customized report of data access records. The report provides records of each time a user reads Google Analytics reporting data. Access records are retained for up to 2 years. Data Access Reports can be requested for a property. Reports may be requested for any property, but dimensions that aren't related to quota can only be requested on Google Analytics 360 properties. This method is only available to Administrators. These data access records include GA UI Reporting, GA UI Exploratio"
+        },
+        {
+          "info": {
+            "name": "Deprecated: Use `ListKeyEvents` instead",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://analyticsadmin.googleapis.com/v1beta/properties/:propertiesId/conversionEvents",
+            "params": [
+              {
+                "name": "parent",
+                "value": "",
+                "type": "query",
+                "description": "Required. The resource name of the parent property. Example: 'properties/123'"
+              },
+              {
+                "name": "pageSize",
+                "value": "",
+                "type": "query",
+                "description": "Optional. The maximum number of resources to return. If unspecified, at most 50 resources will be returned. The maximum value is 200; (higher values will be coerced to the maximum)"
+              },
+              {
+                "name": "pageToken",
+                "value": "",
+                "type": "query",
+                "description": "Optional. A page token, received from a previous `ListConversionEvents` call. Provide this to retrieve the subsequent page. When paginating, all other parameters provided to `ListConversionEvents` must match the call that provided the page token."
+              },
+              {
+                "name": "propertiesId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://accounts.google.com/o/oauth2/v2/auth",
+              "accessTokenUrl": "https://oauth2.googleapis.com/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Deprecated: Use `ListKeyEvents` instead. Returns a list of conversion events in the specified parent property. Returns an empty list if no conversion events are found."
+        },
+        {
+          "info": {
+            "name": "Deprecated: Use `CreateKeyEvent` instead",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://analyticsadmin.googleapis.com/v1beta/properties/:propertiesId/conversionEvents",
+            "params": [
+              {
+                "name": "parent",
+                "value": "",
+                "type": "query",
+                "description": "Required. The resource name of the parent property where this conversion event will be created. Format: properties/123"
+              },
+              {
+                "name": "propertiesId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://accounts.google.com/o/oauth2/v2/auth",
+              "accessTokenUrl": "https://oauth2.googleapis.com/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Deprecated: Use `CreateKeyEvent` instead. Creates a conversion event with the specified attributes."
+        },
+        {
+          "info": {
+            "name": "Deprecated: Use `GetKeyEvent` instead",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://analyticsadmin.googleapis.com/v1beta/properties/:propertiesId/conversionEvents/:conversionEventsId",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "query",
+                "description": "Required. The resource name of the conversion event to retrieve. Format: properties/{property}/conversionEvents/{conversion_event} Example: \"properties/123/conversionEvents/456\""
+              },
+              {
+                "name": "conversionEventsId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "propertiesId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://accounts.google.com/o/oauth2/v2/auth",
+              "accessTokenUrl": "https://oauth2.googleapis.com/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Deprecated: Use `GetKeyEvent` instead. Retrieve a single conversion event."
+        },
+        {
+          "info": {
+            "name": "Deprecated: Use `UpdateKeyEvent` instead",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://analyticsadmin.googleapis.com/v1beta/properties/:propertiesId/conversionEvents/:conversionEventsId",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "query",
+                "description": "Identifier. Resource name of this conversion event. Format: properties/{property}/conversionEvents/{conversion_event}"
+              },
+              {
+                "name": "updateMask",
+                "value": "",
+                "type": "query",
+                "description": "Required. The list of fields to be updated. Field names must be in snake case (e.g., \"field_to_update\"). Omitted fields will not be updated. To replace the entire entity, use one path with the string \"*\" to match all fields."
+              },
+              {
+                "name": "conversionEventsId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "propertiesId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://accounts.google.com/o/oauth2/v2/auth",
+              "accessTokenUrl": "https://oauth2.googleapis.com/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Deprecated: Use `UpdateKeyEvent` instead. Updates a conversion event with the specified attributes."
+        },
+        {
+          "info": {
+            "name": "Deprecated: Use `DeleteKeyEvent` instead",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://analyticsadmin.googleapis.com/v1beta/properties/:propertiesId/conversionEvents/:conversionEventsId",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "query",
+                "description": "Required. The resource name of the conversion event to delete. Format: properties/{property}/conversionEvents/{conversion_event} Example: \"properties/123/conversionEvents/456\""
+              },
+              {
+                "name": "conversionEventsId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "propertiesId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://accounts.google.com/o/oauth2/v2/auth",
+              "accessTokenUrl": "https://oauth2.googleapis.com/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Deprecated: Use `DeleteKeyEvent` instead. Deletes a conversion event in a property."
+        },
+        {
+          "info": {
+            "name": "Archives a CustomDimension on a property",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://analyticsadmin.googleapis.com/v1beta/properties/:propertiesId/customDimensions/:customDimensionsId:archive",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "query",
+                "description": "Required. The name of the CustomDimension to archive. Example format: properties/1234/customDimensions/5678"
+              },
+              {
+                "name": "customDimensionsId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "propertiesId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://accounts.google.com/o/oauth2/v2/auth",
+              "accessTokenUrl": "https://oauth2.googleapis.com/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Archives a CustomDimension on a property."
+        },
+        {
+          "info": {
+            "name": "Lists CustomDimensions on a property",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://analyticsadmin.googleapis.com/v1beta/properties/:propertiesId/customDimensions",
+            "params": [
+              {
+                "name": "parent",
+                "value": "",
+                "type": "query",
+                "description": "Required. Example format: properties/1234"
+              },
+              {
+                "name": "pageSize",
+                "value": "",
+                "type": "query",
+                "description": "Optional. The maximum number of resources to return. If unspecified, at most 50 resources will be returned. The maximum value is 200 (higher values will be coerced to the maximum)."
+              },
+              {
+                "name": "pageToken",
+                "value": "",
+                "type": "query",
+                "description": "Optional. A page token, received from a previous `ListCustomDimensions` call. Provide this to retrieve the subsequent page. When paginating, all other parameters provided to `ListCustomDimensions` must match the call that provided the page token."
+              },
+              {
+                "name": "propertiesId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://accounts.google.com/o/oauth2/v2/auth",
+              "accessTokenUrl": "https://oauth2.googleapis.com/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Lists CustomDimensions on a property."
+        },
+        {
+          "info": {
+            "name": "Creates a CustomDimension",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://analyticsadmin.googleapis.com/v1beta/properties/:propertiesId/customDimensions",
+            "params": [
+              {
+                "name": "parent",
+                "value": "",
+                "type": "query",
+                "description": "Required. Example format: properties/1234"
+              },
+              {
+                "name": "propertiesId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://accounts.google.com/o/oauth2/v2/auth",
+              "accessTokenUrl": "https://oauth2.googleapis.com/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Creates a CustomDimension. Warning: It's not permissible to use this method to collect data on individual users. In particular, sending user IDs in custom dimensions violates the [Google Analytics Terms of Service](https://www.google.com/analytics/terms/)."
+        },
+        {
+          "info": {
+            "name": "Lookup for a single CustomDimension",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://analyticsadmin.googleapis.com/v1beta/properties/:propertiesId/customDimensions/:customDimensionsId",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "query",
+                "description": "Required. The name of the CustomDimension to get. Example format: properties/1234/customDimensions/5678"
+              },
+              {
+                "name": "customDimensionsId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "propertiesId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://accounts.google.com/o/oauth2/v2/auth",
+              "accessTokenUrl": "https://oauth2.googleapis.com/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Lookup for a single CustomDimension."
+        },
+        {
+          "info": {
+            "name": "Updates a CustomDimension on a property",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://analyticsadmin.googleapis.com/v1beta/properties/:propertiesId/customDimensions/:customDimensionsId",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "query",
+                "description": "Identifier. Resource name for this CustomDimension resource. Format: properties/{property}/customDimensions/{customDimension}"
+              },
+              {
+                "name": "updateMask",
+                "value": "",
+                "type": "query",
+                "description": "Required. The list of fields to be updated. Omitted fields will not be updated. To replace the entire entity, use one path with the string \"*\" to match all fields."
+              },
+              {
+                "name": "customDimensionsId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "propertiesId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://accounts.google.com/o/oauth2/v2/auth",
+              "accessTokenUrl": "https://oauth2.googleapis.com/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Updates a CustomDimension on a property."
+        },
+        {
+          "info": {
+            "name": "Archives a CustomMetric on a property",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://analyticsadmin.googleapis.com/v1beta/properties/:propertiesId/customMetrics/:customMetricsId:archive",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "query",
+                "description": "Required. The name of the CustomMetric to archive. Example format: properties/1234/customMetrics/5678"
+              },
+              {
+                "name": "customMetricsId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "propertiesId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://accounts.google.com/o/oauth2/v2/auth",
+              "accessTokenUrl": "https://oauth2.googleapis.com/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Archives a CustomMetric on a property."
+        },
+        {
+          "info": {
+            "name": "Lists CustomMetrics on a property",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://analyticsadmin.googleapis.com/v1beta/properties/:propertiesId/customMetrics",
+            "params": [
+              {
+                "name": "pageToken",
+                "value": "",
+                "type": "query",
+                "description": "A page token, received from a previous `ListCustomMetrics` call. Provide this to retrieve the subsequent page. When paginating, all other parameters provided to `ListCustomMetrics` must match the call that provided the page token."
+              },
+              {
+                "name": "parent",
+                "value": "",
+                "type": "query",
+                "description": "Required. Example format: properties/1234"
+              },
+              {
+                "name": "pageSize",
+                "value": "",
+                "type": "query",
+                "description": "The maximum number of resources to return. If unspecified, at most 50 resources will be returned. The maximum value is 200 (higher values will be coerced to the maximum)."
+              },
+              {
+                "name": "propertiesId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://accounts.google.com/o/oauth2/v2/auth",
+              "accessTokenUrl": "https://oauth2.googleapis.com/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Lists CustomMetrics on a property."
+        },
+        {
+          "info": {
+            "name": "Creates a CustomMetric",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://analyticsadmin.googleapis.com/v1beta/properties/:propertiesId/customMetrics",
+            "params": [
+              {
+                "name": "parent",
+                "value": "",
+                "type": "query",
+                "description": "Required. Example format: properties/1234"
+              },
+              {
+                "name": "propertiesId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://accounts.google.com/o/oauth2/v2/auth",
+              "accessTokenUrl": "https://oauth2.googleapis.com/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Creates a CustomMetric."
+        },
+        {
+          "info": {
+            "name": "Lookup for a single CustomMetric",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://analyticsadmin.googleapis.com/v1beta/properties/:propertiesId/customMetrics/:customMetricsId",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "query",
+                "description": "Required. The name of the CustomMetric to get. Example format: properties/1234/customMetrics/5678"
+              },
+              {
+                "name": "customMetricsId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "propertiesId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://accounts.google.com/o/oauth2/v2/auth",
+              "accessTokenUrl": "https://oauth2.googleapis.com/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Lookup for a single CustomMetric."
+        },
+        {
+          "info": {
+            "name": "Updates a CustomMetric on a property",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://analyticsadmin.googleapis.com/v1beta/properties/:propertiesId/customMetrics/:customMetricsId",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "query",
+                "description": "Identifier. Resource name for this CustomMetric resource. Format: properties/{property}/customMetrics/{customMetric}"
+              },
+              {
+                "name": "updateMask",
+                "value": "",
+                "type": "query",
+                "description": "Required. The list of fields to be updated. Omitted fields will not be updated. To replace the entire entity, use one path with the string \"*\" to match all fields."
+              },
+              {
+                "name": "customMetricsId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "propertiesId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://accounts.google.com/o/oauth2/v2/auth",
+              "accessTokenUrl": "https://oauth2.googleapis.com/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Updates a CustomMetric on a property."
+        },
+        {
+          "info": {
+            "name": "Lists DataStreams on a property",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://analyticsadmin.googleapis.com/v1beta/properties/:propertiesId/dataStreams",
+            "params": [
+              {
+                "name": "pageToken",
+                "value": "",
+                "type": "query",
+                "description": "A page token, received from a previous `ListDataStreams` call. Provide this to retrieve the subsequent page. When paginating, all other parameters provided to `ListDataStreams` must match the call that provided the page token."
+              },
+              {
+                "name": "pageSize",
+                "value": "",
+                "type": "query",
+                "description": "The maximum number of resources to return. If unspecified, at most 50 resources will be returned. The maximum value is 200 (higher values will be coerced to the maximum)."
+              },
+              {
+                "name": "parent",
+                "value": "",
+                "type": "query",
+                "description": "Required. Example format: properties/1234"
+              },
+              {
+                "name": "propertiesId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://accounts.google.com/o/oauth2/v2/auth",
+              "accessTokenUrl": "https://oauth2.googleapis.com/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Lists DataStreams on a property."
+        },
+        {
+          "info": {
+            "name": "Creates a DataStream",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://analyticsadmin.googleapis.com/v1beta/properties/:propertiesId/dataStreams",
+            "params": [
+              {
+                "name": "parent",
+                "value": "",
+                "type": "query",
+                "description": "Required. Example format: properties/1234"
+              },
+              {
+                "name": "propertiesId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://accounts.google.com/o/oauth2/v2/auth",
+              "accessTokenUrl": "https://oauth2.googleapis.com/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Creates a DataStream."
+        },
+        {
+          "info": {
+            "name": "Lookup for a single DataStream",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://analyticsadmin.googleapis.com/v1beta/properties/:propertiesId/dataStreams/:dataStreamsId",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "query",
+                "description": "Required. The name of the DataStream to get. Example format: properties/1234/dataStreams/5678"
+              },
+              {
+                "name": "dataStreamsId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "propertiesId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://accounts.google.com/o/oauth2/v2/auth",
+              "accessTokenUrl": "https://oauth2.googleapis.com/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Lookup for a single DataStream."
+        },
+        {
+          "info": {
+            "name": "Updates a DataStream on a property",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://analyticsadmin.googleapis.com/v1beta/properties/:propertiesId/dataStreams/:dataStreamsId",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "query",
+                "description": "Identifier. Resource name of this Data Stream. Format: properties/{property_id}/dataStreams/{stream_id} Example: \"properties/1000/dataStreams/2000\""
+              },
+              {
+                "name": "updateMask",
+                "value": "",
+                "type": "query",
+                "description": "Required. The list of fields to be updated. Omitted fields will not be updated. To replace the entire entity, use one path with the string \"*\" to match all fields."
+              },
+              {
+                "name": "dataStreamsId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "propertiesId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://accounts.google.com/o/oauth2/v2/auth",
+              "accessTokenUrl": "https://oauth2.googleapis.com/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Updates a DataStream on a property."
+        },
+        {
+          "info": {
+            "name": "Deletes a DataStream on a property",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://analyticsadmin.googleapis.com/v1beta/properties/:propertiesId/dataStreams/:dataStreamsId",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "query",
+                "description": "Required. The name of the DataStream to delete. Example format: properties/1234/dataStreams/5678"
+              },
+              {
+                "name": "dataStreamsId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "propertiesId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://accounts.google.com/o/oauth2/v2/auth",
+              "accessTokenUrl": "https://oauth2.googleapis.com/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Deletes a DataStream on a property."
+        },
+        {
+          "info": {
+            "name": "Returns child MeasurementProtocolSecrets under the specified parent Property",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://analyticsadmin.googleapis.com/v1beta/properties/:propertiesId/dataStreams/:dataStreamsId/measurementProtocolSecrets",
+            "params": [
+              {
+                "name": "pageSize",
+                "value": "",
+                "type": "query",
+                "description": "Optional. The maximum number of resources to return. If unspecified, at most 10 resources will be returned. The maximum value is 10. Higher values will be coerced to the maximum."
+              },
+              {
+                "name": "parent",
+                "value": "",
+                "type": "query",
+                "description": "Required. The resource name of the parent stream. Format: properties/{property}/dataStreams/{dataStream}/measurementProtocolSecrets"
+              },
+              {
+                "name": "pageToken",
+                "value": "",
+                "type": "query",
+                "description": "Optional. A page token, received from a previous `ListMeasurementProtocolSecrets` call. Provide this to retrieve the subsequent page. When paginating, all other parameters provided to `ListMeasurementProtocolSecrets` must match the call that provided the page token."
+              },
+              {
+                "name": "dataStreamsId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "propertiesId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://accounts.google.com/o/oauth2/v2/auth",
+              "accessTokenUrl": "https://oauth2.googleapis.com/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Returns child MeasurementProtocolSecrets under the specified parent Property."
+        },
+        {
+          "info": {
+            "name": "Creates a measurement protocol secret",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://analyticsadmin.googleapis.com/v1beta/properties/:propertiesId/dataStreams/:dataStreamsId/measurementProtocolSecrets",
+            "params": [
+              {
+                "name": "parent",
+                "value": "",
+                "type": "query",
+                "description": "Required. The parent resource where this secret will be created. Format: properties/{property}/dataStreams/{dataStream}"
+              },
+              {
+                "name": "dataStreamsId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "propertiesId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://accounts.google.com/o/oauth2/v2/auth",
+              "accessTokenUrl": "https://oauth2.googleapis.com/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Creates a measurement protocol secret."
+        },
+        {
+          "info": {
+            "name": "Lookup for a single MeasurementProtocolSecret",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://analyticsadmin.googleapis.com/v1beta/properties/:propertiesId/dataStreams/:dataStreamsId/measurementProtocolSecrets/:measurementProtocolSecretsId",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "query",
+                "description": "Required. The name of the measurement protocol secret to lookup. Format: properties/{property}/dataStreams/{dataStream}/measurementProtocolSecrets/{measurementProtocolSecret}"
+              },
+              {
+                "name": "dataStreamsId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "measurementProtocolSecretsId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "propertiesId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://accounts.google.com/o/oauth2/v2/auth",
+              "accessTokenUrl": "https://oauth2.googleapis.com/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Lookup for a single MeasurementProtocolSecret."
+        },
+        {
+          "info": {
+            "name": "Updates a measurement protocol secret",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://analyticsadmin.googleapis.com/v1beta/properties/:propertiesId/dataStreams/:dataStreamsId/measurementProtocolSecrets/:measurementProtocolSecretsId",
+            "params": [
+              {
+                "name": "updateMask",
+                "value": "",
+                "type": "query",
+                "description": "Required. The list of fields to be updated. Omitted fields will not be updated."
+              },
+              {
+                "name": "name",
+                "value": "",
+                "type": "query",
+                "description": "Identifier. Resource name of this secret. This secret may be a child of any type of stream. Format: properties/{property}/dataStreams/{dataStream}/measurementProtocolSecrets/{measurementProtocolSecret}"
+              },
+              {
+                "name": "dataStreamsId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "measurementProtocolSecretsId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "propertiesId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://accounts.google.com/o/oauth2/v2/auth",
+              "accessTokenUrl": "https://oauth2.googleapis.com/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Updates a measurement protocol secret."
+        },
+        {
+          "info": {
+            "name": "Deletes target MeasurementProtocolSecret",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://analyticsadmin.googleapis.com/v1beta/properties/:propertiesId/dataStreams/:dataStreamsId/measurementProtocolSecrets/:measurementProtocolSecretsId",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "query",
+                "description": "Required. The name of the MeasurementProtocolSecret to delete. Format: properties/{property}/dataStreams/{dataStream}/measurementProtocolSecrets/{measurementProtocolSecret}"
+              },
+              {
+                "name": "dataStreamsId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "measurementProtocolSecretsId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "propertiesId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://accounts.google.com/o/oauth2/v2/auth",
+              "accessTokenUrl": "https://oauth2.googleapis.com/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Deletes target MeasurementProtocolSecret."
+        },
+        {
+          "info": {
+            "name": "Lists FirebaseLinks on a property",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://analyticsadmin.googleapis.com/v1beta/properties/:propertiesId/firebaseLinks",
+            "params": [
+              {
+                "name": "pageToken",
+                "value": "",
+                "type": "query",
+                "description": "Optional. A page token, received from a previous `ListFirebaseLinks` call. Provide this to retrieve the subsequent page. When paginating, all other parameters provided to `ListFirebaseLinks` must match the call that provided the page token."
+              },
+              {
+                "name": "parent",
+                "value": "",
+                "type": "query",
+                "description": "Required. Format: properties/{property_id} Example: `properties/1234`"
+              },
+              {
+                "name": "pageSize",
+                "value": "",
+                "type": "query",
+                "description": "Optional. The maximum number of resources to return. The service may return fewer than this value, even if there are additional pages. If unspecified, at most 50 resources will be returned. The maximum value is 200; (higher values will be coerced to the maximum)"
+              },
+              {
+                "name": "propertiesId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://accounts.google.com/o/oauth2/v2/auth",
+              "accessTokenUrl": "https://oauth2.googleapis.com/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Lists FirebaseLinks on a property. Properties can have at most one FirebaseLink."
+        },
+        {
+          "info": {
+            "name": "Creates a FirebaseLink",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://analyticsadmin.googleapis.com/v1beta/properties/:propertiesId/firebaseLinks",
+            "params": [
+              {
+                "name": "parent",
+                "value": "",
+                "type": "query",
+                "description": "Required. Format: properties/{property_id} Example: `properties/1234`"
+              },
+              {
+                "name": "propertiesId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://accounts.google.com/o/oauth2/v2/auth",
+              "accessTokenUrl": "https://oauth2.googleapis.com/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Creates a FirebaseLink. Properties can have at most one FirebaseLink."
+        },
+        {
+          "info": {
+            "name": "Deletes a FirebaseLink on a property",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://analyticsadmin.googleapis.com/v1beta/properties/:propertiesId/firebaseLinks/:firebaseLinksId",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "query",
+                "description": "Required. Format: properties/{property_id}/firebaseLinks/{firebase_link_id} Example: `properties/1234/firebaseLinks/5678`"
+              },
+              {
+                "name": "firebaseLinksId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "propertiesId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://accounts.google.com/o/oauth2/v2/auth",
+              "accessTokenUrl": "https://oauth2.googleapis.com/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Deletes a FirebaseLink on a property"
+        },
+        {
+          "info": {
+            "name": "Lists GoogleAdsLinks on a property",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://analyticsadmin.googleapis.com/v1beta/properties/:propertiesId/googleAdsLinks",
+            "params": [
+              {
+                "name": "pageSize",
+                "value": "",
+                "type": "query",
+                "description": "Optional. The maximum number of resources to return. If unspecified, at most 50 resources will be returned. The maximum value is 200 (higher values will be coerced to the maximum)."
+              },
+              {
+                "name": "parent",
+                "value": "",
+                "type": "query",
+                "description": "Required. Example format: properties/1234"
+              },
+              {
+                "name": "pageToken",
+                "value": "",
+                "type": "query",
+                "description": "Optional. A page token, received from a previous `ListGoogleAdsLinks` call. Provide this to retrieve the subsequent page. When paginating, all other parameters provided to `ListGoogleAdsLinks` must match the call that provided the page token."
+              },
+              {
+                "name": "propertiesId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://accounts.google.com/o/oauth2/v2/auth",
+              "accessTokenUrl": "https://oauth2.googleapis.com/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Lists GoogleAdsLinks on a property."
+        },
+        {
+          "info": {
+            "name": "Creates a GoogleAdsLink",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://analyticsadmin.googleapis.com/v1beta/properties/:propertiesId/googleAdsLinks",
+            "params": [
+              {
+                "name": "parent",
+                "value": "",
+                "type": "query",
+                "description": "Required. Example format: properties/1234"
+              },
+              {
+                "name": "propertiesId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://accounts.google.com/o/oauth2/v2/auth",
+              "accessTokenUrl": "https://oauth2.googleapis.com/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Creates a GoogleAdsLink."
+        },
+        {
+          "info": {
+            "name": "Updates a GoogleAdsLink on a property",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://analyticsadmin.googleapis.com/v1beta/properties/:propertiesId/googleAdsLinks/:googleAdsLinksId",
+            "params": [
+              {
+                "name": "updateMask",
+                "value": "",
+                "type": "query",
+                "description": "Required. The list of fields to be updated. Field names must be in snake case (e.g., \"field_to_update\"). Omitted fields will not be updated. To replace the entire entity, use one path with the string \"*\" to match all fields."
+              },
+              {
+                "name": "name",
+                "value": "",
+                "type": "query",
+                "description": "Identifier. Format: properties/{propertyId}/googleAdsLinks/{googleAdsLinkId} Note: googleAdsLinkId is not the Google Ads customer ID."
+              },
+              {
+                "name": "googleAdsLinksId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "propertiesId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://accounts.google.com/o/oauth2/v2/auth",
+              "accessTokenUrl": "https://oauth2.googleapis.com/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Updates a GoogleAdsLink on a property"
+        },
+        {
+          "info": {
+            "name": "Deletes a GoogleAdsLink on a property",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://analyticsadmin.googleapis.com/v1beta/properties/:propertiesId/googleAdsLinks/:googleAdsLinksId",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "query",
+                "description": "Required. Example format: properties/1234/googleAdsLinks/5678"
+              },
+              {
+                "name": "googleAdsLinksId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "propertiesId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://accounts.google.com/o/oauth2/v2/auth",
+              "accessTokenUrl": "https://oauth2.googleapis.com/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Deletes a GoogleAdsLink on a property"
+        },
+        {
+          "info": {
+            "name": "Returns a list of Key Events in the specified parent property",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://analyticsadmin.googleapis.com/v1beta/properties/:propertiesId/keyEvents",
+            "params": [
+              {
+                "name": "pageSize",
+                "value": "",
+                "type": "query",
+                "description": "Optional. The maximum number of resources to return. If unspecified, at most 50 resources will be returned. The maximum value is 200; (higher values will be coerced to the maximum)"
+              },
+              {
+                "name": "parent",
+                "value": "",
+                "type": "query",
+                "description": "Required. The resource name of the parent property. Example: 'properties/123'"
+              },
+              {
+                "name": "pageToken",
+                "value": "",
+                "type": "query",
+                "description": "Optional. A page token, received from a previous `ListKeyEvents` call. Provide this to retrieve the subsequent page. When paginating, all other parameters provided to `ListKeyEvents` must match the call that provided the page token."
+              },
+              {
+                "name": "propertiesId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://accounts.google.com/o/oauth2/v2/auth",
+              "accessTokenUrl": "https://oauth2.googleapis.com/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Returns a list of Key Events in the specified parent property. Returns an empty list if no Key Events are found."
+        },
+        {
+          "info": {
+            "name": "Creates a Key Event",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://analyticsadmin.googleapis.com/v1beta/properties/:propertiesId/keyEvents",
+            "params": [
+              {
+                "name": "parent",
+                "value": "",
+                "type": "query",
+                "description": "Required. The resource name of the parent property where this Key Event will be created. Format: properties/123"
+              },
+              {
+                "name": "propertiesId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://accounts.google.com/o/oauth2/v2/auth",
+              "accessTokenUrl": "https://oauth2.googleapis.com/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Creates a Key Event."
+        },
+        {
+          "info": {
+            "name": "Retrieve a single Key Event",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://analyticsadmin.googleapis.com/v1beta/properties/:propertiesId/keyEvents/:keyEventsId",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "query",
+                "description": "Required. The resource name of the Key Event to retrieve. Format: properties/{property}/keyEvents/{key_event} Example: \"properties/123/keyEvents/456\""
+              },
+              {
+                "name": "keyEventsId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "propertiesId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://accounts.google.com/o/oauth2/v2/auth",
+              "accessTokenUrl": "https://oauth2.googleapis.com/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieve a single Key Event."
+        },
+        {
+          "info": {
+            "name": "Updates a Key Event",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://analyticsadmin.googleapis.com/v1beta/properties/:propertiesId/keyEvents/:keyEventsId",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "query",
+                "description": "Output only. Resource name of this key event. Format: properties/{property}/keyEvents/{key_event}"
+              },
+              {
+                "name": "updateMask",
+                "value": "",
+                "type": "query",
+                "description": "Required. The list of fields to be updated. Field names must be in snake case (e.g., \"field_to_update\"). Omitted fields will not be updated. To replace the entire entity, use one path with the string \"*\" to match all fields."
+              },
+              {
+                "name": "keyEventsId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "propertiesId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://accounts.google.com/o/oauth2/v2/auth",
+              "accessTokenUrl": "https://oauth2.googleapis.com/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Updates a Key Event."
+        },
+        {
+          "info": {
+            "name": "Deletes a Key Event",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://analyticsadmin.googleapis.com/v1beta/properties/:propertiesId/keyEvents/:keyEventsId",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "query",
+                "description": "Required. The resource name of the Key Event to delete. Format: properties/{property}/keyEvents/{key_event} Example: \"properties/123/keyEvents/456\""
+              },
+              {
+                "name": "keyEventsId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "propertiesId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://accounts.google.com/o/oauth2/v2/auth",
+              "accessTokenUrl": "https://oauth2.googleapis.com/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Deletes a Key Event."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

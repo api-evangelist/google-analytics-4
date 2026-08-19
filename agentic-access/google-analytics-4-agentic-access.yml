@@ -1,134 +1,43 @@
-generated: '2026-07-15'
+generated: '2026-08-13'
 method: generated
-source: openapi/google-analytics-4-openapi.yml
+source: openapi/google-analytics-4-admin-v1alpha-openapi.yml, openapi/google-analytics-4-admin-v1beta-openapi.yml,
+  openapi/google-analytics-4-data-v1alpha-openapi.yml, openapi/google-analytics-4-data-v1beta-openapi.yml
 description: Recommended x-agentic-access execution contracts, classified heuristically from
   the OpenAPI. A governance starting point for exposing this API to AI agents — review and bind
   audience per deployment. See research/curity/agentic-governance/.
 summary:
-  operations: 8
+  operations: 247
   by_action_class:
-    acting: 6
-    connected: 2
+    connected: 98
+    acting: 149
   by_consequence:
-    write: 6
-    read: 2
+    read: 98
+    write: 145
+    physical: 4
   human_in_the_loop_required: 0
 operations:
-- path: /v1beta/{property}:runReport
-  method: post
-  operationId: runReport
-  x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
-    token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
-    scope:
-    - analytics
-    - analytics.readonly
-- path: /v1beta/{property}:runPivotReport
-  method: post
-  operationId: runPivotReport
-  x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
-    token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
-    scope:
-    - analytics
-    - analytics.readonly
-- path: /v1beta/{property}:batchRunReports
-  method: post
-  operationId: batchRunReports
-  x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
-    token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
-    scope:
-    - analytics
-    - analytics.readonly
-- path: /v1beta/{property}:batchRunPivotReports
-  method: post
-  operationId: batchRunPivotReports
-  x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
-    token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
-    scope:
-    - analytics
-    - analytics.readonly
-- path: /v1beta/{property}:runRealtimeReport
-  method: post
-  operationId: runRealtimeReport
-  x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
-    token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
-    scope:
-    - analytics
-    - analytics.readonly
-- path: /v1beta/{name}/metadata
+- path: /v1alpha/accountSummaries
   method: get
-  operationId: getMetadata
+  operationId: accountSummaries_list
   x-agentic-access:
     action-class: connected
     consequence: read
     subject: optional
+    scope:
+    - analytics.edit
+    - analytics.readonly
     token:
       max-ttl: 3600
     audit: none
-    scope:
-    - analytics
-    - analytics.readonly
-- path: /v1beta/{parent}/audienceExports
-  method: post
-  operationId: createAudienceExport
+- path: /v1alpha/accounts/{accountsId}
+  method: delete
+  operationId: accounts_delete
   x-agentic-access:
     action-class: acting
     consequence: write
     subject: required
+    scope:
+    - analytics.edit
     audience: null
     token:
       max-ttl: 900
@@ -138,19 +47,3955 @@ operations:
       - abnormal
       - high-value
     audit: required
-    scope:
-    - analytics
-    - analytics.readonly
-- path: /v1beta/{name}
+- path: /v1alpha/accounts/{accountsId}
   method: get
-  operationId: getAudienceExport
+  operationId: accounts_get
   x-agentic-access:
     action-class: connected
     consequence: read
     subject: optional
+    scope:
+    - analytics.edit
+    - analytics.readonly
     token:
       max-ttl: 3600
     audit: none
+- path: /v1alpha/accounts/{accountsId}
+  method: patch
+  operationId: accounts_patch
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics.edit
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1alpha/accounts/{accountsId}/dataSharingSettings
+  method: get
+  operationId: accounts_getDataSharingSettings
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - analytics.edit
+    - analytics.readonly
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1alpha/accounts
+  method: get
+  operationId: accounts_list
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - analytics.edit
+    - analytics.readonly
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1alpha/accounts:provisionAccountTicket
+  method: post
+  operationId: accounts_provisionAccountTicket
+  x-agentic-access:
+    action-class: acting
+    consequence: physical
+    subject: required
+    scope:
+    - analytics.edit
+    audience: null
+    token:
+      max-ttl: 300
+      exchange: true
+      purpose-required: true
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1alpha/accounts/{accountsId}:runAccessReport
+  method: post
+  operationId: accounts_runAccessReport
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics.edit
+    - analytics.readonly
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1alpha/accounts/{accountsId}:searchChangeHistoryEvents
+  method: post
+  operationId: accounts_searchChangeHistoryEvents
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics.edit
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1alpha/accounts/{accountsId}/accessBindings:batchCreate
+  method: post
+  operationId: accounts_accessBindings_batchCreate
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics.manage.users
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1alpha/accounts/{accountsId}/accessBindings:batchDelete
+  method: post
+  operationId: accounts_accessBindings_batchDelete
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics.manage.users
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1alpha/accounts/{accountsId}/accessBindings:batchGet
+  method: get
+  operationId: accounts_accessBindings_batchGet
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - analytics.manage.users
+    - analytics.manage.users.readonly
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1alpha/accounts/{accountsId}/accessBindings:batchUpdate
+  method: post
+  operationId: accounts_accessBindings_batchUpdate
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics.manage.users
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1alpha/accounts/{accountsId}/accessBindings
+  method: post
+  operationId: accounts_accessBindings_create
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics.manage.users
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1alpha/accounts/{accountsId}/accessBindings
+  method: get
+  operationId: accounts_accessBindings_list
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - analytics.manage.users
+    - analytics.manage.users.readonly
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1alpha/accounts/{accountsId}/accessBindings/{accessBindingsId}
+  method: delete
+  operationId: accounts_accessBindings_delete
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics.manage.users
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1alpha/accounts/{accountsId}/accessBindings/{accessBindingsId}
+  method: get
+  operationId: accounts_accessBindings_get
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - analytics.manage.users
+    - analytics.manage.users.readonly
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1alpha/accounts/{accountsId}/accessBindings/{accessBindingsId}
+  method: patch
+  operationId: accounts_accessBindings_patch
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics.manage.users
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1alpha/properties/{propertiesId}:acknowledgeUserDataCollection
+  method: post
+  operationId: properties_acknowledgeUserDataCollection
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics.edit
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1alpha/properties
+  method: post
+  operationId: properties_create
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics.edit
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1alpha/properties
+  method: get
+  operationId: properties_list
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - analytics.edit
+    - analytics.readonly
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1alpha/properties:createRollupProperty
+  method: post
+  operationId: properties_createRollupProperty
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics.edit
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1alpha/properties/{propertiesId}
+  method: delete
+  operationId: properties_delete
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics.edit
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1alpha/properties/{propertiesId}
+  method: get
+  operationId: properties_get
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - analytics.edit
+    - analytics.readonly
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1alpha/properties/{propertiesId}
+  method: patch
+  operationId: properties_patch
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics.edit
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1alpha/properties/{propertiesId}/attributionSettings
+  method: get
+  operationId: properties_getAttributionSettings
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - analytics.edit
+    - analytics.readonly
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1alpha/properties/{propertiesId}/attributionSettings
+  method: patch
+  operationId: properties_updateAttributionSettings
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics.edit
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1alpha/properties/{propertiesId}/dataRetentionSettings
+  method: get
+  operationId: properties_getDataRetentionSettings
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - analytics.edit
+    - analytics.readonly
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1alpha/properties/{propertiesId}/dataRetentionSettings
+  method: patch
+  operationId: properties_updateDataRetentionSettings
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics.edit
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1alpha/properties/{propertiesId}/googleSignalsSettings
+  method: get
+  operationId: properties_getGoogleSignalsSettings
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - analytics.edit
+    - analytics.readonly
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1alpha/properties/{propertiesId}/googleSignalsSettings
+  method: patch
+  operationId: properties_updateGoogleSignalsSettings
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics.edit
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1alpha/properties/{propertiesId}/reportingIdentitySettings
+  method: get
+  operationId: properties_getReportingIdentitySettings
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - analytics.edit
+    - analytics.readonly
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1alpha/properties/{propertiesId}/reportingIdentitySettings
+  method: patch
+  operationId: properties_updateReportingIdentitySettings
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics.edit
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1alpha/properties/{propertiesId}/userProvidedDataSettings
+  method: get
+  operationId: properties_getUserProvidedDataSettings
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - analytics.edit
+    - analytics.readonly
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1alpha/properties:provisionSubproperty
+  method: post
+  operationId: properties_provisionSubproperty
+  x-agentic-access:
+    action-class: acting
+    consequence: physical
+    subject: required
+    scope:
+    - analytics.edit
+    audience: null
+    token:
+      max-ttl: 300
+      exchange: true
+      purpose-required: true
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1alpha/properties/{propertiesId}:runAccessReport
+  method: post
+  operationId: properties_runAccessReport
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics.edit
+    - analytics.readonly
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1alpha/properties/{propertiesId}:submitUserDeletion
+  method: post
+  operationId: properties_submitUserDeletion
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics.edit
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1alpha/properties/{propertiesId}/accessBindings:batchCreate
+  method: post
+  operationId: properties_accessBindings_batchCreate
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics.manage.users
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1alpha/properties/{propertiesId}/accessBindings:batchDelete
+  method: post
+  operationId: properties_accessBindings_batchDelete
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics.manage.users
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1alpha/properties/{propertiesId}/accessBindings:batchGet
+  method: get
+  operationId: properties_accessBindings_batchGet
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - analytics.manage.users
+    - analytics.manage.users.readonly
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1alpha/properties/{propertiesId}/accessBindings:batchUpdate
+  method: post
+  operationId: properties_accessBindings_batchUpdate
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics.manage.users
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1alpha/properties/{propertiesId}/accessBindings
+  method: post
+  operationId: properties_accessBindings_create
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics.manage.users
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1alpha/properties/{propertiesId}/accessBindings
+  method: get
+  operationId: properties_accessBindings_list
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - analytics.manage.users
+    - analytics.manage.users.readonly
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1alpha/properties/{propertiesId}/accessBindings/{accessBindingsId}
+  method: delete
+  operationId: properties_accessBindings_delete
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics.manage.users
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1alpha/properties/{propertiesId}/accessBindings/{accessBindingsId}
+  method: get
+  operationId: properties_accessBindings_get
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - analytics.manage.users
+    - analytics.manage.users.readonly
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1alpha/properties/{propertiesId}/accessBindings/{accessBindingsId}
+  method: patch
+  operationId: properties_accessBindings_patch
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics.manage.users
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1alpha/properties/{propertiesId}/adSenseLinks
+  method: post
+  operationId: properties_adSenseLinks_create
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics.edit
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1alpha/properties/{propertiesId}/adSenseLinks
+  method: get
+  operationId: properties_adSenseLinks_list
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - analytics.edit
+    - analytics.readonly
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1alpha/properties/{propertiesId}/adSenseLinks/{adSenseLinksId}
+  method: delete
+  operationId: properties_adSenseLinks_delete
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics.edit
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1alpha/properties/{propertiesId}/adSenseLinks/{adSenseLinksId}
+  method: get
+  operationId: properties_adSenseLinks_get
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - analytics.edit
+    - analytics.readonly
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1alpha/properties/{propertiesId}/audiences/{audiencesId}:archive
+  method: post
+  operationId: properties_audiences_archive
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics.edit
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1alpha/properties/{propertiesId}/audiences
+  method: post
+  operationId: properties_audiences_create
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics.edit
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1alpha/properties/{propertiesId}/audiences
+  method: get
+  operationId: properties_audiences_list
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - analytics.edit
+    - analytics.readonly
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1alpha/properties/{propertiesId}/audiences/{audiencesId}
+  method: get
+  operationId: properties_audiences_get
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - analytics.edit
+    - analytics.readonly
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1alpha/properties/{propertiesId}/audiences/{audiencesId}
+  method: patch
+  operationId: properties_audiences_patch
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics.edit
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1alpha/properties/{propertiesId}/bigQueryLinks
+  method: post
+  operationId: properties_bigQueryLinks_create
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics.edit
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1alpha/properties/{propertiesId}/bigQueryLinks
+  method: get
+  operationId: properties_bigQueryLinks_list
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - analytics.edit
+    - analytics.readonly
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1alpha/properties/{propertiesId}/bigQueryLinks/{bigQueryLinksId}
+  method: delete
+  operationId: properties_bigQueryLinks_delete
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics.edit
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1alpha/properties/{propertiesId}/bigQueryLinks/{bigQueryLinksId}
+  method: get
+  operationId: properties_bigQueryLinks_get
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - analytics.edit
+    - analytics.readonly
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1alpha/properties/{propertiesId}/bigQueryLinks/{bigQueryLinksId}
+  method: patch
+  operationId: properties_bigQueryLinks_patch
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics.edit
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1alpha/properties/{propertiesId}/calculatedMetrics
+  method: post
+  operationId: properties_calculatedMetrics_create
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics.edit
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1alpha/properties/{propertiesId}/calculatedMetrics
+  method: get
+  operationId: properties_calculatedMetrics_list
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - analytics.edit
+    - analytics.readonly
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1alpha/properties/{propertiesId}/calculatedMetrics/{calculatedMetricsId}
+  method: delete
+  operationId: properties_calculatedMetrics_delete
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics.edit
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1alpha/properties/{propertiesId}/calculatedMetrics/{calculatedMetricsId}
+  method: get
+  operationId: properties_calculatedMetrics_get
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - analytics.edit
+    - analytics.readonly
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1alpha/properties/{propertiesId}/calculatedMetrics/{calculatedMetricsId}
+  method: patch
+  operationId: properties_calculatedMetrics_patch
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics.edit
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1alpha/properties/{propertiesId}/channelGroups
+  method: post
+  operationId: properties_channelGroups_create
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics.edit
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1alpha/properties/{propertiesId}/channelGroups
+  method: get
+  operationId: properties_channelGroups_list
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - analytics.edit
+    - analytics.readonly
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1alpha/properties/{propertiesId}/channelGroups/{channelGroupsId}
+  method: delete
+  operationId: properties_channelGroups_delete
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics.edit
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1alpha/properties/{propertiesId}/channelGroups/{channelGroupsId}
+  method: get
+  operationId: properties_channelGroups_get
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - analytics.edit
+    - analytics.readonly
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1alpha/properties/{propertiesId}/channelGroups/{channelGroupsId}
+  method: patch
+  operationId: properties_channelGroups_patch
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics.edit
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1alpha/properties/{propertiesId}/conversionEvents
+  method: post
+  operationId: properties_conversionEvents_create
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics.edit
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1alpha/properties/{propertiesId}/conversionEvents
+  method: get
+  operationId: properties_conversionEvents_list
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - analytics.edit
+    - analytics.readonly
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1alpha/properties/{propertiesId}/conversionEvents/{conversionEventsId}
+  method: delete
+  operationId: properties_conversionEvents_delete
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics.edit
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1alpha/properties/{propertiesId}/conversionEvents/{conversionEventsId}
+  method: get
+  operationId: properties_conversionEvents_get
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - analytics.edit
+    - analytics.readonly
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1alpha/properties/{propertiesId}/conversionEvents/{conversionEventsId}
+  method: patch
+  operationId: properties_conversionEvents_patch
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics.edit
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1alpha/properties/{propertiesId}/customDimensions/{customDimensionsId}:archive
+  method: post
+  operationId: properties_customDimensions_archive
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics.edit
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1alpha/properties/{propertiesId}/customDimensions
+  method: post
+  operationId: properties_customDimensions_create
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics.edit
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1alpha/properties/{propertiesId}/customDimensions
+  method: get
+  operationId: properties_customDimensions_list
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - analytics.edit
+    - analytics.readonly
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1alpha/properties/{propertiesId}/customDimensions/{customDimensionsId}
+  method: get
+  operationId: properties_customDimensions_get
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - analytics.edit
+    - analytics.readonly
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1alpha/properties/{propertiesId}/customDimensions/{customDimensionsId}
+  method: patch
+  operationId: properties_customDimensions_patch
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics.edit
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1alpha/properties/{propertiesId}/customMetrics/{customMetricsId}:archive
+  method: post
+  operationId: properties_customMetrics_archive
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics.edit
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1alpha/properties/{propertiesId}/customMetrics
+  method: post
+  operationId: properties_customMetrics_create
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics.edit
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1alpha/properties/{propertiesId}/customMetrics
+  method: get
+  operationId: properties_customMetrics_list
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - analytics.edit
+    - analytics.readonly
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1alpha/properties/{propertiesId}/customMetrics/{customMetricsId}
+  method: get
+  operationId: properties_customMetrics_get
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - analytics.edit
+    - analytics.readonly
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1alpha/properties/{propertiesId}/customMetrics/{customMetricsId}
+  method: patch
+  operationId: properties_customMetrics_patch
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics.edit
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1alpha/properties/{propertiesId}/dataStreams
+  method: post
+  operationId: properties_dataStreams_create
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics.edit
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1alpha/properties/{propertiesId}/dataStreams
+  method: get
+  operationId: properties_dataStreams_list
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - analytics.edit
+    - analytics.readonly
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1alpha/properties/{propertiesId}/dataStreams/{dataStreamsId}
+  method: delete
+  operationId: properties_dataStreams_delete
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics.edit
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1alpha/properties/{propertiesId}/dataStreams/{dataStreamsId}
+  method: get
+  operationId: properties_dataStreams_get
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - analytics.edit
+    - analytics.readonly
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1alpha/properties/{propertiesId}/dataStreams/{dataStreamsId}
+  method: patch
+  operationId: properties_dataStreams_patch
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics.edit
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1alpha/properties/{propertiesId}/dataStreams/{dataStreamsId}/dataRedactionSettings
+  method: get
+  operationId: properties_dataStreams_getDataRedactionSettings
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - analytics.edit
+    - analytics.readonly
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1alpha/properties/{propertiesId}/dataStreams/{dataStreamsId}/dataRedactionSettings
+  method: patch
+  operationId: properties_dataStreams_updateDataRedactionSettings
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics.edit
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1alpha/properties/{propertiesId}/dataStreams/{dataStreamsId}/enhancedMeasurementSettings
+  method: get
+  operationId: properties_dataStreams_getEnhancedMeasurementSettings
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - analytics.edit
+    - analytics.readonly
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1alpha/properties/{propertiesId}/dataStreams/{dataStreamsId}/enhancedMeasurementSettings
+  method: patch
+  operationId: properties_dataStreams_updateEnhancedMeasurementSettings
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics.edit
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1alpha/properties/{propertiesId}/dataStreams/{dataStreamsId}/globalSiteTag
+  method: get
+  operationId: properties_dataStreams_getGlobalSiteTag
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - analytics.edit
+    - analytics.readonly
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1alpha/properties/{propertiesId}/dataStreams/{dataStreamsId}/eventCreateRules
+  method: post
+  operationId: properties_dataStreams_eventCreateRules_create
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics.edit
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1alpha/properties/{propertiesId}/dataStreams/{dataStreamsId}/eventCreateRules
+  method: get
+  operationId: properties_dataStreams_eventCreateRules_list
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - analytics.edit
+    - analytics.readonly
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1alpha/properties/{propertiesId}/dataStreams/{dataStreamsId}/eventCreateRules/{eventCreateRulesId}
+  method: delete
+  operationId: properties_dataStreams_eventCreateRules_delete
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics.edit
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1alpha/properties/{propertiesId}/dataStreams/{dataStreamsId}/eventCreateRules/{eventCreateRulesId}
+  method: get
+  operationId: properties_dataStreams_eventCreateRules_get
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - analytics.edit
+    - analytics.readonly
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1alpha/properties/{propertiesId}/dataStreams/{dataStreamsId}/eventCreateRules/{eventCreateRulesId}
+  method: patch
+  operationId: properties_dataStreams_eventCreateRules_patch
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics.edit
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1alpha/properties/{propertiesId}/dataStreams/{dataStreamsId}/eventEditRules
+  method: post
+  operationId: properties_dataStreams_eventEditRules_create
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics.edit
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1alpha/properties/{propertiesId}/dataStreams/{dataStreamsId}/eventEditRules
+  method: get
+  operationId: properties_dataStreams_eventEditRules_list
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - analytics.edit
+    - analytics.readonly
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1alpha/properties/{propertiesId}/dataStreams/{dataStreamsId}/eventEditRules/{eventEditRulesId}
+  method: delete
+  operationId: properties_dataStreams_eventEditRules_delete
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics.edit
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1alpha/properties/{propertiesId}/dataStreams/{dataStreamsId}/eventEditRules/{eventEditRulesId}
+  method: get
+  operationId: properties_dataStreams_eventEditRules_get
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - analytics.edit
+    - analytics.readonly
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1alpha/properties/{propertiesId}/dataStreams/{dataStreamsId}/eventEditRules/{eventEditRulesId}
+  method: patch
+  operationId: properties_dataStreams_eventEditRules_patch
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics.edit
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1alpha/properties/{propertiesId}/dataStreams/{dataStreamsId}/eventEditRules:reorder
+  method: post
+  operationId: properties_dataStreams_eventEditRules_reorder
+  x-agentic-access:
+    action-class: acting
+    consequence: physical
+    subject: required
+    scope:
+    - analytics.edit
+    audience: null
+    token:
+      max-ttl: 300
+      exchange: true
+      purpose-required: true
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1alpha/properties/{propertiesId}/dataStreams/{dataStreamsId}/measurementProtocolSecrets
+  method: post
+  operationId: properties_dataStreams_measurementProtocolSecrets_create
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics.edit
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1alpha/properties/{propertiesId}/dataStreams/{dataStreamsId}/measurementProtocolSecrets
+  method: get
+  operationId: properties_dataStreams_measurementProtocolSecrets_list
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - analytics.edit
+    - analytics.readonly
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1alpha/properties/{propertiesId}/dataStreams/{dataStreamsId}/measurementProtocolSecrets/{measurementProtocolSecretsId}
+  method: delete
+  operationId: properties_dataStreams_measurementProtocolSecrets_delete
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics.edit
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1alpha/properties/{propertiesId}/dataStreams/{dataStreamsId}/measurementProtocolSecrets/{measurementProtocolSecretsId}
+  method: get
+  operationId: properties_dataStreams_measurementProtocolSecrets_get
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - analytics.edit
+    - analytics.readonly
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1alpha/properties/{propertiesId}/dataStreams/{dataStreamsId}/measurementProtocolSecrets/{measurementProtocolSecretsId}
+  method: patch
+  operationId: properties_dataStreams_measurementProtocolSecrets_patch
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics.edit
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1alpha/properties/{propertiesId}/dataStreams/{dataStreamsId}/sKAdNetworkConversionValueSchema
+  method: post
+  operationId: properties_dataStreams_sKAdNetworkConversionValueSchema_create
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics.edit
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1alpha/properties/{propertiesId}/dataStreams/{dataStreamsId}/sKAdNetworkConversionValueSchema
+  method: get
+  operationId: properties_dataStreams_sKAdNetworkConversionValueSchema_list
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - analytics.edit
+    - analytics.readonly
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1alpha/properties/{propertiesId}/dataStreams/{dataStreamsId}/sKAdNetworkConversionValueSchema/{sKAdNetworkConversionValueSchemaId}
+  method: delete
+  operationId: properties_dataStreams_sKAdNetworkConversionValueSchema_delete
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics.edit
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1alpha/properties/{propertiesId}/dataStreams/{dataStreamsId}/sKAdNetworkConversionValueSchema/{sKAdNetworkConversionValueSchemaId}
+  method: get
+  operationId: properties_dataStreams_sKAdNetworkConversionValueSchema_get
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - analytics.edit
+    - analytics.readonly
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1alpha/properties/{propertiesId}/dataStreams/{dataStreamsId}/sKAdNetworkConversionValueSchema/{sKAdNetworkConversionValueSchemaId}
+  method: patch
+  operationId: properties_dataStreams_sKAdNetworkConversionValueSchema_patch
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics.edit
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1alpha/properties/{propertiesId}/displayVideo360AdvertiserLinkProposals/{displayVideo360AdvertiserLinkProposalsId}:approve
+  method: post
+  operationId: properties_displayVideo360AdvertiserLinkProposals_approve
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics.edit
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1alpha/properties/{propertiesId}/displayVideo360AdvertiserLinkProposals/{displayVideo360AdvertiserLinkProposalsId}:cancel
+  method: post
+  operationId: properties_displayVideo360AdvertiserLinkProposals_cancel
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics.edit
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1alpha/properties/{propertiesId}/displayVideo360AdvertiserLinkProposals
+  method: post
+  operationId: properties_displayVideo360AdvertiserLinkProposals_create
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics.edit
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1alpha/properties/{propertiesId}/displayVideo360AdvertiserLinkProposals
+  method: get
+  operationId: properties_displayVideo360AdvertiserLinkProposals_list
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - analytics.edit
+    - analytics.readonly
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1alpha/properties/{propertiesId}/displayVideo360AdvertiserLinkProposals/{displayVideo360AdvertiserLinkProposalsId}
+  method: delete
+  operationId: properties_displayVideo360AdvertiserLinkProposals_delete
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics.edit
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1alpha/properties/{propertiesId}/displayVideo360AdvertiserLinkProposals/{displayVideo360AdvertiserLinkProposalsId}
+  method: get
+  operationId: properties_displayVideo360AdvertiserLinkProposals_get
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - analytics.edit
+    - analytics.readonly
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1alpha/properties/{propertiesId}/displayVideo360AdvertiserLinks
+  method: post
+  operationId: properties_displayVideo360AdvertiserLinks_create
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics.edit
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1alpha/properties/{propertiesId}/displayVideo360AdvertiserLinks
+  method: get
+  operationId: properties_displayVideo360AdvertiserLinks_list
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - analytics.edit
+    - analytics.readonly
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1alpha/properties/{propertiesId}/displayVideo360AdvertiserLinks/{displayVideo360AdvertiserLinksId}
+  method: delete
+  operationId: properties_displayVideo360AdvertiserLinks_delete
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics.edit
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1alpha/properties/{propertiesId}/displayVideo360AdvertiserLinks/{displayVideo360AdvertiserLinksId}
+  method: get
+  operationId: properties_displayVideo360AdvertiserLinks_get
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - analytics.edit
+    - analytics.readonly
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1alpha/properties/{propertiesId}/displayVideo360AdvertiserLinks/{displayVideo360AdvertiserLinksId}
+  method: patch
+  operationId: properties_displayVideo360AdvertiserLinks_patch
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics.edit
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1alpha/properties/{propertiesId}/expandedDataSets
+  method: post
+  operationId: properties_expandedDataSets_create
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics.edit
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1alpha/properties/{propertiesId}/expandedDataSets
+  method: get
+  operationId: properties_expandedDataSets_list
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - analytics.edit
+    - analytics.readonly
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1alpha/properties/{propertiesId}/expandedDataSets/{expandedDataSetsId}
+  method: delete
+  operationId: properties_expandedDataSets_delete
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics.edit
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1alpha/properties/{propertiesId}/expandedDataSets/{expandedDataSetsId}
+  method: get
+  operationId: properties_expandedDataSets_get
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - analytics.edit
+    - analytics.readonly
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1alpha/properties/{propertiesId}/expandedDataSets/{expandedDataSetsId}
+  method: patch
+  operationId: properties_expandedDataSets_patch
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics.edit
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1alpha/properties/{propertiesId}/firebaseLinks
+  method: post
+  operationId: properties_firebaseLinks_create
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics.edit
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1alpha/properties/{propertiesId}/firebaseLinks
+  method: get
+  operationId: properties_firebaseLinks_list
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - analytics.edit
+    - analytics.readonly
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1alpha/properties/{propertiesId}/firebaseLinks/{firebaseLinksId}
+  method: delete
+  operationId: properties_firebaseLinks_delete
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics.edit
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1alpha/properties/{propertiesId}/googleAdsLinks
+  method: post
+  operationId: properties_googleAdsLinks_create
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics.edit
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1alpha/properties/{propertiesId}/googleAdsLinks
+  method: get
+  operationId: properties_googleAdsLinks_list
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - analytics.edit
+    - analytics.readonly
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1alpha/properties/{propertiesId}/googleAdsLinks/{googleAdsLinksId}
+  method: delete
+  operationId: properties_googleAdsLinks_delete
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics.edit
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1alpha/properties/{propertiesId}/googleAdsLinks/{googleAdsLinksId}
+  method: patch
+  operationId: properties_googleAdsLinks_patch
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics.edit
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1alpha/properties/{propertiesId}/keyEvents
+  method: post
+  operationId: properties_keyEvents_create
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics.edit
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1alpha/properties/{propertiesId}/keyEvents
+  method: get
+  operationId: properties_keyEvents_list
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - analytics.edit
+    - analytics.readonly
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1alpha/properties/{propertiesId}/keyEvents/{keyEventsId}
+  method: delete
+  operationId: properties_keyEvents_delete
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics.edit
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1alpha/properties/{propertiesId}/keyEvents/{keyEventsId}
+  method: get
+  operationId: properties_keyEvents_get
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - analytics.edit
+    - analytics.readonly
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1alpha/properties/{propertiesId}/keyEvents/{keyEventsId}
+  method: patch
+  operationId: properties_keyEvents_patch
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics.edit
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1alpha/properties/{propertiesId}/reportingDataAnnotations
+  method: post
+  operationId: properties_reportingDataAnnotations_create
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics.edit
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1alpha/properties/{propertiesId}/reportingDataAnnotations
+  method: get
+  operationId: properties_reportingDataAnnotations_list
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - analytics.edit
+    - analytics.readonly
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1alpha/properties/{propertiesId}/reportingDataAnnotations/{reportingDataAnnotationsId}
+  method: delete
+  operationId: properties_reportingDataAnnotations_delete
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics.edit
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1alpha/properties/{propertiesId}/reportingDataAnnotations/{reportingDataAnnotationsId}
+  method: get
+  operationId: properties_reportingDataAnnotations_get
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - analytics.edit
+    - analytics.readonly
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1alpha/properties/{propertiesId}/reportingDataAnnotations/{reportingDataAnnotationsId}
+  method: patch
+  operationId: properties_reportingDataAnnotations_patch
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics.edit
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1alpha/properties/{propertiesId}/rollupPropertySourceLinks
+  method: post
+  operationId: properties_rollupPropertySourceLinks_create
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics.edit
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1alpha/properties/{propertiesId}/rollupPropertySourceLinks
+  method: get
+  operationId: properties_rollupPropertySourceLinks_list
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - analytics.edit
+    - analytics.readonly
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1alpha/properties/{propertiesId}/rollupPropertySourceLinks/{rollupPropertySourceLinksId}
+  method: delete
+  operationId: properties_rollupPropertySourceLinks_delete
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics.edit
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1alpha/properties/{propertiesId}/rollupPropertySourceLinks/{rollupPropertySourceLinksId}
+  method: get
+  operationId: properties_rollupPropertySourceLinks_get
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - analytics.edit
+    - analytics.readonly
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1alpha/properties/{propertiesId}/searchAds360Links
+  method: post
+  operationId: properties_searchAds360Links_create
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics.edit
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1alpha/properties/{propertiesId}/searchAds360Links
+  method: get
+  operationId: properties_searchAds360Links_list
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - analytics.edit
+    - analytics.readonly
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1alpha/properties/{propertiesId}/searchAds360Links/{searchAds360LinksId}
+  method: delete
+  operationId: properties_searchAds360Links_delete
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics.edit
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1alpha/properties/{propertiesId}/searchAds360Links/{searchAds360LinksId}
+  method: get
+  operationId: properties_searchAds360Links_get
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - analytics.edit
+    - analytics.readonly
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1alpha/properties/{propertiesId}/searchAds360Links/{searchAds360LinksId}
+  method: patch
+  operationId: properties_searchAds360Links_patch
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics.edit
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1alpha/properties/{propertiesId}/subpropertyEventFilters
+  method: post
+  operationId: properties_subpropertyEventFilters_create
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics.edit
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1alpha/properties/{propertiesId}/subpropertyEventFilters
+  method: get
+  operationId: properties_subpropertyEventFilters_list
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - analytics.edit
+    - analytics.readonly
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1alpha/properties/{propertiesId}/subpropertyEventFilters/{subpropertyEventFiltersId}
+  method: delete
+  operationId: properties_subpropertyEventFilters_delete
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics.edit
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1alpha/properties/{propertiesId}/subpropertyEventFilters/{subpropertyEventFiltersId}
+  method: get
+  operationId: properties_subpropertyEventFilters_get
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - analytics.edit
+    - analytics.readonly
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1alpha/properties/{propertiesId}/subpropertyEventFilters/{subpropertyEventFiltersId}
+  method: patch
+  operationId: properties_subpropertyEventFilters_patch
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics.edit
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1alpha/properties/{propertiesId}/subpropertySyncConfigs/{subpropertySyncConfigsId}
+  method: get
+  operationId: properties_subpropertySyncConfigs_get
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - analytics.edit
+    - analytics.readonly
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1alpha/properties/{propertiesId}/subpropertySyncConfigs/{subpropertySyncConfigsId}
+  method: patch
+  operationId: properties_subpropertySyncConfigs_patch
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics.edit
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1alpha/properties/{propertiesId}/subpropertySyncConfigs
+  method: get
+  operationId: properties_subpropertySyncConfigs_list
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - analytics.edit
+    - analytics.readonly
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1beta/accountSummaries
+  method: get
+  operationId: accountSummaries_list
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - analytics.edit
+    - analytics.readonly
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1beta/accounts/{accountsId}
+  method: delete
+  operationId: accounts_delete
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics.edit
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1beta/accounts/{accountsId}
+  method: get
+  operationId: accounts_get
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - analytics.edit
+    - analytics.readonly
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1beta/accounts/{accountsId}
+  method: patch
+  operationId: accounts_patch
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics.edit
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1beta/accounts/{accountsId}/dataSharingSettings
+  method: get
+  operationId: accounts_getDataSharingSettings
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - analytics.edit
+    - analytics.readonly
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1beta/accounts
+  method: get
+  operationId: accounts_list
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - analytics.edit
+    - analytics.readonly
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1beta/accounts:provisionAccountTicket
+  method: post
+  operationId: accounts_provisionAccountTicket
+  x-agentic-access:
+    action-class: acting
+    consequence: physical
+    subject: required
+    scope:
+    - analytics.edit
+    audience: null
+    token:
+      max-ttl: 300
+      exchange: true
+      purpose-required: true
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1beta/accounts/{accountsId}:runAccessReport
+  method: post
+  operationId: accounts_runAccessReport
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics.edit
+    - analytics.readonly
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1beta/accounts/{accountsId}:searchChangeHistoryEvents
+  method: post
+  operationId: accounts_searchChangeHistoryEvents
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics.edit
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1beta/properties/{propertiesId}:acknowledgeUserDataCollection
+  method: post
+  operationId: properties_acknowledgeUserDataCollection
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics.edit
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1beta/properties
+  method: post
+  operationId: properties_create
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics.edit
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1beta/properties
+  method: get
+  operationId: properties_list
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - analytics.edit
+    - analytics.readonly
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1beta/properties/{propertiesId}
+  method: delete
+  operationId: properties_delete
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics.edit
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1beta/properties/{propertiesId}
+  method: get
+  operationId: properties_get
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - analytics.edit
+    - analytics.readonly
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1beta/properties/{propertiesId}
+  method: patch
+  operationId: properties_patch
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics.edit
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1beta/properties/{propertiesId}/dataRetentionSettings
+  method: get
+  operationId: properties_getDataRetentionSettings
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - analytics.edit
+    - analytics.readonly
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1beta/properties/{propertiesId}/dataRetentionSettings
+  method: patch
+  operationId: properties_updateDataRetentionSettings
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics.edit
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1beta/properties/{propertiesId}:runAccessReport
+  method: post
+  operationId: properties_runAccessReport
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics.edit
+    - analytics.readonly
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1beta/properties/{propertiesId}/conversionEvents
+  method: post
+  operationId: properties_conversionEvents_create
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics.edit
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1beta/properties/{propertiesId}/conversionEvents
+  method: get
+  operationId: properties_conversionEvents_list
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - analytics.edit
+    - analytics.readonly
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1beta/properties/{propertiesId}/conversionEvents/{conversionEventsId}
+  method: delete
+  operationId: properties_conversionEvents_delete
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics.edit
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1beta/properties/{propertiesId}/conversionEvents/{conversionEventsId}
+  method: get
+  operationId: properties_conversionEvents_get
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - analytics.edit
+    - analytics.readonly
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1beta/properties/{propertiesId}/conversionEvents/{conversionEventsId}
+  method: patch
+  operationId: properties_conversionEvents_patch
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics.edit
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1beta/properties/{propertiesId}/customDimensions/{customDimensionsId}:archive
+  method: post
+  operationId: properties_customDimensions_archive
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics.edit
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1beta/properties/{propertiesId}/customDimensions
+  method: post
+  operationId: properties_customDimensions_create
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics.edit
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1beta/properties/{propertiesId}/customDimensions
+  method: get
+  operationId: properties_customDimensions_list
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - analytics.edit
+    - analytics.readonly
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1beta/properties/{propertiesId}/customDimensions/{customDimensionsId}
+  method: get
+  operationId: properties_customDimensions_get
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - analytics.edit
+    - analytics.readonly
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1beta/properties/{propertiesId}/customDimensions/{customDimensionsId}
+  method: patch
+  operationId: properties_customDimensions_patch
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics.edit
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1beta/properties/{propertiesId}/customMetrics/{customMetricsId}:archive
+  method: post
+  operationId: properties_customMetrics_archive
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics.edit
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1beta/properties/{propertiesId}/customMetrics
+  method: post
+  operationId: properties_customMetrics_create
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics.edit
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1beta/properties/{propertiesId}/customMetrics
+  method: get
+  operationId: properties_customMetrics_list
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - analytics.edit
+    - analytics.readonly
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1beta/properties/{propertiesId}/customMetrics/{customMetricsId}
+  method: get
+  operationId: properties_customMetrics_get
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - analytics.edit
+    - analytics.readonly
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1beta/properties/{propertiesId}/customMetrics/{customMetricsId}
+  method: patch
+  operationId: properties_customMetrics_patch
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics.edit
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1beta/properties/{propertiesId}/dataStreams
+  method: post
+  operationId: properties_dataStreams_create
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics.edit
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1beta/properties/{propertiesId}/dataStreams
+  method: get
+  operationId: properties_dataStreams_list
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - analytics.edit
+    - analytics.readonly
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1beta/properties/{propertiesId}/dataStreams/{dataStreamsId}
+  method: delete
+  operationId: properties_dataStreams_delete
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics.edit
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1beta/properties/{propertiesId}/dataStreams/{dataStreamsId}
+  method: get
+  operationId: properties_dataStreams_get
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - analytics.edit
+    - analytics.readonly
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1beta/properties/{propertiesId}/dataStreams/{dataStreamsId}
+  method: patch
+  operationId: properties_dataStreams_patch
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics.edit
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1beta/properties/{propertiesId}/dataStreams/{dataStreamsId}/measurementProtocolSecrets
+  method: post
+  operationId: properties_dataStreams_measurementProtocolSecrets_create
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics.edit
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1beta/properties/{propertiesId}/dataStreams/{dataStreamsId}/measurementProtocolSecrets
+  method: get
+  operationId: properties_dataStreams_measurementProtocolSecrets_list
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - analytics.edit
+    - analytics.readonly
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1beta/properties/{propertiesId}/dataStreams/{dataStreamsId}/measurementProtocolSecrets/{measurementProtocolSecretsId}
+  method: delete
+  operationId: properties_dataStreams_measurementProtocolSecrets_delete
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics.edit
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1beta/properties/{propertiesId}/dataStreams/{dataStreamsId}/measurementProtocolSecrets/{measurementProtocolSecretsId}
+  method: get
+  operationId: properties_dataStreams_measurementProtocolSecrets_get
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - analytics.edit
+    - analytics.readonly
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1beta/properties/{propertiesId}/dataStreams/{dataStreamsId}/measurementProtocolSecrets/{measurementProtocolSecretsId}
+  method: patch
+  operationId: properties_dataStreams_measurementProtocolSecrets_patch
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics.edit
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1beta/properties/{propertiesId}/firebaseLinks
+  method: post
+  operationId: properties_firebaseLinks_create
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics.edit
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1beta/properties/{propertiesId}/firebaseLinks
+  method: get
+  operationId: properties_firebaseLinks_list
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - analytics.edit
+    - analytics.readonly
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1beta/properties/{propertiesId}/firebaseLinks/{firebaseLinksId}
+  method: delete
+  operationId: properties_firebaseLinks_delete
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics.edit
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1beta/properties/{propertiesId}/googleAdsLinks
+  method: post
+  operationId: properties_googleAdsLinks_create
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics.edit
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1beta/properties/{propertiesId}/googleAdsLinks
+  method: get
+  operationId: properties_googleAdsLinks_list
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - analytics.edit
+    - analytics.readonly
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1beta/properties/{propertiesId}/googleAdsLinks/{googleAdsLinksId}
+  method: delete
+  operationId: properties_googleAdsLinks_delete
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics.edit
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1beta/properties/{propertiesId}/googleAdsLinks/{googleAdsLinksId}
+  method: patch
+  operationId: properties_googleAdsLinks_patch
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics.edit
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1beta/properties/{propertiesId}/keyEvents
+  method: post
+  operationId: properties_keyEvents_create
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics.edit
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1beta/properties/{propertiesId}/keyEvents
+  method: get
+  operationId: properties_keyEvents_list
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - analytics.edit
+    - analytics.readonly
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1beta/properties/{propertiesId}/keyEvents/{keyEventsId}
+  method: delete
+  operationId: properties_keyEvents_delete
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics.edit
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1beta/properties/{propertiesId}/keyEvents/{keyEventsId}
+  method: get
+  operationId: properties_keyEvents_get
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - analytics.edit
+    - analytics.readonly
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1beta/properties/{propertiesId}/keyEvents/{keyEventsId}
+  method: patch
+  operationId: properties_keyEvents_patch
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics.edit
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1alpha/properties/{propertiesId}/metadata
+  method: get
+  operationId: properties_getMetadata
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
     scope:
     - analytics
     - analytics.readonly
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1alpha/properties/{propertiesId}/propertyQuotasSnapshot
+  method: get
+  operationId: properties_getPropertyQuotasSnapshot
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - analytics
+    - analytics.readonly
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1alpha/properties/{propertiesId}:runFunnelReport
+  method: post
+  operationId: properties_runFunnelReport
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics
+    - analytics.readonly
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1alpha/properties/{propertiesId}:runReport
+  method: post
+  operationId: properties_runReport
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics
+    - analytics.readonly
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1alpha/properties/{propertiesId}/audienceLists
+  method: post
+  operationId: properties_audienceLists_create
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics
+    - analytics.readonly
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1alpha/properties/{propertiesId}/audienceLists
+  method: get
+  operationId: properties_audienceLists_list
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - analytics
+    - analytics.readonly
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1alpha/properties/{propertiesId}/audienceLists/{audienceListsId}
+  method: get
+  operationId: properties_audienceLists_get
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - analytics
+    - analytics.readonly
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1alpha/properties/{propertiesId}/audienceLists/{audienceListsId}:query
+  method: post
+  operationId: properties_audienceLists_query
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics
+    - analytics.readonly
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1alpha/properties/{propertiesId}/recurringAudienceLists
+  method: post
+  operationId: properties_recurringAudienceLists_create
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics
+    - analytics.readonly
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1alpha/properties/{propertiesId}/recurringAudienceLists
+  method: get
+  operationId: properties_recurringAudienceLists_list
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - analytics
+    - analytics.readonly
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1alpha/properties/{propertiesId}/recurringAudienceLists/{recurringAudienceListsId}
+  method: get
+  operationId: properties_recurringAudienceLists_get
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - analytics
+    - analytics.readonly
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1alpha/properties/{propertiesId}/reportTasks
+  method: post
+  operationId: properties_reportTasks_create
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics
+    - analytics.readonly
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1alpha/properties/{propertiesId}/reportTasks
+  method: get
+  operationId: properties_reportTasks_list
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - analytics
+    - analytics.readonly
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1alpha/properties/{propertiesId}/reportTasks/{reportTasksId}
+  method: get
+  operationId: properties_reportTasks_get
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - analytics
+    - analytics.readonly
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1alpha/properties/{propertiesId}/reportTasks/{reportTasksId}:query
+  method: post
+  operationId: properties_reportTasks_query
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics
+    - analytics.readonly
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1beta/properties/{propertiesId}:batchRunPivotReports
+  method: post
+  operationId: properties_batchRunPivotReports
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics
+    - analytics.readonly
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1beta/properties/{propertiesId}:batchRunReports
+  method: post
+  operationId: properties_batchRunReports
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics
+    - analytics.readonly
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1beta/properties/{propertiesId}:checkCompatibility
+  method: post
+  operationId: properties_checkCompatibility
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics
+    - analytics.readonly
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1beta/properties/{propertiesId}/metadata
+  method: get
+  operationId: properties_getMetadata
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - analytics
+    - analytics.readonly
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1beta/properties/{propertiesId}:runPivotReport
+  method: post
+  operationId: properties_runPivotReport
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics
+    - analytics.readonly
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1beta/properties/{propertiesId}:runRealtimeReport
+  method: post
+  operationId: properties_runRealtimeReport
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics
+    - analytics.readonly
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1beta/properties/{propertiesId}:runReport
+  method: post
+  operationId: properties_runReport
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics
+    - analytics.readonly
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1beta/properties/{propertiesId}/audienceExports
+  method: post
+  operationId: properties_audienceExports_create
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics
+    - analytics.readonly
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1beta/properties/{propertiesId}/audienceExports
+  method: get
+  operationId: properties_audienceExports_list
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - analytics
+    - analytics.readonly
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1beta/properties/{propertiesId}/audienceExports/{audienceExportsId}
+  method: get
+  operationId: properties_audienceExports_get
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - analytics
+    - analytics.readonly
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1beta/properties/{propertiesId}/audienceExports/{audienceExportsId}:query
+  method: post
+  operationId: properties_audienceExports_query
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - analytics
+    - analytics.readonly
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required

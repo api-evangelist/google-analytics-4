@@ -1,23 +1,114 @@
-generated: '2026-07-11'
-method: derived
-source: openapi/google-analytics-4-openapi.yml
+generated: '2026-08-13'
+method: searched
+docs: https://developers.google.com/identity/protocols/oauth2/scopes
+docs_note: >-
+  Google's canonical OAuth 2.0 scope reference lists the analyticsadmin and analyticsdata
+  scope sets. Every scope below is also declared in Google's own Discovery documents, so the
+  spec-derived set and the documented set agree exactly - no scope is documented that the
+  contract omits, and none is in the contract that the docs omit.
+scope_prefix: https://www.googleapis.com/auth/
+scope_prefix_note: >-
+  Scopes are recorded here in short form. The wire form an OAuth request must send is the
+  prefix above plus the short name, e.g.
+  https://www.googleapis.com/auth/analytics.readonly
+authorization_server: https://accounts.google.com
+oidc_discovery: well-known/google-analytics-4-openid-configuration.json
+oauth_server_metadata: well-known/google-analytics-4-oauth-authorization-server.json
+source: openapi/google-analytics-4-admin-v1alpha-openapi.yml, openapi/google-analytics-4-admin-v1beta-openapi.yml,
+  openapi/google-analytics-4-data-v1alpha-openapi.yml, openapi/google-analytics-4-data-v1beta-openapi.yml
 schemes:
 - name: OAuth2
-  source: openapi/google-analytics-4-openapi.yml
+  source: openapi/google-analytics-4-admin-v1alpha-openapi.yml
   flows:
   - flow: authorizationCode
     authorizationUrl: https://accounts.google.com/o/oauth2/v2/auth
     tokenUrl: https://oauth2.googleapis.com/token
+  description: Google OAuth 2.0. Scopes are the short form of the full https://www.googleapis.com/auth/<scope>
+    identifier.
+- name: OAuth2
+  source: openapi/google-analytics-4-admin-v1beta-openapi.yml
+  flows:
+  - flow: authorizationCode
+    authorizationUrl: https://accounts.google.com/o/oauth2/v2/auth
+    tokenUrl: https://oauth2.googleapis.com/token
+  description: Google OAuth 2.0. Scopes are the short form of the full https://www.googleapis.com/auth/<scope>
+    identifier.
+- name: OAuth2
+  source: openapi/google-analytics-4-data-v1alpha-openapi.yml
+  flows:
+  - flow: authorizationCode
+    authorizationUrl: https://accounts.google.com/o/oauth2/v2/auth
+    tokenUrl: https://oauth2.googleapis.com/token
+  description: Google OAuth 2.0. Scopes are the short form of the full https://www.googleapis.com/auth/<scope>
+    identifier.
+- name: OAuth2
+  source: openapi/google-analytics-4-data-v1beta-openapi.yml
+  flows:
+  - flow: authorizationCode
+    authorizationUrl: https://accounts.google.com/o/oauth2/v2/auth
+    tokenUrl: https://oauth2.googleapis.com/token
+  description: Google OAuth 2.0. Scopes are the short form of the full https://www.googleapis.com/auth/<scope>
+    identifier.
 scopes:
 - scope: analytics
-  description: View and manage Google Analytics data
+  description: View and manage your Google Analytics data
   flows:
   - authorizationCode
   sources:
-  - openapi/google-analytics-4-openapi.yml
+  - openapi/google-analytics-4-data-v1alpha-openapi.yml
+  - openapi/google-analytics-4-data-v1beta-openapi.yml
+- scope: analytics.edit
+  description: Edit Google Analytics management entities
+  flows:
+  - authorizationCode
+  sources:
+  - openapi/google-analytics-4-admin-v1alpha-openapi.yml
+  - openapi/google-analytics-4-admin-v1beta-openapi.yml
+- scope: analytics.manage.users
+  description: Manage Google Analytics Account users by email address
+  flows:
+  - authorizationCode
+  sources:
+  - openapi/google-analytics-4-admin-v1alpha-openapi.yml
+- scope: analytics.manage.users.readonly
+  description: View Google Analytics user permissions
+  flows:
+  - authorizationCode
+  sources:
+  - openapi/google-analytics-4-admin-v1alpha-openapi.yml
 - scope: analytics.readonly
-  description: View Google Analytics data
+  description: See and download your Google Analytics data
   flows:
   - authorizationCode
   sources:
-  - openapi/google-analytics-4-openapi.yml
+  - openapi/google-analytics-4-admin-v1alpha-openapi.yml
+  - openapi/google-analytics-4-admin-v1beta-openapi.yml
+  - openapi/google-analytics-4-data-v1alpha-openapi.yml
+  - openapi/google-analytics-4-data-v1beta-openapi.yml
+grants:
+  supported:
+    - authorization_code
+    - refresh_token
+    - urn:ietf:params:oauth:grant-type:device_code
+    - urn:ietf:params:oauth:grant-type:jwt-bearer
+  source: well-known/google-analytics-4-oauth-authorization-server.json
+  note: >-
+    The jwt-bearer grant is how service accounts authenticate; it is the path Google's own
+    client libraries and the official MCP server take via Application Default Credentials.
+  client_credentials: false
+  client_credentials_note: >-
+    There is no client_credentials grant. Machine-to-machine access requires a service account
+    with a domain-delegated or property-granted identity, not a bare client id and secret.
+usage:
+  read_only: analytics.readonly
+  reporting_write: analytics
+  configuration_write: analytics.edit
+  user_management: analytics.manage.users
+  user_management_read: analytics.manage.users.readonly
+  mcp_server_requires:
+    - analytics.readonly
+    - cloud-platform
+  mcp_note: >-
+    The official analytics-mcp server additionally requests the broad
+    https://www.googleapis.com/auth/cloud-platform scope, which is far wider than the GA4
+    surface it exposes. Worth flagging for anyone granting it.

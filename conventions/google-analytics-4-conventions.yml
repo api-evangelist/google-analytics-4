@@ -1,0 +1,146 @@
+generated: '2026-08-13'
+method: derived
+source:
+  - openapi/google-analytics-4-data-v1beta-openapi.yml
+  - openapi/google-analytics-4-admin-v1beta-openapi.yml
+  - openapi/google-analytics-4-admin-v1alpha-openapi.yml
+  - https://developers.google.com/analytics/devguides/reporting/data/v1/basics
+  - https://developers.google.com/analytics/devguides/reporting/data/v1/errors
+note: >-
+  Cross-cutting request/response semantics for the GA4 API surface, derived from the four
+  harvested Discovery-sourced OpenAPI files and confirmed against Google's own guides. GA4
+  follows the Google API Improvement Proposals (AIP) house style rather than any REST
+  convention set of its own.
+design_style:
+  family: Google API Improvement Proposals (AIP) / google.api resource-oriented design
+  transport: JSON over HTTPS, generated from protobuf (see grpc/)
+  custom_methods: >-
+    Reporting operations use the AIP-136 custom-method colon form —
+    POST /v1beta/properties/{property}:runReport, :runPivotReport, :batchRunReports,
+    :runRealtimeReport, :checkCompatibility, :runFunnelReport.
+  resource_names: >-
+    Resources are addressed by relative resource name, not bare id — properties/{propertyId},
+    properties/{propertyId}/dataStreams/{streamId}. An agent must pass the full name string.
+authentication:
+  style: OAuth 2.0 bearer token
+  header: "Authorization: Bearer <access_token>"
+  authorization_server: https://accounts.google.com
+  service_accounts: supported via Application Default Credentials
+  api_keys: not supported for Data or Admin API
+  measurement_protocol_exception: >-
+    The Measurement Protocol authenticates with an api_secret query parameter plus
+    measurement_id / firebase_app_id — no OAuth, no bearer token.
+  artifact: authentication/google-analytics-4-authentication.yml
+idempotency:
+  supported: false
+  header: null
+  evidence: >-
+    Grepped all four Discovery documents for requestId, idempotency, Idempotency-Key,
+    validateOnly, dryRun, etag and If-Match. Zero occurrences. There is no idempotency key,
+    no client-supplied request id, and no optimistic-concurrency etag anywhere in the GA4
+    API surface.
+  consequence: >-
+    Retrying a failed Admin API create (custom dimension, data stream, key event, audience)
+    can duplicate the resource. Agents must read-before-write or reconcile by displayName.
+    Reporting operations are naturally idempotent because they are read-only despite using
+    POST.
+  scored: >-
+    No Idempotency pointer is emitted in apis.yml. This is an honest absence, not a missing
+    artifact.
+pagination:
+  style: cursor (opaque page token)
+  applies_to: 44 list operations across the Admin and Data APIs
+  request_params:
+    - name: pageSize
+      description: Maximum items to return. Server may return fewer.
+    - name: pageToken
+      description: Opaque token from the previous response's nextPageToken.
+  response_fields:
+    - name: nextPageToken
+      description: Present when more results exist; absent or empty on the last page.
+  data_api_exception:
+    style: offset
+    params: [limit, offset]
+    note: >-
+      Data API reporting requests do not use pageToken. They page with limit and offset in
+      the request body, and the default row cap is 10,000 rows per response.
+    docs: https://developers.google.com/analytics/devguides/reporting/data/v1/basics
+partial_update:
+  style: field mask
+  param: updateMask
+  operations: 38
+  note: >-
+    Every Admin API patch operation takes an updateMask listing the fields to change. Omitting
+    updateMask is an error; a mask of "*" replaces the whole resource. This is the GA4
+    equivalent of PATCH semantics and agents must set it explicitly.
+soft_delete:
+  param: showDeleted
+  note: >-
+    Several Admin API list operations accept showDeleted to include soft-deleted resources.
+    Properties are archived rather than hard-deleted (properties_delete performs a soft
+    delete with a retention window).
+field_expansion:
+  supported: false
+  note: No expand / include / fields-graph parameter. Google's global $fields / prettyPrint
+    system parameters exist but only trim the response, they do not expand relations.
+metadata:
+  custom_metadata_fields: false
+  note: >-
+    No free-form metadata bag on resources. Custom dimensions and custom metrics are
+    first-class Admin API resources instead (properties_customDimensions_*,
+    properties_customMetrics_*).
+request_tracing:
+  request_id_header: null
+  correlation: null
+  note: >-
+    No request-id or trace header is documented on the response. The only per-request
+    identifier available to a caller is the optional quotaUser system parameter it supplies
+    itself for quota attribution.
+system_parameters:
+  - name: quotaUser
+    description: Arbitrary string to attribute quota to an end user when there is no OAuth user.
+  - name: alt
+    description: Response format (json, media).
+  - name: fields
+    description: Partial response selector.
+  - name: prettyPrint
+    description: Pretty-print the JSON response.
+  - name: callback
+    description: JSONP callback.
+  - name: uploadType
+    description: Upload protocol for media requests.
+versioning:
+  scheme: uri-path
+  channels:
+    - version: v1beta
+      status: stable-beta
+      apis: [Data API, Admin API]
+    - version: v1alpha
+      status: alpha
+      apis: [Data API, Admin API]
+  note: >-
+    GA4 has no GA (v1) channel. The most stable channel is v1beta; every marquee feature
+    added since 2024 (report tasks, funnel reports, subproperty sync, reporting data
+    annotations, conversion reporting) landed in v1alpha first and several have never
+    graduated. See lifecycle/google-analytics-4-lifecycle.yml.
+  discovery:
+    data: https://analyticsdata.googleapis.com/$discovery/rest?version=v1beta
+    admin: https://analyticsadmin.googleapis.com/$discovery/rest?version=v1beta
+    note: Each Discovery document carries a `revision` date stamp (YYYYMMDD).
+errors:
+  envelope: google.rpc.Status under a top-level "error" key
+  discriminator: error.status (google.rpc.Code canonical name)
+  rfc9457: false
+  artifact: errors/google-analytics-4-problem-types.yml
+rate_limit_signaling:
+  headers: none
+  in_band: returnPropertyQuota request flag returns a PropertyQuota response block
+  exhaustion: 429 / RESOURCE_EXHAUSTED
+  artifact: rate-limits/google-analytics-4-rate-limits.yml
+cross_links:
+  authentication: authentication/google-analytics-4-authentication.yml
+  scopes: scopes/google-analytics-4-scopes.yml
+  errors: errors/google-analytics-4-problem-types.yml
+  lifecycle: lifecycle/google-analytics-4-lifecycle.yml
+  rate_limits: rate-limits/google-analytics-4-rate-limits.yml
+  sandbox: sandbox/google-analytics-4-sandbox.yml

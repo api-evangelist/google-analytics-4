@@ -1,0 +1,118 @@
+generated: '2026-08-13'
+method: searched
+source:
+  - https://developers.google.com/analytics/devguides/reporting/data/v1/errors
+  - openapi/google-analytics-4-data-v1beta-openapi.yml
+  - openapi/google-analytics-4-admin-v1beta-openapi.yml
+format: google-rpc-status
+rfc9457: false
+note: >-
+  GA4 does NOT use RFC 9457 application/problem+json. Every GA4 API returns Google's
+  canonical google.rpc.Status envelope as application/json, keyed on a top-level "error"
+  object. The Discovery documents declare no per-status response bodies at all — the error
+  contract lives in Google's shared API design guide and in the Data API error page, which
+  is where the entries below come from. The default response in every harvested OpenAPI
+  operation is wired to the GoogleRpcStatus schema for exactly this reason.
+envelope:
+  content_type: application/json
+  shape: |
+    {
+      "error": {
+        "code": 400,
+        "message": "Description of the error",
+        "status": "CANONICAL_CODE"
+      }
+    }
+  fields:
+    - name: error.code
+      type: integer
+      description: HTTP status code.
+    - name: error.message
+      type: string
+      description: Human-readable description. Not stable; do not branch on it.
+    - name: error.status
+      type: string
+      description: >-
+        google.rpc.Code canonical name. This is the stable machine-readable discriminator an
+        agent should branch on.
+    - name: error.details
+      type: array
+      description: Optional typed detail payloads (google.rpc.ErrorInfo and friends).
+problems:
+  - status: 400
+    code: INVALID_ARGUMENT
+    title: Malformed request
+    description: >-
+      Missing or incorrect parameters — invalid date ranges, unknown dimension or metric
+      names, malformed filter expressions, or incompatible dimension/metric combinations.
+    remediation: >-
+      Validate the request before sending. The Data API exposes properties_checkCompatibility
+      to test whether a dimension/metric set can be combined, and properties_getMetadata to
+      enumerate the valid names for a property.
+    retryable: false
+  - status: 401
+    code: UNAUTHENTICATED
+    title: Missing or expired credentials
+    description: Missing, invalid or expired OAuth 2.0 access token.
+    remediation: >-
+      Refresh the access token against https://oauth2.googleapis.com/token. See
+      authentication/google-analytics-4-authentication.yml.
+    retryable: false
+  - status: 403
+    code: PERMISSION_DENIED
+    title: No access to the property
+    description: >-
+      The authenticated principal is not granted access to the requested GA4 property, or
+      the required API is not enabled on the Google Cloud project.
+    remediation: >-
+      Grant the principal a role on the property, and enable analyticsdata.googleapis.com /
+      analyticsadmin.googleapis.com on the calling project.
+    retryable: false
+  - status: 429
+    code: RESOURCE_EXHAUSTED
+    title: Quota exhausted
+    description: >-
+      A token, concurrency or write quota was exceeded at the project or property level.
+    remediation: >-
+      Back off and re-check the budget. Set returnPropertyQuota: true on Data API requests,
+      or call properties_getPropertyQuotasSnapshot (v1alpha), to read remaining quota — there
+      are no rate-limit response headers. See rate-limits/google-analytics-4-rate-limits.yml.
+    retryable: true
+    retry_strategy: exponential backoff
+  - status: 500
+    code: INTERNAL
+    title: Internal server error
+    description: Unexpected server-side error; typically transient.
+    remediation: Retry with exponential backoff.
+    retryable: true
+    retry_strategy: exponential backoff
+    warning: >-
+      Counts against the Server Errors Per Project Per Property Per Hour quota (10 standard,
+      50 for Analytics 360). Unbounded retries will lock the property out.
+  - status: 503
+    code: UNAVAILABLE
+    title: Service temporarily unavailable
+    description: The service is temporarily unable to handle the request.
+    remediation: Retry with exponential backoff and a bounded retry count.
+    retryable: true
+    retry_strategy: exponential backoff
+    warning: >-
+      Also counts against the server-error quota. Google explicitly warns to cap retries for
+      this reason.
+measurement_protocol:
+  note: >-
+    The Measurement Protocol is fire-and-forget: POST https://www.google-analytics.com/mp/collect
+    returns HTTP 204 with no body and reports no validation errors, by design. Errors are
+    only observable against the separate validation endpoint.
+  validation_endpoint: https://www.google-analytics.com/_debug_/mp/collect
+  validation_envelope: |
+    {"validationMessages": [{"fieldPath": "...", "description": "...", "validationCode": "..."}]}
+  validation_codes:
+    - NAME_INVALID
+    - VALUE_REQUIRED
+    - EXCEEDED_MAX_ENTITIES
+  validation_note: >-
+    Google documents the codes list as non-exhaustive; only the three above are quoted on the
+    validating-events page and are recorded verbatim. The validation server does not validate
+    api_secret or firebase_app_id.
+  docs: https://developers.google.com/analytics/devguides/collection/protocol/ga4/validating-events

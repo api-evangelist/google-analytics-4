@@ -1,0 +1,48 @@
+generated: '2026-08-13'
+method: searched
+source: https://github.com/googleapis/googleapis/tree/master/google/analytics
+note: >-
+  Canonical protobuf service definitions for the GA4 APIs, saved verbatim from the
+  googleapis/googleapis repository — the same protos Google's own generated client libraries
+  and Discovery documents are produced from. These are the upstream source of truth; the
+  OpenAPI files in openapi/ are two conversions downstream of them.
+transport:
+  grpc_endpoints:
+    - analyticsdata.googleapis.com:443
+    - analyticsadmin.googleapis.com:443
+  note: >-
+    gRPC is the native transport for both APIs and is what the Java, Go, Python, Ruby, PHP and
+    .NET client libraries use. The JSON/REST surface is the transcoded projection.
+files:
+  - file: google-analytics-4-data-v1beta-analytics_data_api.proto
+    package: google.analytics.data.v1beta
+    service: BetaAnalyticsData
+    kind: service
+    rpcs: 12
+    source: https://github.com/googleapis/googleapis/blob/master/google/analytics/data/v1beta/analytics_data_api.proto
+  - file: google-analytics-4-data-v1beta-data.proto
+    package: google.analytics.data.v1beta
+    kind: messages
+    source: https://github.com/googleapis/googleapis/blob/master/google/analytics/data/v1beta/data.proto
+  - file: google-analytics-4-data-v1alpha-analytics_data_api.proto
+    package: google.analytics.data.v1alpha
+    service: AlphaAnalyticsData
+    kind: service
+    rpcs: 16
+    source: https://github.com/googleapis/googleapis/blob/master/google/analytics/data/v1alpha/analytics_data_api.proto
+  - file: google-analytics-4-admin-v1beta-analytics_admin.proto
+    package: google.analytics.admin.v1beta
+    service: AnalyticsAdminService
+    kind: service
+    rpcs: 55
+    source: https://github.com/googleapis/googleapis/blob/master/google/analytics/admin/v1beta/analytics_admin.proto
+  - file: google-analytics-4-admin-v1beta-resources.proto
+    package: google.analytics.admin.v1beta
+    kind: messages
+    source: https://github.com/googleapis/googleapis/blob/master/google/analytics/admin/v1beta/resources.proto
+  - file: google-analytics-4-admin-v1alpha-analytics_admin.proto
+    package: google.analytics.admin.v1alpha
+    service: AnalyticsAdminService
+    kind: service
+    rpcs: 157
+    source: https://github.com/googleapis/googleapis/blob/master/google/analytics/admin/v1alpha/analytics_admin.proto

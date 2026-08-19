@@ -1,0 +1,46 @@
+generated: '2026-08-13'
+method: generated
+source: >-
+  Authored by the API Evangelist enrichment pipeline against the four OpenAPI files in
+  openapi/, which are mechanical conversions of Google's own Discovery documents. Every
+  operationId referenced in every skill was verified by grep against those specs. Google
+  publishes no AGENTS.md and no first-party agent skills for GA4.
+skills:
+  - file: google-analytics-4-run-a-report.md
+    name: Run a Google Analytics 4 report
+    api: openapi/google-analytics-4-data-v1beta-openapi.yml
+    operations:
+      - accountSummaries_list
+      - properties_getMetadata
+      - properties_checkCompatibility
+      - properties_runReport
+  - file: google-analytics-4-configure-a-property.md
+    name: Configure a GA4 property's custom dimensions and key events
+    api: openapi/google-analytics-4-admin-v1beta-openapi.yml
+    operations:
+      - accountSummaries_list
+      - properties_get
+      - properties_customDimensions_list
+      - properties_customDimensions_create
+      - properties_customDimensions_patch
+      - properties_customDimensions_archive
+      - properties_customMetrics_list
+      - properties_customMetrics_create
+      - properties_keyEvents_list
+      - properties_keyEvents_create
+  - file: google-analytics-4-export-an-audience.md
+    name: Export a GA4 audience
+    api: openapi/google-analytics-4-data-v1beta-openapi.yml
+    operations:
+      - properties_audienceExports_create
+      - properties_audienceExports_get
+      - properties_audienceExports_list
+      - properties_audienceExports_query
+  - file: google-analytics-4-send-server-side-events.md
+    name: Send server-side events to GA4 with the Measurement Protocol
+    api: openapi/google-analytics-4-admin-v1beta-openapi.yml
+    operations:
+      - properties_dataStreams_list
+      - properties_dataStreams_get
+      - properties_dataStreams_measurementProtocolSecrets_list
+      - properties_dataStreams_measurementProtocolSecrets_create

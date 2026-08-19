@@ -1,0 +1,86 @@
+generated: '2026-08-13'
+method: searched
+source:
+  - https://developers.google.com/analytics/devguides/collection/protocol/ga4/validating-events
+  - https://ga-dev-tools.google/ga4/
+  - https://support.google.com/analytics/answer/6367342
+note: >-
+  GA4 has no test-mode API key, no sandbox tenant and no test/live key-prefix split. What it
+  does publish is a real validation endpoint for the Measurement Protocol, a hosted query
+  explorer, and a shared read-only demo property that anyone can add to their own account —
+  which together are the practical test surface. Everything below is quoted from Google's
+  own docs; no test value is invented.
+test_live_separation:
+  key_prefixes: none
+  modes: none
+  note: >-
+    Data API and Admin API calls always run against live property data with the caller's own
+    OAuth credentials. There is no way to issue a non-production credential.
+validation_endpoint:
+  api: Measurement Protocol
+  url: https://www.google-analytics.com/_debug_/mp/collect
+  eu_url: https://region1.google-analytics.com/_debug_/mp/collect
+  production_url: https://www.google-analytics.com/mp/collect
+  method: POST
+  accepts: the same request fields as the production endpoint
+  returns: |
+    {"validationMessages": []}
+  behaviour: >-
+    Events sent to the validation server are validated and discarded — they do not appear in
+    reports. The production endpoint returns 204 with no body and never reports a validation
+    error, so this is the only way to see why an event was rejected.
+  limitations:
+    - Does not validate api_secret.
+    - Does not validate firebase_app_id.
+  validation_codes:
+    - NAME_INVALID
+    - VALUE_REQUIRED
+    - EXCEEDED_MAX_ENTITIES
+  docs: https://developers.google.com/analytics/devguides/collection/protocol/ga4/validating-events
+demo_property:
+  name: Google Analytics 4 demo account
+  access: >-
+    Any Google account can add the shared GA4 demo property to its own Analytics account and
+    query it read-only through the Data API. It carries real traffic from the Google
+    Merchandise Store, which makes it the only published dataset that returns non-empty
+    reports without a production property.
+  docs: https://support.google.com/analytics/answer/6367342
+  limits:
+    - Read-only. Admin API writes against the demo property are rejected.
+    - Counts against the caller's own project quota, not a separate sandbox quota.
+fixture_tooling:
+  - name: GA4 Event Builder
+    url: https://ga-dev-tools.google/ga4/event-builder/
+    description: >-
+      Interactively construct Measurement Protocol events and validate them against the
+      validation server.
+    source: https://github.com/googleanalytics/ga-dev-tools
+  - name: GA4 Query Explorer
+    url: https://ga-dev-tools.google/ga4/query-explorer/
+    description: Build and run Data API runReport requests against a property you have access to.
+  - name: GA4 Dimensions and Metrics Explorer
+    url: https://ga-dev-tools.google/ga4/dimensions-metrics-explorer/
+    description: Browse every valid dimension and metric name before composing a request.
+  - name: DebugView
+    url: https://support.google.com/analytics/answer/7201382
+    description: >-
+      In-product real-time stream of events from a device or client flagged with debug_mode,
+      for verifying client-side collection.
+  - name: analytics-data-curl-examples
+    url: https://github.com/googleanalytics/analytics-data-curl-examples
+    description: First-party runnable curl request bodies for the Data API.
+preflight_operations:
+  note: >-
+    Two real API operations act as dry-run tooling and are the closest thing to a sandbox for
+    the Data API.
+  operations:
+    - operationId: properties_checkCompatibility
+      spec: openapi/google-analytics-4-data-v1beta-openapi.yml
+      description: >-
+        Tests whether a set of dimensions and metrics can legally be combined, before paying
+        the token cost of a real report.
+    - operationId: properties_getMetadata
+      spec: openapi/google-analytics-4-data-v1beta-openapi.yml
+      description: Enumerates every dimension and metric valid for the property, including custom ones.
+test_clocks: null
+time_simulation: null

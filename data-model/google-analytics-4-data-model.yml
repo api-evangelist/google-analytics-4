@@ -1,0 +1,262 @@
+generated: '2026-08-13'
+method: derived
+source:
+  - openapi/google-analytics-4-admin-v1beta-openapi.yml
+  - openapi/google-analytics-4-admin-v1alpha-openapi.yml
+  - openapi/google-analytics-4-data-v1beta-openapi.yml
+  - openapi/google-analytics-4-data-v1alpha-openapi.yml
+note: >-
+  Entity graph derived from the resource-name hierarchy in the harvested OpenAPI paths and
+  the $ref graph in components.schemas. GA4 follows Google AIP resource naming, so the
+  containment relationships are encoded directly in the URL path — properties/{p}/dataStreams/{d}/eventCreateRules
+  is an unambiguous statement that an EventCreateRule belongs to a DataStream which belongs
+  to a Property. Nothing here is inferred from prose.
+identifier_style:
+  form: relative resource name
+  examples:
+    - accounts/{accountId}
+    - properties/{propertyId}
+    - properties/{propertyId}/dataStreams/{streamId}
+    - properties/{propertyId}/dataStreams/{streamId}/measurementProtocolSecrets/{secretId}
+  id_prefixes: none
+  note: >-
+    GA4 uses no typed id prefixes. Identity is carried by the full path-shaped `name` field
+    on every resource, and every operation takes that name rather than a bare id.
+domains:
+  - name: Account administration
+    api: Google Analytics Admin API
+    root: Account
+  - name: Property configuration
+    api: Google Analytics Admin API
+    root: Property
+  - name: Data collection
+    api: Google Analytics Admin API + Measurement Protocol
+    root: DataStream
+  - name: Reporting
+    api: Google Analytics Data API
+    root: Property
+entities:
+  - name: Account
+    resource: accounts
+    channel: v1beta
+    description: Top-level Analytics organisational container. Owns properties and access bindings.
+  - name: AccountSummary
+    resource: accountSummaries
+    channel: v1beta
+    description: >-
+      Flattened read-only projection of the account/property tree. The single most useful
+      discovery operation for an agent - accountSummaries_list.
+  - name: DataSharingSettings
+    resource: accounts/dataSharingSettings
+    channel: v1beta
+  - name: Property
+    resource: properties
+    channel: v1beta
+    description: A GA4 property. The unit every Data API report is scoped to.
+  - name: DataRetentionSettings
+    resource: properties/dataRetentionSettings
+    channel: v1beta
+  - name: CustomDimension
+    resource: properties/customDimensions
+    channel: v1beta
+  - name: CustomMetric
+    resource: properties/customMetrics
+    channel: v1beta
+  - name: KeyEvent
+    resource: properties/keyEvents
+    channel: v1beta
+  - name: ConversionEvent
+    resource: properties/conversionEvents
+    channel: v1beta
+    deprecated: true
+    superseded_by: KeyEvent
+  - name: DataStream
+    resource: properties/dataStreams
+    channel: v1beta
+    description: A web, Android or iOS collection stream on a property.
+  - name: MeasurementProtocolSecret
+    resource: properties/dataStreams/measurementProtocolSecrets
+    channel: v1beta
+    description: >-
+      The api_secret used to authenticate Measurement Protocol POSTs for a stream. This is the
+      only credential material managed through the API.
+  - name: FirebaseLink
+    resource: properties/firebaseLinks
+    channel: v1beta
+  - name: GoogleAdsLink
+    resource: properties/googleAdsLinks
+    channel: v1beta
+  - name: AccessBinding
+    resource: accounts/accessBindings, properties/accessBindings
+    channel: v1alpha
+    description: >-
+      User/group role grant. Exists on both Account and Property and is the only GA4 entity
+      with batch operations (batchCreate, batchGet, batchUpdate, batchDelete).
+  - name: Audience
+    resource: properties/audiences
+    channel: v1alpha
+  - name: CalculatedMetric
+    resource: properties/calculatedMetrics
+    channel: v1alpha
+  - name: ChannelGroup
+    resource: properties/channelGroups
+    channel: v1alpha
+  - name: ExpandedDataSet
+    resource: properties/expandedDataSets
+    channel: v1alpha
+  - name: BigQueryLink
+    resource: properties/bigQueryLinks
+    channel: v1alpha
+  - name: AdSenseLink
+    resource: properties/adSenseLinks
+    channel: v1alpha
+  - name: DisplayVideo360AdvertiserLink
+    resource: properties/displayVideo360AdvertiserLinks
+    channel: v1alpha
+  - name: DisplayVideo360AdvertiserLinkProposal
+    resource: properties/displayVideo360AdvertiserLinkProposals
+    channel: v1alpha
+  - name: SearchAds360Link
+    resource: properties/searchAds360Links
+    channel: v1alpha
+  - name: EventCreateRule
+    resource: properties/dataStreams/eventCreateRules
+    channel: v1alpha
+  - name: EventEditRule
+    resource: properties/dataStreams/eventEditRules
+    channel: v1alpha
+  - name: EnhancedMeasurementSettings
+    resource: properties/dataStreams/enhancedMeasurementSettings
+    channel: v1alpha
+  - name: DataRedactionSettings
+    resource: properties/dataStreams/dataRedactionSettings
+    channel: v1alpha
+  - name: GlobalSiteTag
+    resource: properties/dataStreams/globalSiteTag
+    channel: v1alpha
+    description: The gtag.js snippet for a web data stream. See components/.
+  - name: SKAdNetworkConversionValueSchema
+    resource: properties/dataStreams/sKAdNetworkConversionValueSchema
+    channel: v1alpha
+  - name: ReportingDataAnnotation
+    resource: properties/reportingDataAnnotations
+    channel: v1alpha
+  - name: SubpropertyEventFilter
+    resource: properties/subpropertyEventFilters
+    channel: v1alpha
+  - name: SubpropertySyncConfig
+    resource: properties/subpropertySyncConfigs
+    channel: v1alpha
+  - name: RollupPropertySourceLink
+    resource: properties/rollupPropertySourceLinks
+    channel: v1alpha
+  - name: AudienceExport
+    resource: properties/audienceExports
+    channel: v1beta
+    api: Google Analytics Data API
+    description: Long-running materialisation of an Audience into an exportable user list.
+  - name: AudienceList
+    resource: properties/audienceLists
+    channel: v1alpha
+    api: Google Analytics Data API
+    description: v1alpha sibling of AudienceExport; carries the only webhook surface in GA4.
+  - name: RecurringAudienceList
+    resource: properties/recurringAudienceLists
+    channel: v1alpha
+    api: Google Analytics Data API
+  - name: ReportTask
+    resource: properties/reportTasks
+    channel: v1alpha
+    api: Google Analytics Data API
+    description: Asynchronous long-running report, added 2024-05-08.
+relationships:
+  - from: Account
+    to: Property
+    type: has_many
+    via: resource name containment
+  - from: Account
+    to: AccessBinding
+    type: has_many
+    via: accounts/{account}/accessBindings
+  - from: Account
+    to: DataSharingSettings
+    type: has_one
+    via: accounts/{account}/dataSharingSettings
+  - from: Property
+    to: Account
+    type: belongs_to
+    via: parent
+  - from: Property
+    to: DataStream
+    type: has_many
+    via: properties/{property}/dataStreams
+  - from: Property
+    to: CustomDimension
+    type: has_many
+  - from: Property
+    to: CustomMetric
+    type: has_many
+  - from: Property
+    to: KeyEvent
+    type: has_many
+  - from: Property
+    to: Audience
+    type: has_many
+  - from: Property
+    to: AccessBinding
+    type: has_many
+  - from: Property
+    to: DataRetentionSettings
+    type: has_one
+  - from: Property
+    to: GoogleAdsLink
+    type: has_many
+  - from: Property
+    to: FirebaseLink
+    type: has_many
+  - from: Property
+    to: BigQueryLink
+    type: has_many
+  - from: Property
+    to: Property
+    type: has_many
+    via: rollupPropertySourceLinks / provisionSubproperty
+    note: Properties nest — rollup properties aggregate source properties, subproperties filter a parent.
+  - from: DataStream
+    to: MeasurementProtocolSecret
+    type: has_many
+  - from: DataStream
+    to: EventCreateRule
+    type: has_many
+  - from: DataStream
+    to: EventEditRule
+    type: has_many
+  - from: DataStream
+    to: EnhancedMeasurementSettings
+    type: has_one
+  - from: DataStream
+    to: DataRedactionSettings
+    type: has_one
+  - from: DataStream
+    to: GlobalSiteTag
+    type: has_one
+  - from: Audience
+    to: AudienceExport
+    type: has_many
+    via: AudienceExport.audience
+  - from: RecurringAudienceList
+    to: AudienceList
+    type: has_many
+    via: RecurringAudienceList.audienceLists
+  - from: AudienceList
+    to: RecurringAudienceList
+    type: belongs_to
+    via: AudienceList.recurringAudienceList
+cross_api_join:
+  note: >-
+    The Admin API and the Data API share exactly one join key — the property resource name.
+    An agent discovers properties via accountSummaries_list on the Admin API, then passes
+    properties/{propertyId} as the `property` path parameter to every Data API reporting
+    operation. Custom dimensions and metrics created through the Admin API become queryable
+    dimension/metric names in the Data API, discoverable via properties_getMetadata.
+render: null

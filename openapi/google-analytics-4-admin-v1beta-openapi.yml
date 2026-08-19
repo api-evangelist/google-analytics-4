@@ -1,0 +1,4150 @@
+openapi: 3.1.0
+info:
+  title: Google Analytics Admin API
+  description: 'Manage properties in Google Analytics. Warning: Creating multiple Customer Applications,
+    Accounts, or Projects to simulate or act as a single Customer Application, Account, or Project (respectively)
+    or to circumvent Service-specific usage limits or quotas is a direct violation of Google Cloud Platform
+    Terms of Service as well as Google APIs Terms of Service. These actions can result in immediate termination
+    of your GCP project(s) without any warning.'
+  version: v1beta
+  contact:
+    name: Google
+    url: http://code.google.com/apis/analytics/docs/mgmt/home.html
+  x-discovery-revision: '20260810'
+servers:
+- url: https://analyticsadmin.googleapis.com
+  description: Google Analytics Admin API
+tags:
+- name: accountSummaries
+- name: accounts
+- name: properties
+security:
+- BearerAuth: []
+paths:
+  /v1beta/accountSummaries:
+    get:
+      operationId: accountSummaries_list
+      summary: Returns summaries of all accounts accessible by the caller
+      tags:
+      - accountSummaries
+      description: Returns summaries of all accounts accessible by the caller.
+      parameters:
+      - name: pageToken
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Optional. A page token, received from a previous `ListAccountSummaries` call. Provide
+          this to retrieve the subsequent page. When paginating, all other parameters provided to `ListAccountSummaries`
+          must match the call that provided the page token.
+      - name: pageSize
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+        description: Optional. The maximum number of AccountSummary resources to return. The service may
+          return fewer than this value, even if there are additional pages. If unspecified, at most 50
+          resources will be returned. The maximum value is 200; (higher values will be coerced to the
+          maximum)
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaListAccountSummariesResponse'
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoogleRpcStatus'
+      security:
+      - OAuth2:
+        - analytics.edit
+        - analytics.readonly
+      - BearerAuth: []
+  /v1beta/accounts/{accountsId}:
+    delete:
+      operationId: accounts_delete
+      summary: 'Marks target Account as soft-deleted (ie: "trashed") and returns it'
+      tags:
+      - accounts
+      description: 'Marks target Account as soft-deleted (ie: "trashed") and returns it. This API does
+        not have a method to restore soft-deleted accounts. However, they can be restored using the Trash
+        Can UI. If the accounts are not restored before the expiration time, the account and all child
+        resources (eg: Properties, GoogleAdsLinks, Streams, AccessBindings) will be permanently purged.
+        https://support.google.com/analytics/answer/6154772 Returns an error if the target is not found.'
+      parameters:
+      - name: name
+        in: query
+        required: true
+        schema:
+          type: string
+          pattern: ^accounts/[^/]+$
+        description: 'Required. The name of the Account to soft-delete. Format: accounts/{account} Example:
+          "accounts/100"'
+      - name: accountsId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoogleProtobufEmpty'
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoogleRpcStatus'
+      security:
+      - OAuth2:
+        - analytics.edit
+      - BearerAuth: []
+    get:
+      operationId: accounts_get
+      summary: Lookup for a single Account
+      tags:
+      - accounts
+      description: Lookup for a single Account.
+      parameters:
+      - name: name
+        in: query
+        required: true
+        schema:
+          type: string
+          pattern: ^accounts/[^/]+$
+        description: 'Required. The name of the account to lookup. Format: accounts/{account} Example:
+          "accounts/100"'
+      - name: accountsId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaAccount'
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoogleRpcStatus'
+      security:
+      - OAuth2:
+        - analytics.edit
+        - analytics.readonly
+      - BearerAuth: []
+    patch:
+      operationId: accounts_patch
+      summary: Updates an account
+      tags:
+      - accounts
+      description: Updates an account.
+      parameters:
+      - name: name
+        in: query
+        required: true
+        schema:
+          type: string
+          pattern: ^accounts/[^/]+$
+        description: 'Identifier. Resource name of this account. Format: accounts/{account} Example: "accounts/100"'
+      - name: updateMask
+        in: query
+        required: false
+        schema:
+          type: string
+          format: google-fieldmask
+        description: Required. The list of fields to be updated. Field names must be in snake case (for
+          example, "field_to_update"). Omitted fields will not be updated. To replace the entire entity,
+          use one path with the string "*" to match all fields.
+      - name: accountsId
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaAccount'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaAccount'
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoogleRpcStatus'
+      security:
+      - OAuth2:
+        - analytics.edit
+      - BearerAuth: []
+  /v1beta/accounts/{accountsId}/dataSharingSettings:
+    get:
+      operationId: accounts_getDataSharingSettings
+      summary: Get data sharing settings on an account
+      tags:
+      - accounts
+      description: Get data sharing settings on an account. Data sharing settings are singletons.
+      parameters:
+      - name: name
+        in: query
+        required: true
+        schema:
+          type: string
+          pattern: ^accounts/[^/]+/dataSharingSettings$
+        description: 'Required. The name of the settings to lookup. Format: accounts/{account}/dataSharingSettings
+          Example: `accounts/1000/dataSharingSettings`'
+      - name: accountsId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaDataSharingSettings'
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoogleRpcStatus'
+      security:
+      - OAuth2:
+        - analytics.edit
+        - analytics.readonly
+      - BearerAuth: []
+  /v1beta/accounts:
+    get:
+      operationId: accounts_list
+      summary: Returns all accounts accessible by the caller
+      tags:
+      - accounts
+      description: 'Returns all accounts accessible by the caller. Note that these accounts might not
+        currently have GA properties. Soft-deleted (ie: "trashed") accounts are excluded by default. Returns
+        an empty list if no relevant accounts are found. Note: The easiest way to retrieve a list of all
+        properties you have access to is by using `ListAccountSummaries`.'
+      parameters:
+      - name: pageToken
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Optional. A page token, received from a previous `ListAccounts` call. Provide this
+          to retrieve the subsequent page. When paginating, all other parameters provided to `ListAccounts`
+          must match the call that provided the page token.
+      - name: showDeleted
+        in: query
+        required: false
+        schema:
+          type: boolean
+        description: 'Whether to include soft-deleted (ie: "trashed") Accounts in the results. Accounts
+          can be inspected to determine whether they are deleted or not.'
+      - name: pageSize
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+        description: Optional. The maximum number of resources to return. The service may return fewer
+          than this value, even if there are additional pages. If unspecified, at most 50 resources will
+          be returned. The maximum value is 200; (higher values will be coerced to the maximum)
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaListAccountsResponse'
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoogleRpcStatus'
+      security:
+      - OAuth2:
+        - analytics.edit
+        - analytics.readonly
+      - BearerAuth: []
+  /v1beta/accounts:provisionAccountTicket:
+    post:
+      operationId: accounts_provisionAccountTicket
+      summary: Requests a ticket for creating an account
+      tags:
+      - accounts
+      description: Requests a ticket for creating an account.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaProvisionAccountTicketRequest'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaProvisionAccountTicketResponse'
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoogleRpcStatus'
+      security:
+      - OAuth2:
+        - analytics.edit
+      - BearerAuth: []
+  /v1beta/accounts/{accountsId}:runAccessReport:
+    post:
+      operationId: accounts_runAccessReport
+      summary: Returns a customized report of data access records
+      tags:
+      - accounts
+      description: Returns a customized report of data access records. The report provides records of
+        each time a user reads Google Analytics reporting data. Access records are retained for up to
+        2 years. Data Access Reports can be requested for a property. Reports may be requested for any
+        property, but dimensions that aren't related to quota can only be requested on Google Analytics
+        360 properties. This method is only available to Administrators. These data access records include
+        GA UI Reporting, GA UI Explorations, GA Data API, and other products like Firebase & Admob that
+        can retrieve data from Google Analytics through a linkage. These records don't include property
+        configuration changes like adding a stream or changing a property's time zone. For configuration
+        change history, see [searchChangeHistoryEvents](https://developers.google.com/analytics/devguides/config/admin/v1/rest/v1alpha/accounts/searchChangeHistoryEvents).
+        To give your feedback on this API, complete the [Google Analytics Access Reports feedback](https://docs.google.com/forms/d/e/1FAIpQLSdmEBUrMzAEdiEKk5TV5dEHvDUZDRlgWYdQdAeSdtR4hVjEhw/viewform)
+        form.
+      parameters:
+      - name: entity
+        in: query
+        required: true
+        schema:
+          type: string
+          pattern: ^accounts/[^/]+$
+        description: The Data Access Report supports requesting at the property level or account level.
+          If requested at the account level, Data Access Reports include all access for all properties
+          under that account. To request at the property level, entity should be for example 'properties/123'
+          if "123" is your Google Analytics property ID. To request at the account level, entity should
+          be for example 'accounts/1234' if "1234" is your Google Analytics Account ID.
+      - name: accountsId
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaRunAccessReportRequest'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaRunAccessReportResponse'
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoogleRpcStatus'
+      security:
+      - OAuth2:
+        - analytics.edit
+        - analytics.readonly
+      - BearerAuth: []
+  /v1beta/accounts/{accountsId}:searchChangeHistoryEvents:
+    post:
+      operationId: accounts_searchChangeHistoryEvents
+      summary: Searches through all changes to an account or its children given the specified set of filters
+      tags:
+      - accounts
+      description: Searches through all changes to an account or its children given the specified set
+        of filters. Only returns the subset of changes supported by the API. The UI may return additional
+        changes.
+      parameters:
+      - name: account
+        in: query
+        required: true
+        schema:
+          type: string
+          pattern: ^accounts/[^/]+$
+        description: 'Required. The account resource for which to return change history resources. Format:
+          accounts/{account} Example: `accounts/100`'
+      - name: accountsId
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaSearchChangeHistoryEventsRequest'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaSearchChangeHistoryEventsResponse'
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoogleRpcStatus'
+      security:
+      - OAuth2:
+        - analytics.edit
+      - BearerAuth: []
+  /v1beta/properties/{propertiesId}:acknowledgeUserDataCollection:
+    post:
+      operationId: properties_acknowledgeUserDataCollection
+      summary: Acknowledges the terms of user data collection for the specified property
+      tags:
+      - properties
+      description: Acknowledges the terms of user data collection for the specified property. This acknowledgement
+        must be completed (either in the Google Analytics UI or through this API) before MeasurementProtocolSecret
+        resources may be created.
+      parameters:
+      - name: property
+        in: query
+        required: true
+        schema:
+          type: string
+          pattern: ^properties/[^/]+$
+        description: Required. The property for which to acknowledge user data collection.
+      - name: propertiesId
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaAcknowledgeUserDataCollectionRequest'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaAcknowledgeUserDataCollectionResponse'
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoogleRpcStatus'
+      security:
+      - OAuth2:
+        - analytics.edit
+      - BearerAuth: []
+  /v1beta/properties:
+    post:
+      operationId: properties_create
+      summary: Creates a Google Analytics property with the specified location and attributes
+      tags:
+      - properties
+      description: Creates a Google Analytics property with the specified location and attributes.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaProperty'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaProperty'
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoogleRpcStatus'
+      security:
+      - OAuth2:
+        - analytics.edit
+      - BearerAuth: []
+    get:
+      operationId: properties_list
+      summary: Returns child Properties under the specified parent Account
+      tags:
+      - properties
+      description: 'Returns child Properties under the specified parent Account. Properties will be excluded
+        if the caller does not have access. Soft-deleted (ie: "trashed") properties are excluded by default.
+        Returns an empty list if no relevant properties are found.'
+      parameters:
+      - name: filter
+        in: query
+        required: false
+        schema:
+          type: string
+        description: 'Required. An expression for filtering the results of the request. Fields eligible
+          for filtering are: `parent:`(The resource name of the parent account/property) or `ancestor:`(The
+          resource name of the parent account) or `firebase_project:`(The id or number of the linked firebase
+          project). Some examples of filters: ``` | Filter | Description | |-----------------------------|-------------------------------------------|
+          | parent:accounts/123 | The account with account id: 123. | | parent:properties/123 | The property
+          with property id: 123. | | ancestor:accounts/123 | The account with account id: 123. | | firebase_project:project-id
+          | The firebase project with id: project-id. | | firebase_project:123 | The firebase project
+          with number: 123. | ```'
+      - name: pageSize
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+        description: Optional. The maximum number of resources to return. The service may return fewer
+          than this value, even if there are additional pages. If unspecified, at most 50 resources will
+          be returned. The maximum value is 200; (higher values will be coerced to the maximum)
+      - name: showDeleted
+        in: query
+        required: false
+        schema:
+          type: boolean
+        description: 'Whether to include soft-deleted (ie: "trashed") Properties in the results. Properties
+          can be inspected to determine whether they are deleted or not.'
+      - name: pageToken
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Optional. A page token, received from a previous `ListProperties` call. Provide this
+          to retrieve the subsequent page. When paginating, all other parameters provided to `ListProperties`
+          must match the call that provided the page token.
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaListPropertiesResponse'
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoogleRpcStatus'
+      security:
+      - OAuth2:
+        - analytics.edit
+        - analytics.readonly
+      - BearerAuth: []
+  /v1beta/properties/{propertiesId}:
+    delete:
+      operationId: properties_delete
+      summary: 'Marks target Property as soft-deleted (ie: "trashed") and returns it'
+      tags:
+      - properties
+      description: 'Marks target Property as soft-deleted (ie: "trashed") and returns it. This API does
+        not have a method to restore soft-deleted properties. However, they can be restored using the
+        Trash Can UI. If the properties are not restored before the expiration time, the Property and
+        all child resources (eg: GoogleAdsLinks, Streams, AccessBindings) will be permanently purged.
+        https://support.google.com/analytics/answer/6154772 Returns an error if the target is not found.'
+      parameters:
+      - name: name
+        in: query
+        required: true
+        schema:
+          type: string
+          pattern: ^properties/[^/]+$
+        description: 'Required. The name of the Property to soft-delete. Format: properties/{property_id}
+          Example: "properties/1000"'
+      - name: propertiesId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaProperty'
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoogleRpcStatus'
+      security:
+      - OAuth2:
+        - analytics.edit
+      - BearerAuth: []
+    get:
+      operationId: properties_get
+      summary: Lookup for a single GA Property
+      tags:
+      - properties
+      description: Lookup for a single GA Property.
+      parameters:
+      - name: name
+        in: query
+        required: true
+        schema:
+          type: string
+          pattern: ^properties/[^/]+$
+        description: 'Required. The name of the property to lookup. Format: properties/{property_id} Example:
+          "properties/1000"'
+      - name: propertiesId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaProperty'
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoogleRpcStatus'
+      security:
+      - OAuth2:
+        - analytics.edit
+        - analytics.readonly
+      - BearerAuth: []
+    patch:
+      operationId: properties_patch
+      summary: Updates a property
+      tags:
+      - properties
+      description: Updates a property.
+      parameters:
+      - name: updateMask
+        in: query
+        required: false
+        schema:
+          type: string
+          format: google-fieldmask
+        description: Required. The list of fields to be updated. Field names must be in snake case (e.g.,
+          "field_to_update"). Omitted fields will not be updated. To replace the entire entity, use one
+          path with the string "*" to match all fields.
+      - name: name
+        in: query
+        required: true
+        schema:
+          type: string
+          pattern: ^properties/[^/]+$
+        description: 'Identifier. Resource name of this property. Format: properties/{property_id} Example:
+          "properties/1000"'
+      - name: propertiesId
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaProperty'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaProperty'
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoogleRpcStatus'
+      security:
+      - OAuth2:
+        - analytics.edit
+      - BearerAuth: []
+  /v1beta/properties/{propertiesId}/dataRetentionSettings:
+    get:
+      operationId: properties_getDataRetentionSettings
+      summary: Returns the singleton data retention settings for this property
+      tags:
+      - properties
+      description: Returns the singleton data retention settings for this property.
+      parameters:
+      - name: name
+        in: query
+        required: true
+        schema:
+          type: string
+          pattern: ^properties/[^/]+/dataRetentionSettings$
+        description: 'Required. The name of the settings to lookup. Format: properties/{property}/dataRetentionSettings
+          Example: "properties/1000/dataRetentionSettings"'
+      - name: propertiesId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaDataRetentionSettings'
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoogleRpcStatus'
+      security:
+      - OAuth2:
+        - analytics.edit
+        - analytics.readonly
+      - BearerAuth: []
+    patch:
+      operationId: properties_updateDataRetentionSettings
+      summary: Updates the singleton data retention settings for this property
+      tags:
+      - properties
+      description: Updates the singleton data retention settings for this property.
+      parameters:
+      - name: updateMask
+        in: query
+        required: false
+        schema:
+          type: string
+          format: google-fieldmask
+        description: Required. The list of fields to be updated. Field names must be in snake case (e.g.,
+          "field_to_update"). Omitted fields will not be updated. To replace the entire entity, use one
+          path with the string "*" to match all fields.
+      - name: name
+        in: query
+        required: true
+        schema:
+          type: string
+          pattern: ^properties/[^/]+/dataRetentionSettings$
+        description: 'Identifier. Resource name for this DataRetentionSetting resource. Format: properties/{property}/dataRetentionSettings'
+      - name: propertiesId
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaDataRetentionSettings'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaDataRetentionSettings'
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoogleRpcStatus'
+      security:
+      - OAuth2:
+        - analytics.edit
+      - BearerAuth: []
+  /v1beta/properties/{propertiesId}:runAccessReport:
+    post:
+      operationId: properties_runAccessReport
+      summary: Returns a customized report of data access records
+      tags:
+      - properties
+      description: Returns a customized report of data access records. The report provides records of
+        each time a user reads Google Analytics reporting data. Access records are retained for up to
+        2 years. Data Access Reports can be requested for a property. Reports may be requested for any
+        property, but dimensions that aren't related to quota can only be requested on Google Analytics
+        360 properties. This method is only available to Administrators. These data access records include
+        GA UI Reporting, GA UI Explorations, GA Data API, and other products like Firebase & Admob that
+        can retrieve data from Google Analytics through a linkage. These records don't include property
+        configuration changes like adding a stream or changing a property's time zone. For configuration
+        change history, see [searchChangeHistoryEvents](https://developers.google.com/analytics/devguides/config/admin/v1/rest/v1alpha/accounts/searchChangeHistoryEvents).
+        To give your feedback on this API, complete the [Google Analytics Access Reports feedback](https://docs.google.com/forms/d/e/1FAIpQLSdmEBUrMzAEdiEKk5TV5dEHvDUZDRlgWYdQdAeSdtR4hVjEhw/viewform)
+        form.
+      parameters:
+      - name: entity
+        in: query
+        required: true
+        schema:
+          type: string
+          pattern: ^properties/[^/]+$
+        description: The Data Access Report supports requesting at the property level or account level.
+          If requested at the account level, Data Access Reports include all access for all properties
+          under that account. To request at the property level, entity should be for example 'properties/123'
+          if "123" is your Google Analytics property ID. To request at the account level, entity should
+          be for example 'accounts/1234' if "1234" is your Google Analytics Account ID.
+      - name: propertiesId
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaRunAccessReportRequest'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaRunAccessReportResponse'
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoogleRpcStatus'
+      security:
+      - OAuth2:
+        - analytics.edit
+        - analytics.readonly
+      - BearerAuth: []
+  /v1beta/properties/{propertiesId}/conversionEvents:
+    post:
+      operationId: properties_conversionEvents_create
+      summary: 'Deprecated: Use `CreateKeyEvent` instead'
+      tags:
+      - properties
+      description: 'Deprecated: Use `CreateKeyEvent` instead. Creates a conversion event with the specified
+        attributes.'
+      deprecated: true
+      parameters:
+      - name: parent
+        in: query
+        required: true
+        schema:
+          type: string
+          pattern: ^properties/[^/]+$
+        description: 'Required. The resource name of the parent property where this conversion event will
+          be created. Format: properties/123'
+      - name: propertiesId
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaConversionEvent'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaConversionEvent'
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoogleRpcStatus'
+      security:
+      - OAuth2:
+        - analytics.edit
+      - BearerAuth: []
+    get:
+      operationId: properties_conversionEvents_list
+      summary: 'Deprecated: Use `ListKeyEvents` instead'
+      tags:
+      - properties
+      description: 'Deprecated: Use `ListKeyEvents` instead. Returns a list of conversion events in the
+        specified parent property. Returns an empty list if no conversion events are found.'
+      deprecated: true
+      parameters:
+      - name: parent
+        in: query
+        required: true
+        schema:
+          type: string
+          pattern: ^properties/[^/]+$
+        description: 'Required. The resource name of the parent property. Example: ''properties/123'''
+      - name: pageSize
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+        description: Optional. The maximum number of resources to return. If unspecified, at most 50 resources
+          will be returned. The maximum value is 200; (higher values will be coerced to the maximum)
+      - name: pageToken
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Optional. A page token, received from a previous `ListConversionEvents` call. Provide
+          this to retrieve the subsequent page. When paginating, all other parameters provided to `ListConversionEvents`
+          must match the call that provided the page token.
+      - name: propertiesId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaListConversionEventsResponse'
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoogleRpcStatus'
+      security:
+      - OAuth2:
+        - analytics.edit
+        - analytics.readonly
+      - BearerAuth: []
+  /v1beta/properties/{propertiesId}/conversionEvents/{conversionEventsId}:
+    delete:
+      operationId: properties_conversionEvents_delete
+      summary: 'Deprecated: Use `DeleteKeyEvent` instead'
+      tags:
+      - properties
+      description: 'Deprecated: Use `DeleteKeyEvent` instead. Deletes a conversion event in a property.'
+      deprecated: true
+      parameters:
+      - name: name
+        in: query
+        required: true
+        schema:
+          type: string
+          pattern: ^properties/[^/]+/conversionEvents/[^/]+$
+        description: 'Required. The resource name of the conversion event to delete. Format: properties/{property}/conversionEvents/{conversion_event}
+          Example: "properties/123/conversionEvents/456"'
+      - name: conversionEventsId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: propertiesId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoogleProtobufEmpty'
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoogleRpcStatus'
+      security:
+      - OAuth2:
+        - analytics.edit
+      - BearerAuth: []
+    get:
+      operationId: properties_conversionEvents_get
+      summary: 'Deprecated: Use `GetKeyEvent` instead'
+      tags:
+      - properties
+      description: 'Deprecated: Use `GetKeyEvent` instead. Retrieve a single conversion event.'
+      deprecated: true
+      parameters:
+      - name: name
+        in: query
+        required: true
+        schema:
+          type: string
+          pattern: ^properties/[^/]+/conversionEvents/[^/]+$
+        description: 'Required. The resource name of the conversion event to retrieve. Format: properties/{property}/conversionEvents/{conversion_event}
+          Example: "properties/123/conversionEvents/456"'
+      - name: conversionEventsId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: propertiesId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaConversionEvent'
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoogleRpcStatus'
+      security:
+      - OAuth2:
+        - analytics.edit
+        - analytics.readonly
+      - BearerAuth: []
+    patch:
+      operationId: properties_conversionEvents_patch
+      summary: 'Deprecated: Use `UpdateKeyEvent` instead'
+      tags:
+      - properties
+      description: 'Deprecated: Use `UpdateKeyEvent` instead. Updates a conversion event with the specified
+        attributes.'
+      deprecated: true
+      parameters:
+      - name: name
+        in: query
+        required: true
+        schema:
+          type: string
+          pattern: ^properties/[^/]+/conversionEvents/[^/]+$
+        description: 'Identifier. Resource name of this conversion event. Format: properties/{property}/conversionEvents/{conversion_event}'
+      - name: updateMask
+        in: query
+        required: false
+        schema:
+          type: string
+          format: google-fieldmask
+        description: Required. The list of fields to be updated. Field names must be in snake case (e.g.,
+          "field_to_update"). Omitted fields will not be updated. To replace the entire entity, use one
+          path with the string "*" to match all fields.
+      - name: conversionEventsId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: propertiesId
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaConversionEvent'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaConversionEvent'
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoogleRpcStatus'
+      security:
+      - OAuth2:
+        - analytics.edit
+      - BearerAuth: []
+  /v1beta/properties/{propertiesId}/customDimensions/{customDimensionsId}:archive:
+    post:
+      operationId: properties_customDimensions_archive
+      summary: Archives a CustomDimension on a property
+      tags:
+      - properties
+      description: Archives a CustomDimension on a property.
+      parameters:
+      - name: name
+        in: query
+        required: true
+        schema:
+          type: string
+          pattern: ^properties/[^/]+/customDimensions/[^/]+$
+        description: 'Required. The name of the CustomDimension to archive. Example format: properties/1234/customDimensions/5678'
+      - name: customDimensionsId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: propertiesId
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaArchiveCustomDimensionRequest'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoogleProtobufEmpty'
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoogleRpcStatus'
+      security:
+      - OAuth2:
+        - analytics.edit
+      - BearerAuth: []
+  /v1beta/properties/{propertiesId}/customDimensions:
+    post:
+      operationId: properties_customDimensions_create
+      summary: Creates a CustomDimension
+      tags:
+      - properties
+      description: 'Creates a CustomDimension. Warning: It''s not permissible to use this method to collect
+        data on individual users. In particular, sending user IDs in custom dimensions violates the [Google
+        Analytics Terms of Service](https://www.google.com/analytics/terms/).'
+      parameters:
+      - name: parent
+        in: query
+        required: true
+        schema:
+          type: string
+          pattern: ^properties/[^/]+$
+        description: 'Required. Example format: properties/1234'
+      - name: propertiesId
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaCustomDimension'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaCustomDimension'
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoogleRpcStatus'
+      security:
+      - OAuth2:
+        - analytics.edit
+      - BearerAuth: []
+    get:
+      operationId: properties_customDimensions_list
+      summary: Lists CustomDimensions on a property
+      tags:
+      - properties
+      description: Lists CustomDimensions on a property.
+      parameters:
+      - name: parent
+        in: query
+        required: true
+        schema:
+          type: string
+          pattern: ^properties/[^/]+$
+        description: 'Required. Example format: properties/1234'
+      - name: pageSize
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+        description: Optional. The maximum number of resources to return. If unspecified, at most 50 resources
+          will be returned. The maximum value is 200 (higher values will be coerced to the maximum).
+      - name: pageToken
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Optional. A page token, received from a previous `ListCustomDimensions` call. Provide
+          this to retrieve the subsequent page. When paginating, all other parameters provided to `ListCustomDimensions`
+          must match the call that provided the page token.
+      - name: propertiesId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaListCustomDimensionsResponse'
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoogleRpcStatus'
+      security:
+      - OAuth2:
+        - analytics.edit
+        - analytics.readonly
+      - BearerAuth: []
+  /v1beta/properties/{propertiesId}/customDimensions/{customDimensionsId}:
+    get:
+      operationId: properties_customDimensions_get
+      summary: Lookup for a single CustomDimension
+      tags:
+      - properties
+      description: Lookup for a single CustomDimension.
+      parameters:
+      - name: name
+        in: query
+        required: true
+        schema:
+          type: string
+          pattern: ^properties/[^/]+/customDimensions/[^/]+$
+        description: 'Required. The name of the CustomDimension to get. Example format: properties/1234/customDimensions/5678'
+      - name: customDimensionsId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: propertiesId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaCustomDimension'
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoogleRpcStatus'
+      security:
+      - OAuth2:
+        - analytics.edit
+        - analytics.readonly
+      - BearerAuth: []
+    patch:
+      operationId: properties_customDimensions_patch
+      summary: Updates a CustomDimension on a property
+      tags:
+      - properties
+      description: Updates a CustomDimension on a property.
+      parameters:
+      - name: name
+        in: query
+        required: true
+        schema:
+          type: string
+          pattern: ^properties/[^/]+/customDimensions/[^/]+$
+        description: 'Identifier. Resource name for this CustomDimension resource. Format: properties/{property}/customDimensions/{customDimension}'
+      - name: updateMask
+        in: query
+        required: false
+        schema:
+          type: string
+          format: google-fieldmask
+        description: Required. The list of fields to be updated. Omitted fields will not be updated. To
+          replace the entire entity, use one path with the string "*" to match all fields.
+      - name: customDimensionsId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: propertiesId
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaCustomDimension'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaCustomDimension'
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoogleRpcStatus'
+      security:
+      - OAuth2:
+        - analytics.edit
+      - BearerAuth: []
+  /v1beta/properties/{propertiesId}/customMetrics/{customMetricsId}:archive:
+    post:
+      operationId: properties_customMetrics_archive
+      summary: Archives a CustomMetric on a property
+      tags:
+      - properties
+      description: Archives a CustomMetric on a property.
+      parameters:
+      - name: name
+        in: query
+        required: true
+        schema:
+          type: string
+          pattern: ^properties/[^/]+/customMetrics/[^/]+$
+        description: 'Required. The name of the CustomMetric to archive. Example format: properties/1234/customMetrics/5678'
+      - name: customMetricsId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: propertiesId
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaArchiveCustomMetricRequest'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoogleProtobufEmpty'
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoogleRpcStatus'
+      security:
+      - OAuth2:
+        - analytics.edit
+      - BearerAuth: []
+  /v1beta/properties/{propertiesId}/customMetrics:
+    post:
+      operationId: properties_customMetrics_create
+      summary: Creates a CustomMetric
+      tags:
+      - properties
+      description: Creates a CustomMetric.
+      parameters:
+      - name: parent
+        in: query
+        required: true
+        schema:
+          type: string
+          pattern: ^properties/[^/]+$
+        description: 'Required. Example format: properties/1234'
+      - name: propertiesId
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaCustomMetric'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaCustomMetric'
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoogleRpcStatus'
+      security:
+      - OAuth2:
+        - analytics.edit
+      - BearerAuth: []
+    get:
+      operationId: properties_customMetrics_list
+      summary: Lists CustomMetrics on a property
+      tags:
+      - properties
+      description: Lists CustomMetrics on a property.
+      parameters:
+      - name: pageToken
+        in: query
+        required: false
+        schema:
+          type: string
+        description: A page token, received from a previous `ListCustomMetrics` call. Provide this to
+          retrieve the subsequent page. When paginating, all other parameters provided to `ListCustomMetrics`
+          must match the call that provided the page token.
+      - name: parent
+        in: query
+        required: true
+        schema:
+          type: string
+          pattern: ^properties/[^/]+$
+        description: 'Required. Example format: properties/1234'
+      - name: pageSize
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+        description: The maximum number of resources to return. If unspecified, at most 50 resources will
+          be returned. The maximum value is 200 (higher values will be coerced to the maximum).
+      - name: propertiesId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaListCustomMetricsResponse'
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoogleRpcStatus'
+      security:
+      - OAuth2:
+        - analytics.edit
+        - analytics.readonly
+      - BearerAuth: []
+  /v1beta/properties/{propertiesId}/customMetrics/{customMetricsId}:
+    get:
+      operationId: properties_customMetrics_get
+      summary: Lookup for a single CustomMetric
+      tags:
+      - properties
+      description: Lookup for a single CustomMetric.
+      parameters:
+      - name: name
+        in: query
+        required: true
+        schema:
+          type: string
+          pattern: ^properties/[^/]+/customMetrics/[^/]+$
+        description: 'Required. The name of the CustomMetric to get. Example format: properties/1234/customMetrics/5678'
+      - name: customMetricsId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: propertiesId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaCustomMetric'
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoogleRpcStatus'
+      security:
+      - OAuth2:
+        - analytics.edit
+        - analytics.readonly
+      - BearerAuth: []
+    patch:
+      operationId: properties_customMetrics_patch
+      summary: Updates a CustomMetric on a property
+      tags:
+      - properties
+      description: Updates a CustomMetric on a property.
+      parameters:
+      - name: name
+        in: query
+        required: true
+        schema:
+          type: string
+          pattern: ^properties/[^/]+/customMetrics/[^/]+$
+        description: 'Identifier. Resource name for this CustomMetric resource. Format: properties/{property}/customMetrics/{customMetric}'
+      - name: updateMask
+        in: query
+        required: false
+        schema:
+          type: string
+          format: google-fieldmask
+        description: Required. The list of fields to be updated. Omitted fields will not be updated. To
+          replace the entire entity, use one path with the string "*" to match all fields.
+      - name: customMetricsId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: propertiesId
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaCustomMetric'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaCustomMetric'
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoogleRpcStatus'
+      security:
+      - OAuth2:
+        - analytics.edit
+      - BearerAuth: []
+  /v1beta/properties/{propertiesId}/dataStreams:
+    post:
+      operationId: properties_dataStreams_create
+      summary: Creates a DataStream
+      tags:
+      - properties
+      description: Creates a DataStream.
+      parameters:
+      - name: parent
+        in: query
+        required: true
+        schema:
+          type: string
+          pattern: ^properties/[^/]+$
+        description: 'Required. Example format: properties/1234'
+      - name: propertiesId
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaDataStream'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaDataStream'
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoogleRpcStatus'
+      security:
+      - OAuth2:
+        - analytics.edit
+      - BearerAuth: []
+    get:
+      operationId: properties_dataStreams_list
+      summary: Lists DataStreams on a property
+      tags:
+      - properties
+      description: Lists DataStreams on a property.
+      parameters:
+      - name: pageToken
+        in: query
+        required: false
+        schema:
+          type: string
+        description: A page token, received from a previous `ListDataStreams` call. Provide this to retrieve
+          the subsequent page. When paginating, all other parameters provided to `ListDataStreams` must
+          match the call that provided the page token.
+      - name: pageSize
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+        description: The maximum number of resources to return. If unspecified, at most 50 resources will
+          be returned. The maximum value is 200 (higher values will be coerced to the maximum).
+      - name: parent
+        in: query
+        required: true
+        schema:
+          type: string
+          pattern: ^properties/[^/]+$
+        description: 'Required. Example format: properties/1234'
+      - name: propertiesId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaListDataStreamsResponse'
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoogleRpcStatus'
+      security:
+      - OAuth2:
+        - analytics.edit
+        - analytics.readonly
+      - BearerAuth: []
+  /v1beta/properties/{propertiesId}/dataStreams/{dataStreamsId}:
+    delete:
+      operationId: properties_dataStreams_delete
+      summary: Deletes a DataStream on a property
+      tags:
+      - properties
+      description: Deletes a DataStream on a property.
+      parameters:
+      - name: name
+        in: query
+        required: true
+        schema:
+          type: string
+          pattern: ^properties/[^/]+/dataStreams/[^/]+$
+        description: 'Required. The name of the DataStream to delete. Example format: properties/1234/dataStreams/5678'
+      - name: dataStreamsId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: propertiesId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoogleProtobufEmpty'
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoogleRpcStatus'
+      security:
+      - OAuth2:
+        - analytics.edit
+      - BearerAuth: []
+    get:
+      operationId: properties_dataStreams_get
+      summary: Lookup for a single DataStream
+      tags:
+      - properties
+      description: Lookup for a single DataStream.
+      parameters:
+      - name: name
+        in: query
+        required: true
+        schema:
+          type: string
+          pattern: ^properties/[^/]+/dataStreams/[^/]+$
+        description: 'Required. The name of the DataStream to get. Example format: properties/1234/dataStreams/5678'
+      - name: dataStreamsId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: propertiesId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaDataStream'
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoogleRpcStatus'
+      security:
+      - OAuth2:
+        - analytics.edit
+        - analytics.readonly
+      - BearerAuth: []
+    patch:
+      operationId: properties_dataStreams_patch
+      summary: Updates a DataStream on a property
+      tags:
+      - properties
+      description: Updates a DataStream on a property.
+      parameters:
+      - name: name
+        in: query
+        required: true
+        schema:
+          type: string
+          pattern: ^properties/[^/]+/dataStreams/[^/]+$
+        description: 'Identifier. Resource name of this Data Stream. Format: properties/{property_id}/dataStreams/{stream_id}
+          Example: "properties/1000/dataStreams/2000"'
+      - name: updateMask
+        in: query
+        required: false
+        schema:
+          type: string
+          format: google-fieldmask
+        description: Required. The list of fields to be updated. Omitted fields will not be updated. To
+          replace the entire entity, use one path with the string "*" to match all fields.
+      - name: dataStreamsId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: propertiesId
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaDataStream'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaDataStream'
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoogleRpcStatus'
+      security:
+      - OAuth2:
+        - analytics.edit
+      - BearerAuth: []
+  /v1beta/properties/{propertiesId}/dataStreams/{dataStreamsId}/measurementProtocolSecrets:
+    post:
+      operationId: properties_dataStreams_measurementProtocolSecrets_create
+      summary: Creates a measurement protocol secret
+      tags:
+      - properties
+      description: Creates a measurement protocol secret.
+      parameters:
+      - name: parent
+        in: query
+        required: true
+        schema:
+          type: string
+          pattern: ^properties/[^/]+/dataStreams/[^/]+$
+        description: 'Required. The parent resource where this secret will be created. Format: properties/{property}/dataStreams/{dataStream}'
+      - name: dataStreamsId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: propertiesId
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaMeasurementProtocolSecret'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaMeasurementProtocolSecret'
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoogleRpcStatus'
+      security:
+      - OAuth2:
+        - analytics.edit
+      - BearerAuth: []
+    get:
+      operationId: properties_dataStreams_measurementProtocolSecrets_list
+      summary: Returns child MeasurementProtocolSecrets under the specified parent Property
+      tags:
+      - properties
+      description: Returns child MeasurementProtocolSecrets under the specified parent Property.
+      parameters:
+      - name: pageSize
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+        description: Optional. The maximum number of resources to return. If unspecified, at most 10 resources
+          will be returned. The maximum value is 10. Higher values will be coerced to the maximum.
+      - name: parent
+        in: query
+        required: true
+        schema:
+          type: string
+          pattern: ^properties/[^/]+/dataStreams/[^/]+$
+        description: 'Required. The resource name of the parent stream. Format: properties/{property}/dataStreams/{dataStream}/measurementProtocolSecrets'
+      - name: pageToken
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Optional. A page token, received from a previous `ListMeasurementProtocolSecrets`
+          call. Provide this to retrieve the subsequent page. When paginating, all other parameters provided
+          to `ListMeasurementProtocolSecrets` must match the call that provided the page token.
+      - name: dataStreamsId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: propertiesId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaListMeasurementProtocolSecretsResponse'
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoogleRpcStatus'
+      security:
+      - OAuth2:
+        - analytics.edit
+        - analytics.readonly
+      - BearerAuth: []
+  /v1beta/properties/{propertiesId}/dataStreams/{dataStreamsId}/measurementProtocolSecrets/{measurementProtocolSecretsId}:
+    delete:
+      operationId: properties_dataStreams_measurementProtocolSecrets_delete
+      summary: Deletes target MeasurementProtocolSecret
+      tags:
+      - properties
+      description: Deletes target MeasurementProtocolSecret.
+      parameters:
+      - name: name
+        in: query
+        required: true
+        schema:
+          type: string
+          pattern: ^properties/[^/]+/dataStreams/[^/]+/measurementProtocolSecrets/[^/]+$
+        description: 'Required. The name of the MeasurementProtocolSecret to delete. Format: properties/{property}/dataStreams/{dataStream}/measurementProtocolSecrets/{measurementProtocolSecret}'
+      - name: dataStreamsId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: measurementProtocolSecretsId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: propertiesId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoogleProtobufEmpty'
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoogleRpcStatus'
+      security:
+      - OAuth2:
+        - analytics.edit
+      - BearerAuth: []
+    get:
+      operationId: properties_dataStreams_measurementProtocolSecrets_get
+      summary: Lookup for a single MeasurementProtocolSecret
+      tags:
+      - properties
+      description: Lookup for a single MeasurementProtocolSecret.
+      parameters:
+      - name: name
+        in: query
+        required: true
+        schema:
+          type: string
+          pattern: ^properties/[^/]+/dataStreams/[^/]+/measurementProtocolSecrets/[^/]+$
+        description: 'Required. The name of the measurement protocol secret to lookup. Format: properties/{property}/dataStreams/{dataStream}/measurementProtocolSecrets/{measurementProtocolSecret}'
+      - name: dataStreamsId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: measurementProtocolSecretsId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: propertiesId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaMeasurementProtocolSecret'
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoogleRpcStatus'
+      security:
+      - OAuth2:
+        - analytics.edit
+        - analytics.readonly
+      - BearerAuth: []
+    patch:
+      operationId: properties_dataStreams_measurementProtocolSecrets_patch
+      summary: Updates a measurement protocol secret
+      tags:
+      - properties
+      description: Updates a measurement protocol secret.
+      parameters:
+      - name: updateMask
+        in: query
+        required: false
+        schema:
+          type: string
+          format: google-fieldmask
+        description: Required. The list of fields to be updated. Omitted fields will not be updated.
+      - name: name
+        in: query
+        required: true
+        schema:
+          type: string
+          pattern: ^properties/[^/]+/dataStreams/[^/]+/measurementProtocolSecrets/[^/]+$
+        description: 'Identifier. Resource name of this secret. This secret may be a child of any type
+          of stream. Format: properties/{property}/dataStreams/{dataStream}/measurementProtocolSecrets/{measurementProtocolSecret}'
+      - name: dataStreamsId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: measurementProtocolSecretsId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: propertiesId
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaMeasurementProtocolSecret'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaMeasurementProtocolSecret'
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoogleRpcStatus'
+      security:
+      - OAuth2:
+        - analytics.edit
+      - BearerAuth: []
+  /v1beta/properties/{propertiesId}/firebaseLinks:
+    post:
+      operationId: properties_firebaseLinks_create
+      summary: Creates a FirebaseLink
+      tags:
+      - properties
+      description: Creates a FirebaseLink. Properties can have at most one FirebaseLink.
+      parameters:
+      - name: parent
+        in: query
+        required: true
+        schema:
+          type: string
+          pattern: ^properties/[^/]+$
+        description: 'Required. Format: properties/{property_id} Example: `properties/1234`'
+      - name: propertiesId
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaFirebaseLink'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaFirebaseLink'
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoogleRpcStatus'
+      security:
+      - OAuth2:
+        - analytics.edit
+      - BearerAuth: []
+    get:
+      operationId: properties_firebaseLinks_list
+      summary: Lists FirebaseLinks on a property
+      tags:
+      - properties
+      description: Lists FirebaseLinks on a property. Properties can have at most one FirebaseLink.
+      parameters:
+      - name: pageToken
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Optional. A page token, received from a previous `ListFirebaseLinks` call. Provide
+          this to retrieve the subsequent page. When paginating, all other parameters provided to `ListFirebaseLinks`
+          must match the call that provided the page token.
+      - name: parent
+        in: query
+        required: true
+        schema:
+          type: string
+          pattern: ^properties/[^/]+$
+        description: 'Required. Format: properties/{property_id} Example: `properties/1234`'
+      - name: pageSize
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+        description: Optional. The maximum number of resources to return. The service may return fewer
+          than this value, even if there are additional pages. If unspecified, at most 50 resources will
+          be returned. The maximum value is 200; (higher values will be coerced to the maximum)
+      - name: propertiesId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaListFirebaseLinksResponse'
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoogleRpcStatus'
+      security:
+      - OAuth2:
+        - analytics.edit
+        - analytics.readonly
+      - BearerAuth: []
+  /v1beta/properties/{propertiesId}/firebaseLinks/{firebaseLinksId}:
+    delete:
+      operationId: properties_firebaseLinks_delete
+      summary: Deletes a FirebaseLink on a property
+      tags:
+      - properties
+      description: Deletes a FirebaseLink on a property
+      parameters:
+      - name: name
+        in: query
+        required: true
+        schema:
+          type: string
+          pattern: ^properties/[^/]+/firebaseLinks/[^/]+$
+        description: 'Required. Format: properties/{property_id}/firebaseLinks/{firebase_link_id} Example:
+          `properties/1234/firebaseLinks/5678`'
+      - name: firebaseLinksId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: propertiesId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoogleProtobufEmpty'
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoogleRpcStatus'
+      security:
+      - OAuth2:
+        - analytics.edit
+      - BearerAuth: []
+  /v1beta/properties/{propertiesId}/googleAdsLinks:
+    post:
+      operationId: properties_googleAdsLinks_create
+      summary: Creates a GoogleAdsLink
+      tags:
+      - properties
+      description: Creates a GoogleAdsLink.
+      parameters:
+      - name: parent
+        in: query
+        required: true
+        schema:
+          type: string
+          pattern: ^properties/[^/]+$
+        description: 'Required. Example format: properties/1234'
+      - name: propertiesId
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaGoogleAdsLink'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaGoogleAdsLink'
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoogleRpcStatus'
+      security:
+      - OAuth2:
+        - analytics.edit
+      - BearerAuth: []
+    get:
+      operationId: properties_googleAdsLinks_list
+      summary: Lists GoogleAdsLinks on a property
+      tags:
+      - properties
+      description: Lists GoogleAdsLinks on a property.
+      parameters:
+      - name: pageSize
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+        description: Optional. The maximum number of resources to return. If unspecified, at most 50 resources
+          will be returned. The maximum value is 200 (higher values will be coerced to the maximum).
+      - name: parent
+        in: query
+        required: true
+        schema:
+          type: string
+          pattern: ^properties/[^/]+$
+        description: 'Required. Example format: properties/1234'
+      - name: pageToken
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Optional. A page token, received from a previous `ListGoogleAdsLinks` call. Provide
+          this to retrieve the subsequent page. When paginating, all other parameters provided to `ListGoogleAdsLinks`
+          must match the call that provided the page token.
+      - name: propertiesId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaListGoogleAdsLinksResponse'
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoogleRpcStatus'
+      security:
+      - OAuth2:
+        - analytics.edit
+        - analytics.readonly
+      - BearerAuth: []
+  /v1beta/properties/{propertiesId}/googleAdsLinks/{googleAdsLinksId}:
+    delete:
+      operationId: properties_googleAdsLinks_delete
+      summary: Deletes a GoogleAdsLink on a property
+      tags:
+      - properties
+      description: Deletes a GoogleAdsLink on a property
+      parameters:
+      - name: name
+        in: query
+        required: true
+        schema:
+          type: string
+          pattern: ^properties/[^/]+/googleAdsLinks/[^/]+$
+        description: 'Required. Example format: properties/1234/googleAdsLinks/5678'
+      - name: googleAdsLinksId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: propertiesId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoogleProtobufEmpty'
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoogleRpcStatus'
+      security:
+      - OAuth2:
+        - analytics.edit
+      - BearerAuth: []
+    patch:
+      operationId: properties_googleAdsLinks_patch
+      summary: Updates a GoogleAdsLink on a property
+      tags:
+      - properties
+      description: Updates a GoogleAdsLink on a property
+      parameters:
+      - name: updateMask
+        in: query
+        required: false
+        schema:
+          type: string
+          format: google-fieldmask
+        description: Required. The list of fields to be updated. Field names must be in snake case (e.g.,
+          "field_to_update"). Omitted fields will not be updated. To replace the entire entity, use one
+          path with the string "*" to match all fields.
+      - name: name
+        in: query
+        required: true
+        schema:
+          type: string
+          pattern: ^properties/[^/]+/googleAdsLinks/[^/]+$
+        description: 'Identifier. Format: properties/{propertyId}/googleAdsLinks/{googleAdsLinkId} Note:
+          googleAdsLinkId is not the Google Ads customer ID.'
+      - name: googleAdsLinksId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: propertiesId
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaGoogleAdsLink'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaGoogleAdsLink'
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoogleRpcStatus'
+      security:
+      - OAuth2:
+        - analytics.edit
+      - BearerAuth: []
+  /v1beta/properties/{propertiesId}/keyEvents:
+    post:
+      operationId: properties_keyEvents_create
+      summary: Creates a Key Event
+      tags:
+      - properties
+      description: Creates a Key Event.
+      parameters:
+      - name: parent
+        in: query
+        required: true
+        schema:
+          type: string
+          pattern: ^properties/[^/]+$
+        description: 'Required. The resource name of the parent property where this Key Event will be
+          created. Format: properties/123'
+      - name: propertiesId
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaKeyEvent'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaKeyEvent'
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoogleRpcStatus'
+      security:
+      - OAuth2:
+        - analytics.edit
+      - BearerAuth: []
+    get:
+      operationId: properties_keyEvents_list
+      summary: Returns a list of Key Events in the specified parent property
+      tags:
+      - properties
+      description: Returns a list of Key Events in the specified parent property. Returns an empty list
+        if no Key Events are found.
+      parameters:
+      - name: pageSize
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+        description: Optional. The maximum number of resources to return. If unspecified, at most 50 resources
+          will be returned. The maximum value is 200; (higher values will be coerced to the maximum)
+      - name: parent
+        in: query
+        required: true
+        schema:
+          type: string
+          pattern: ^properties/[^/]+$
+        description: 'Required. The resource name of the parent property. Example: ''properties/123'''
+      - name: pageToken
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Optional. A page token, received from a previous `ListKeyEvents` call. Provide this
+          to retrieve the subsequent page. When paginating, all other parameters provided to `ListKeyEvents`
+          must match the call that provided the page token.
+      - name: propertiesId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaListKeyEventsResponse'
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoogleRpcStatus'
+      security:
+      - OAuth2:
+        - analytics.edit
+        - analytics.readonly
+      - BearerAuth: []
+  /v1beta/properties/{propertiesId}/keyEvents/{keyEventsId}:
+    delete:
+      operationId: properties_keyEvents_delete
+      summary: Deletes a Key Event
+      tags:
+      - properties
+      description: Deletes a Key Event.
+      parameters:
+      - name: name
+        in: query
+        required: true
+        schema:
+          type: string
+          pattern: ^properties/[^/]+/keyEvents/[^/]+$
+        description: 'Required. The resource name of the Key Event to delete. Format: properties/{property}/keyEvents/{key_event}
+          Example: "properties/123/keyEvents/456"'
+      - name: keyEventsId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: propertiesId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoogleProtobufEmpty'
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoogleRpcStatus'
+      security:
+      - OAuth2:
+        - analytics.edit
+      - BearerAuth: []
+    get:
+      operationId: properties_keyEvents_get
+      summary: Retrieve a single Key Event
+      tags:
+      - properties
+      description: Retrieve a single Key Event.
+      parameters:
+      - name: name
+        in: query
+        required: true
+        schema:
+          type: string
+          pattern: ^properties/[^/]+/keyEvents/[^/]+$
+        description: 'Required. The resource name of the Key Event to retrieve. Format: properties/{property}/keyEvents/{key_event}
+          Example: "properties/123/keyEvents/456"'
+      - name: keyEventsId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: propertiesId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaKeyEvent'
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoogleRpcStatus'
+      security:
+      - OAuth2:
+        - analytics.edit
+        - analytics.readonly
+      - BearerAuth: []
+    patch:
+      operationId: properties_keyEvents_patch
+      summary: Updates a Key Event
+      tags:
+      - properties
+      description: Updates a Key Event.
+      parameters:
+      - name: name
+        in: query
+        required: true
+        schema:
+          type: string
+          pattern: ^properties/[^/]+/keyEvents/[^/]+$
+        description: 'Output only. Resource name of this key event. Format: properties/{property}/keyEvents/{key_event}'
+      - name: updateMask
+        in: query
+        required: false
+        schema:
+          type: string
+          format: google-fieldmask
+        description: Required. The list of fields to be updated. Field names must be in snake case (e.g.,
+          "field_to_update"). Omitted fields will not be updated. To replace the entire entity, use one
+          path with the string "*" to match all fields.
+      - name: keyEventsId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: propertiesId
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaKeyEvent'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaKeyEvent'
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoogleRpcStatus'
+      security:
+      - OAuth2:
+        - analytics.edit
+      - BearerAuth: []
+components:
+  schemas:
+    GoogleAnalyticsAdminV1betaConversionEventDefaultConversionValue:
+      description: Defines a default value/currency for a conversion event. Both value and currency must
+        be provided.
+      type: object
+      properties:
+        currencyCode:
+          description: When a conversion event for this event_name has no set currency, this currency
+            will be applied as the default. Must be in ISO 4217 currency code format. See https://en.wikipedia.org/wiki/ISO_4217
+            for more information.
+          type: string
+        value:
+          description: This value will be used to populate the value for all conversions of the specified
+            event_name where the event "value" parameter is unset.
+          type: number
+          format: double
+    GoogleAnalyticsAdminV1betaCustomDimension:
+      description: A definition for a CustomDimension.
+      type: object
+      properties:
+        parameterName:
+          description: Required. Immutable. Tagging parameter name for this custom dimension. If this
+            is a user-scoped dimension, then this is the user property name. If this is an event-scoped
+            dimension, then this is the event parameter name. If this is an item-scoped dimension, then
+            this is the parameter name found in the eCommerce items array. May only contain alphanumeric
+            and underscore characters, starting with a letter. Max length of 24 characters for user-scoped
+            dimensions, 40 characters for event-scoped dimensions.
+          type: string
+        displayName:
+          description: Required. Display name for this custom dimension as shown in the Analytics UI.
+            Max length of 82 characters, alphanumeric plus space and underscore starting with a letter.
+            Legacy system-generated display names may contain square brackets, but updates to this field
+            will never permit square brackets.
+          type: string
+        description:
+          description: Optional. Description for this custom dimension. Max length of 150 characters.
+          type: string
+        name:
+          description: 'Identifier. Resource name for this CustomDimension resource. Format: properties/{property}/customDimensions/{customDimension}'
+          type: string
+        scope:
+          enum:
+          - DIMENSION_SCOPE_UNSPECIFIED
+          - EVENT
+          - USER
+          - ITEM
+          description: Required. Immutable. The scope of this dimension.
+          type: string
+          x-enumDescriptions:
+          - Scope unknown or not specified.
+          - Dimension scoped to an event.
+          - Dimension scoped to a user.
+          - Dimension scoped to eCommerce items
+        disallowAdsPersonalization:
+          description: Optional. If set to true, sets this dimension as NPA and excludes it from ads personalization.
+            This is currently only supported by user-scoped custom dimensions.
+          type: boolean
+    GoogleAnalyticsAdminV1betaAcknowledgeUserDataCollectionResponse:
+      description: Response message for AcknowledgeUserDataCollection RPC.
+      type: object
+      properties: {}
+    GoogleAnalyticsAdminV1betaAccessBetweenFilter:
+      description: To express that the result needs to be between two numbers (inclusive).
+      type: object
+      properties:
+        fromValue:
+          $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaNumericValue'
+          description: Begins with this number.
+        toValue:
+          $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaNumericValue'
+          description: Ends with this number.
+    GoogleAnalyticsAdminV1betaDataStreamIosAppStreamData:
+      description: Data specific to iOS app streams.
+      type: object
+      properties:
+        firebaseAppId:
+          description: Output only. ID of the corresponding iOS app in Firebase, if any. This ID can change
+            if the iOS app is deleted and recreated.
+          type: string
+        bundleId:
+          description: 'Required. Immutable. The Apple App Store Bundle ID for the app Example: "com.example.myiosapp"'
+          type: string
+    GoogleAnalyticsAdminV1betaPropertySummary:
+      description: A virtual resource representing metadata for a Google Analytics property.
+      type: object
+      properties:
+        displayName:
+          description: Display name for the property referred to in this property summary.
+          type: string
+        property:
+          description: 'Resource name of property referred to by this property summary Format: properties/{property_id}
+            Example: "properties/1000"'
+          type: string
+        parent:
+          description: 'Resource name of this property''s logical parent. Note: The Property-Moving UI
+            can be used to change the parent. Format: accounts/{account}, properties/{property} Example:
+            "accounts/100", "properties/200"'
+          type: string
+        canEdit:
+          description: If true, then the user has a Google Analytics role that permits them to edit the
+            property.
+          type: boolean
+        propertyType:
+          enum:
+          - PROPERTY_TYPE_UNSPECIFIED
+          - PROPERTY_TYPE_ORDINARY
+          - PROPERTY_TYPE_SUBPROPERTY
+          - PROPERTY_TYPE_ROLLUP
+          x-enumDescriptions:
+          - Unknown or unspecified property type
+          - Ordinary Google Analytics property
+          - Google Analytics subproperty
+          - Google Analytics rollup property
+          description: The property's property type.
+          type: string
+    GoogleAnalyticsAdminV1betaSearchChangeHistoryEventsResponse:
+      description: Response message for SearchAccounts RPC.
+      type: object
+      properties:
+        nextPageToken:
+          description: A token, which can be sent as `page_token` to retrieve the next page. If this field
+            is omitted, there are no subsequent pages.
+          type: string
+        changeHistoryEvents:
+          description: Results that were accessible to the caller.
+          type: array
+          items:
+            $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaChangeHistoryEvent'
+    GoogleAnalyticsAdminV1betaKeyEventDefaultValue:
+      properties:
+        numericValue:
+          description: Required. This will be used to populate the "value" parameter for all occurrences
+            of this Key Event (specified by event_name) where that parameter is unset.
+          type: number
+          format: double
+        currencyCode:
+          description: Required. When an occurrence of this Key Event (specified by event_name) has no
+            set currency this currency will be applied as the default. Must be in ISO 4217 currency code
+            format. See https://en.wikipedia.org/wiki/ISO_4217 for more information.
+          type: string
+      description: Defines a default value/currency for a key event.
+      type: object
+    GoogleAnalyticsAdminV1betaAccessRow:
+      description: Access report data for each row.
+      type: object
+      properties:
+        dimensionValues:
+          description: List of dimension values. These values are in the same order as specified in the
+            request.
+          type: array
+          items:
+            $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaAccessDimensionValue'
+        metricValues:
+          description: List of metric values. These values are in the same order as specified in the request.
+          type: array
+          items:
+            $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaAccessMetricValue'
+    GoogleAnalyticsAdminV1betaCustomMetric:
+      properties:
+        parameterName:
+          description: Required. Immutable. Tagging name for this custom metric. If this is an event-scoped
+            metric, then this is the event parameter name. May only contain alphanumeric and underscore
+            charactes, starting with a letter. Max length of 40 characters for event-scoped metrics.
+          type: string
+        displayName:
+          description: Required. Display name for this custom metric as shown in the Analytics UI. Max
+            length of 82 characters, alphanumeric plus space and underscore starting with a letter. Legacy
+            system-generated display names may contain square brackets, but updates to this field will
+            never permit square brackets.
+          type: string
+        description:
+          description: Optional. Description for this custom dimension. Max length of 150 characters.
+          type: string
+        measurementUnit:
+          x-enumDescriptions:
+          - MeasurementUnit unspecified or missing.
+          - This metric uses default units.
+          - This metric measures a currency.
+          - This metric measures feet.
+          - This metric measures meters.
+          - This metric measures kilometers.
+          - This metric measures miles.
+          - This metric measures milliseconds.
+          - This metric measures seconds.
+          - This metric measures minutes.
+          - This metric measures hours.
+          description: Required. The type for the custom metric's value.
+          type: string
+          enum:
+          - MEASUREMENT_UNIT_UNSPECIFIED
+          - STANDARD
+          - CURRENCY
+          - FEET
+          - METERS
+          - KILOMETERS
+          - MILES
+          - MILLISECONDS
+          - SECONDS
+          - MINUTES
+          - HOURS
+        scope:
+          enum:
+          - METRIC_SCOPE_UNSPECIFIED
+          - EVENT
+          description: Required. Immutable. The scope of this custom metric.
+          type: string
+          x-enumDescriptions:
+          - Scope unknown or not specified.
+          - Metric scoped to an event.
+        name:
+          description: 'Identifier. Resource name for this CustomMetric resource. Format: properties/{property}/customMetrics/{customMetric}'
+          type: string
+        restrictedMetricType:
+          description: Optional. Types of restricted data that this metric may contain. Required for metrics
+            with CURRENCY measurement unit. Must be empty for metrics with a non-CURRENCY measurement
+            unit.
+          type: array
+          items:
+            enum:
+            - RESTRICTED_METRIC_TYPE_UNSPECIFIED
+            - COST_DATA
+            - REVENUE_DATA
+            x-enumDescriptions:
+            - Type unknown or unspecified.
+            - Metric reports cost data.
+            - Metric reports revenue data.
+            type: string
+      description: A definition for a custom metric.
+      type: object
+    GoogleAnalyticsAdminV1betaDataSharingSettings:
+      properties:
+        name:
+          description: 'Identifier. Resource name. Format: accounts/{account}/dataSharingSettings Example:
+            "accounts/1000/dataSharingSettings"'
+          type: string
+        sharingWithGoogleAnySalesEnabled:
+          deprecated: true
+          description: Deprecated. This field is no longer used and always returns false.
+          type: boolean
+        sharingWithOthersEnabled:
+          description: Enable features like predictions, modeled data, and benchmarking that can provide
+            you with richer business insights when you contribute aggregated measurement data. The data
+            you share (including information about the property from which it is shared) is aggregated
+            and de-identified before being used to generate business insights. This field maps to the
+            "Modeling contributions & business insights" field in the Google Analytics Admin UI.
+          type: boolean
+        sharingWithGoogleAssignedSalesEnabled:
+          description: Allows Google access to your Google Analytics account data, including account usage
+            and configuration data, product spending, and users associated with your Google Analytics
+            account, so that Google can help you make the most of Google products, providing you with
+            insights, offers, recommendations, and optimization tips across Google Analytics and other
+            Google products for business. This field maps to the "Recommendations for your business" field
+            in the Google Analytics Admin UI.
+          type: boolean
+        sharingWithGoogleProductsEnabled:
+          description: Allows Google to use the data to improve other Google products or services. This
+            fields maps to the "Google products & services" field in the Google Analytics Admin UI.
+          type: boolean
+        sharingWithGoogleSupportEnabled:
+          description: Allows Google technical support representatives access to your Google Analytics
+            data and account when necessary to provide service and find solutions to technical issues.
+            This field maps to the "Technical support" field in the Google Analytics Admin UI.
+          type: boolean
+      description: A resource message representing data sharing settings of a Google Analytics account.
+      type: object
+    GoogleAnalyticsAdminV1betaAccessFilter:
+      properties:
+        inListFilter:
+          description: A filter for in list values.
+          $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaAccessInListFilter'
+        stringFilter:
+          description: Strings related filter.
+          $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaAccessStringFilter'
+        fieldName:
+          description: The dimension name or metric name.
+          type: string
+        numericFilter:
+          description: A filter for numeric or date values.
+          $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaAccessNumericFilter'
+        betweenFilter:
+          $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaAccessBetweenFilter'
+          description: A filter for two values.
+      description: An expression to filter dimension or metric values.
+      type: object
+    GoogleAnalyticsAdminV1betaMeasurementProtocolSecret:
+      description: A secret value used for sending hits to Measurement Protocol.
+      type: object
+      properties:
+        displayName:
+          description: Required. Human-readable display name for this secret.
+          type: string
+        secretValue:
+          description: Output only. The measurement protocol secret value. Pass this value to the api_secret
+            field of the Measurement Protocol API when sending hits to this secret's parent property.
+          type: string
+        name:
+          description: 'Identifier. Resource name of this secret. This secret may be a child of any type
+            of stream. Format: properties/{property}/dataStreams/{dataStream}/measurementProtocolSecrets/{measurementProtocolSecret}'
+          type: string
+    GoogleAnalyticsAdminV1betaAccessDimension:
+      properties:
+        dimensionName:
+          description: The API name of the dimension. See [Data Access Schema](https://developers.google.com/analytics/devguides/config/admin/v1/access-api-schema)
+            for the list of dimensions supported in this API. Dimensions are referenced by name in `dimensionFilter`
+            and `orderBys`.
+          type: string
+      description: Dimensions are attributes of your data. For example, the dimension `userEmail` indicates
+        the email of the user that accessed reporting data. Dimension values in report responses are strings.
+      type: object
+    GoogleAnalyticsAdminV1betaAccessOrderByDimensionOrderBy:
+      properties:
+        dimensionName:
+          description: A dimension name in the request to order by.
+          type: string
+        orderType:
+          enum:
+          - ORDER_TYPE_UNSPECIFIED
+          - ALPHANUMERIC
+          - CASE_INSENSITIVE_ALPHANUMERIC
+          - NUMERIC
+          x-enumDescriptions:
+          - Unspecified.
+          - Alphanumeric sort by Unicode code point. For example, "2" < "A" < "X" < "b" < "z".
+          - Case insensitive alphanumeric sort by lower case Unicode code point. For example, "2" < "A"
+            < "b" < "X" < "z".
+          - Dimension values are converted to numbers before sorting. For example in NUMERIC sort, "25"
+            < "100", and in `ALPHANUMERIC` sort, "100" < "25". Non-numeric dimension values all have equal
+            ordering value below all numeric values.
+          description: Controls the rule for dimension value ordering.
+          type: string
+      description: Sorts by dimension values.
+      type: object
+    GoogleAnalyticsAdminV1betaRunAccessReportResponse:
+      properties:
+        rows:
+          description: Rows of dimension value combinations and metric values in the report.
+          type: array
+          items:
+            $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaAccessRow'
+        quota:
+          $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaAccessQuota'
+          description: The quota state for this Analytics property including this request. This field
+            doesn't work with account-level requests.
+        metricHeaders:
+          description: The header for a column in the report that corresponds to a specific metric. The
+            number of MetricHeaders and ordering of MetricHeaders matches the metrics present in rows.
+          type: array
+          items:
+            $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaAccessMetricHeader'
+        dimensionHeaders:
+          description: The header for a column in the report that corresponds to a specific dimension.
+            The number of DimensionHeaders and ordering of DimensionHeaders matches the dimensions present
+            in rows.
+          type: array
+          items:
+            $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaAccessDimensionHeader'
+        rowCount:
+          format: int32
+          description: The total number of rows in the query result. `rowCount` is independent of the
+            number of rows returned in the response, the `limit` request parameter, and the `offset` request
+            parameter. For example if a query returns 175 rows and includes `limit` of 50 in the API request,
+            the response will contain `rowCount` of 175 but only 50 rows. To learn more about this pagination
+            parameter, see [Pagination](https://developers.google.com/analytics/devguides/reporting/data/v1/basics#pagination).
+          type: integer
+      description: The customized Data Access Record Report response.
+      type: object
+    GoogleAnalyticsAdminV1betaDataStreamWebStreamData:
+      description: Data specific to web streams.
+      type: object
+      properties:
+        measurementId:
+          description: 'Output only. Analytics Measurement ID. Example: "G-1A2BCD345E"'
+          type: string
+        defaultUri:
+          description: 'Domain name of the web app being measured, or empty. Example: "http://www.google.com",
+            "https://www.google.com"'
+          type: string
+        firebaseAppId:
+          description: Output only. ID of the corresponding web app in Firebase, if any. This ID can change
+            if the web app is deleted and recreated.
+          type: string
+    GoogleAnalyticsAdminV1betaAccessFilterExpression:
+      properties:
+        andGroup:
+          description: Each of the FilterExpressions in the and_group has an AND relationship.
+          $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaAccessFilterExpressionList'
+        orGroup:
+          description: Each of the FilterExpressions in the or_group has an OR relationship.
+          $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaAccessFilterExpressionList'
+        notExpression:
+          description: The FilterExpression is NOT of not_expression.
+          $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaAccessFilterExpression'
+        accessFilter:
+          description: A primitive filter. In the same FilterExpression, all of the filter's field names
+            need to be either all dimensions or all metrics.
+          $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaAccessFilter'
+      description: Expresses dimension or metric filters. The fields in the same expression need to be
+        either all dimensions or all metrics.
+      type: object
+    GoogleAnalyticsAdminV1betaListFirebaseLinksResponse:
+      properties:
+        firebaseLinks:
+          description: List of FirebaseLinks. This will have at most one value.
+          type: array
+          items:
+            $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaFirebaseLink'
+        nextPageToken:
+          description: A token, which can be sent as `page_token` to retrieve the next page. If this field
+            is omitted, there are no subsequent pages. Currently, Google Analytics supports only one FirebaseLink
+            per property, so this will never be populated.
+          type: string
+      description: Response message for ListFirebaseLinks RPC
+      type: object
+    GoogleAnalyticsAdminV1betaAccessQuota:
+      description: Current state of all quotas for this Analytics property. If any quota for a property
+        is exhausted, all requests to that property will return Resource Exhausted errors.
+      type: object
+      properties:
+        tokensPerHour:
+          description: Properties can use 50,000 tokens per hour. An API request consumes a single number
+            of tokens, and that number is deducted from all of the hourly, daily, and per project hourly
+            quotas.
+          $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaAccessQuotaStatus'
+        serverErrorsPerProjectPerHour:
+          $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaAccessQuotaStatus'
+          description: Properties and cloud project pairs can have up to 50 server errors per hour.
+        concurrentRequests:
+          description: Properties can use up to 50 concurrent requests.
+          $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaAccessQuotaStatus'
+        tokensPerProjectPerHour:
+          $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaAccessQuotaStatus'
+          description: Properties can use up to 25% of their tokens per project per hour. This amounts
+            to Analytics 360 Properties can use 12,500 tokens per project per hour. An API request consumes
+            a single number of tokens, and that number is deducted from all of the hourly, daily, and
+            per project hourly quotas.
+        tokensPerDay:
+          description: Properties can use 250,000 tokens per day. Most requests consume fewer than 10
+            tokens.
+          $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaAccessQuotaStatus'
+    GoogleAnalyticsAdminV1betaListCustomMetricsResponse:
+      properties:
+        nextPageToken:
+          description: A token, which can be sent as `page_token` to retrieve the next page. If this field
+            is omitted, there are no subsequent pages.
+          type: string
+        customMetrics:
+          description: List of CustomMetrics.
+          type: array
+          items:
+            $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaCustomMetric'
+      description: Response message for ListCustomMetrics RPC.
+      type: object
+    GoogleAnalyticsAdminV1betaKeyEvent:
+      description: A key event in a Google Analytics property.
+      type: object
+      properties:
+        countingMethod:
+          enum:
+          - COUNTING_METHOD_UNSPECIFIED
+          - ONCE_PER_EVENT
+          - ONCE_PER_SESSION
+          x-enumDescriptions:
+          - Counting method not specified.
+          - Each Event instance is considered a Key Event.
+          - An Event instance is considered a Key Event at most once per session per user.
+          description: Required. The method by which Key Events will be counted across multiple events
+            within a session.
+          type: string
+        name:
+          description: 'Output only. Resource name of this key event. Format: properties/{property}/keyEvents/{key_event}'
+          type: string
+        custom:
+          description: Output only. If set to true, this key event refers to a custom event. If set to
+            false, this key event refers to a default event in GA. Default events typically have special
+            meaning in GA. Default events are usually created for you by the GA system, but in some cases
+            can be created by property admins. Custom events count towards the maximum number of custom
+            key events that may be created per property.
+          type: boolean
+        eventName:
+          description: 'Immutable. The event name for this key event. Examples: ''click'', ''purchase'''
+          type: string
+        createTime:
+          format: google-datetime
+          description: Output only. Time when this key event was created in the property.
+          type: string
+        defaultValue:
+          description: Optional. Defines a default value/currency for a key event.
+          $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaKeyEventDefaultValue'
+        deletable:
+          description: Output only. If set to true, this event can be deleted.
+          type: boolean
+    GoogleAnalyticsAdminV1betaChangeHistoryChange:
+      properties:
+        resourceBeforeChange:
+          $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaChangeHistoryChangeChangeHistoryResource'
+          description: Resource contents from before the change was made. If this resource was created
+            in this change, this field will be missing.
+        resourceAfterChange:
+          description: Resource contents from after the change was made. If this resource was deleted
+            in this change, this field will be missing.
+          $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaChangeHistoryChangeChangeHistoryResource'
+        resource:
+          description: Resource name of the resource whose changes are described by this entry.
+          type: string
+        action:
+          x-enumDescriptions:
+          - Action type unknown or not specified.
+          - Resource was created in this change.
+          - Resource was updated in this change.
+          - Resource was deleted in this change.
+          description: The type of action that changed this resource.
+          type: string
+          enum:
+          - ACTION_TYPE_UNSPECIFIED
+          - CREATED
+          - UPDATED
+          - DELETED
+      description: A description of a change to a single Google Analytics resource.
+      type: object
+    GoogleAnalyticsAdminV1betaProperty:
+      properties:
+        expireTime:
+          description: Output only. If set, the time at which this trashed property will be permanently
+            deleted. If not set, then this property is not currently in the trash can and is not slated
+            to be deleted.
+          type: string
+          format: google-datetime
+        deleteTime:
+          description: Output only. If set, the time at which this property was trashed. If not set, then
+            this property is not currently in the trash can.
+          type: string
+          format: google-datetime
+        currencyCode:
+          description: 'The currency type used in reports involving monetary values. Format: https://en.wikipedia.org/wiki/ISO_4217
+            Examples: "USD", "EUR", "JPY"'
+          type: string
+        updateTime:
+          format: google-datetime
+          description: Output only. Time when entity payload fields were last updated.
+          type: string
+        serviceLevel:
+          x-enumDescriptions:
+          - Service level not specified or invalid.
+          - The standard version of Google Analytics.
+          - The paid, premium version of Google Analytics.
+          description: Output only. The Google Analytics service level that applies to this property.
+          type: string
+          enum:
+          - SERVICE_LEVEL_UNSPECIFIED
+          - GOOGLE_ANALYTICS_STANDARD
+          - GOOGLE_ANALYTICS_360
+        industryCategory:
+          enum:
+          - INDUSTRY_CATEGORY_UNSPECIFIED
+          - AUTOMOTIVE
+          - BUSINESS_AND_INDUSTRIAL_MARKETS
+          - FINANCE
+          - HEALTHCARE
+          - TECHNOLOGY
+          - TRAVEL
+          - OTHER
+          - ARTS_AND_ENTERTAINMENT
+          - BEAUTY_AND_FITNESS
+          - BOOKS_AND_LITERATURE
+          - FOOD_AND_DRINK
+          - GAMES
+          - HOBBIES_AND_LEISURE
+          - HOME_AND_GARDEN
+          - INTERNET_AND_TELECOM
+          - LAW_AND_GOVERNMENT
+          - NEWS
+          - ONLINE_COMMUNITIES
+          - PEOPLE_AND_SOCIETY
+          - PETS_AND_ANIMALS
+          - REAL_ESTATE
+          - REFERENCE
+          - SCIENCE
+          - SPORTS
+          - JOBS_AND_EDUCATION
+          - SHOPPING
+          description: 'Industry associated with this property Example: AUTOMOTIVE, FOOD_AND_DRINK'
+          type: string
+          x-enumDescriptions:
+          - Industry category unspecified
+          - Automotive
+          - Business and industrial markets
+          - Finance
+          - Healthcare
+          - Technology
+          - Travel
+          - Other
+          - Arts and entertainment
+          - Beauty and fitness
+          - Books and literature
+          - Food and drink
+          - Games
+          - Hobbies and leisure
+          - Home and garden
+          - Internet and telecom
+          - Law and government
+          - News
+          - Online communities
+          - People and society
+          - Pets and animals
+          - Real estate
+          - Reference
+          - Science
+          - Sports
+          - Jobs and education
+          - Shopping
+        propertyType:
+          x-enumDescriptions:
+          - Unknown or unspecified property type
+          - Ordinary Google Analytics property
+          - Google Analytics subproperty
+          - Google Analytics rollup property
+          description: Immutable. The property type for this Property resource. When creating a property,
+            if the type is "PROPERTY_TYPE_UNSPECIFIED", then "ORDINARY_PROPERTY" will be implied.
+          type: string
+          enum:
+          - PROPERTY_TYPE_UNSPECIFIED
+          - PROPERTY_TYPE_ORDINARY
+          - PROPERTY_TYPE_SUBPROPERTY
+          - PROPERTY_TYPE_ROLLUP
+        name:
+          description: 'Identifier. Resource name of this property. Format: properties/{property_id} Example:
+            "properties/1000"'
+          type: string
+        timeZone:
+          description: 'Required. Reporting Time Zone, used as the day boundary for reports, regardless
+            of where the data originates. If the time zone honors DST, Analytics will automatically adjust
+            for the changes. NOTE: Changing the time zone only affects data going forward, and is not
+            applied retroactively. Format: https://www.iana.org/time-zones Example: "America/Los_Angeles"'
+          type: string
+        parent:
+          description: 'Immutable. Resource name of this property''s logical parent. Note: The Property-Moving
+            UI can be used to change the parent. Format: accounts/{account}, properties/{property} Example:
+            "accounts/100", "properties/101"'
+          type: string
+        createTime:
+          format: google-datetime
+          description: Output only. Time when the entity was originally created.
+          type: string
+        displayName:
+          description: Required. Human-readable display name for this property. The max allowed display
+            name length is 100 UTF-16 code units.
+          type: string
+        account:
+          description: 'Immutable. The resource name of the parent account Format: accounts/{account_id}
+            Example: "accounts/123"'
+          type: string
+      description: A resource message representing a Google Analytics property.
+      type: object
+    GoogleAnalyticsAdminV1betaAccessNumericFilter:
+      description: Filters for numeric or date values.
+      type: object
+      properties:
+        operation:
+          x-enumDescriptions:
+          - Unspecified.
+          - Equal
+          - Less than
+          - Less than or equal
+          - Greater than
+          - Greater than or equal
+          description: The operation type for this filter.
+          type: string
+          enum:
+          - OPERATION_UNSPECIFIED
+          - EQUAL
+          - LESS_THAN
+          - LESS_THAN_OR_EQUAL
+          - GREATER_THAN
+          - GREATER_THAN_OR_EQUAL
+        value:
+          $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaNumericValue'
+          description: A numeric value or a date value.
+    GoogleAnalyticsAdminV1betaSearchChangeHistoryEventsRequest:
+      properties:
+        pageToken:
+          description: Optional. A page token, received from a previous `SearchChangeHistoryEvents` call.
+            Provide this to retrieve the subsequent page. When paginating, all other parameters provided
+            to `SearchChangeHistoryEvents` must match the call that provided the page token.
+          type: string
+        resourceType:
+          description: Optional. If set, only return changes if they are for a resource that matches at
+            least one of these types.
+          type: array
+          items:
+            enum:
+            - CHANGE_HISTORY_RESOURCE_TYPE_UNSPECIFIED
+            - ACCOUNT
+            - PROPERTY
+            - FIREBASE_LINK
+            - GOOGLE_ADS_LINK
+            - GOOGLE_SIGNALS_SETTINGS
+            - CONVERSION_EVENT
+            - MEASUREMENT_PROTOCOL_SECRET
+            - CUSTOM_DIMENSION
+            - CUSTOM_METRIC
+            - DATA_RETENTION_SETTINGS
+            - DISPLAY_VIDEO_360_ADVERTISER_LINK
+            - DISPLAY_VIDEO_360_ADVERTISER_LINK_PROPOSAL
+            - DATA_STREAM
+            - ATTRIBUTION_SETTINGS
+            x-enumDescriptions:
+            - Resource type unknown or not specified.
+            - Account resource
+            - Property resource
+            - FirebaseLink resource
+            - GoogleAdsLink resource
+            - GoogleSignalsSettings resource
+            - ConversionEvent resource
+            - MeasurementProtocolSecret resource
+            - CustomDimension resource
+            - CustomMetric resource
+            - DataRetentionSettings resource
+            - DisplayVideo360AdvertiserLink resource
+            - DisplayVideo360AdvertiserLinkProposal resource
+            - DataStream resource
+            - AttributionSettings resource
+            type: string
+        property:
+          description: 'Optional. Resource name for a child property. If set, only return changes made
+            to this property or its child resources. Format: properties/{propertyId} Example: `properties/100`'
+          type: string
+        action:
+          description: Optional. If set, only return changes that match one or more of these types of
+            actions.
+          type: array
+          items:
+            enum:
+            - ACTION_TYPE_UNSPECIFIED
+            - CREATED
+            - UPDATED
+            - DELETED
+            x-enumDescriptions:
+            - Action type unknown or not specified.
+            - Resource was created in this change.
+            - Resource was updated in this change.
+            - Resource was deleted in this change.
+            type: string
+        earliestChangeTime:
+          format: google-datetime
+          description: Optional. If set, only return changes made after this time (inclusive).
+          type: string
+        latestChangeTime:
+          format: google-datetime
+          description: Optional. If set, only return changes made before this time (inclusive).
+          type: string
+        pageSize:
+          format: int32
+          description: Optional. The maximum number of ChangeHistoryEvent items to return. If unspecified,
+            at most 50 items will be returned. The maximum value is 200 (higher values will be coerced
+            to the maximum). Note that the service may return a page with fewer items than this value
+            specifies (potentially even zero), and that there still may be additional pages. If you want
+            a particular number of items, you'll need to continue requesting additional pages using `page_token`
+            until you get the needed number.
+          type: integer
+        actorEmail:
+          description: Optional. If set, only return changes if they are made by a user in this list.
+          type: array
+          items:
+            type: string
+      description: Request message for SearchChangeHistoryEvents RPC.
+      type: object
+    GoogleAnalyticsAdminV1betaArchiveCustomDimensionRequest:
+      description: Request message for ArchiveCustomDimension RPC.
+      type: object
+      properties: {}
+    GoogleAnalyticsAdminV1betaAccount:
+      properties:
+        regionCode:
+          description: Country of business. Must be a Unicode CLDR region code.
+          type: string
+        displayName:
+          description: Required. Human-readable display name for this account.
+          type: string
+        gmpOrganization:
+          description: 'Output only. The URI for a Google Marketing Platform organization resource. Only
+            set when this account is connected to a GMP organization. Format: marketingplatformadmin.googleapis.com/organizations/{org_id}'
+          type: string
+        name:
+          description: 'Identifier. Resource name of this account. Format: accounts/{account} Example:
+            "accounts/100"'
+          type: string
+        createTime:
+          format: google-datetime
+          description: Output only. Time when this account was originally created.
+          type: string
+        updateTime:
+          description: Output only. Time when account payload fields were last updated.
+          type: string
+          format: google-datetime
+        deleted:
+          description: Output only. Indicates whether this Account is soft-deleted or not. Deleted accounts
+            are excluded from List results unless specifically requested.
+          type: boolean
+      description: A resource message representing a Google Analytics account.
+      type: object
+    GoogleAnalyticsAdminV1betaAccessDimensionHeader:
+      description: Describes a dimension column in the report. Dimensions requested in a report produce
+        column entries within rows and DimensionHeaders. However, dimensions used exclusively within filters
+        or expressions do not produce columns in a report; correspondingly, those dimensions do not produce
+        headers.
+      type: object
+      properties:
+        dimensionName:
+          description: The dimension's name; for example 'userEmail'.
+          type: string
+    GoogleAnalyticsAdminV1betaAccessDateRange:
+      description: 'A contiguous range of days: startDate, startDate + 1, ..., endDate.'
+      type: object
+      properties:
+        startDate:
+          description: The inclusive start date for the query in the format `YYYY-MM-DD`. Cannot be after
+            `endDate`. The format `NdaysAgo`, `yesterday`, or `today` is also accepted, and in that case,
+            the date is inferred based on the current time in the request's time zone.
+          type: string
+        endDate:
+          description: The inclusive end date for the query in the format `YYYY-MM-DD`. Cannot be before
+            `startDate`. The format `NdaysAgo`, `yesterday`, or `today` is also accepted, and in that
+            case, the date is inferred based on the current time in the request's time zone.
+          type: string
+    GoogleProtobufEmpty:
+      description: 'A generic empty message that you can re-use to avoid defining duplicated empty messages
+        in your APIs. A typical example is to use it as the request or the response type of an API method.
+        For instance: service Foo { rpc Bar(google.protobuf.Empty) returns (google.protobuf.Empty); }'
+      type: object
+      properties: {}
+    GoogleAnalyticsAdminV1betaListConversionEventsResponse:
+      description: Response message for ListConversionEvents RPC.
+      type: object
+      properties:
+        conversionEvents:
+          description: The requested conversion events
+          type: array
+          items:
+            $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaConversionEvent'
+        nextPageToken:
+          description: A token, which can be sent as `page_token` to retrieve the next page. If this field
+            is omitted, there are no subsequent pages.
+          type: string
+    GoogleAnalyticsAdminV1betaListPropertiesResponse:
+      description: Response message for ListProperties RPC.
+      type: object
+      properties:
+        properties:
+          description: Results that matched the filter criteria and were accessible to the caller.
+          type: array
+          items:
+            $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaProperty'
+        nextPageToken:
+          description: A token, which can be sent as `page_token` to retrieve the next page. If this field
+            is omitted, there are no subsequent pages.
+          type: string
+    GoogleAnalyticsAdminV1betaConversionEvent:
+      properties:
+        countingMethod:
+          enum:
+          - CONVERSION_COUNTING_METHOD_UNSPECIFIED
+          - ONCE_PER_EVENT
+          - ONCE_PER_SESSION
+          description: Optional. The method by which conversions will be counted across multiple events
+            within a session. If this value is not provided, it will be set to `ONCE_PER_EVENT`.
+          type: string
+          x-enumDescriptions:
+          - Counting method not specified.
+          - Each Event instance is considered a Conversion.
+          - An Event instance is considered a Conversion at most once per session per user.
+        defaultConversionValue:
+          description: Optional. Defines a default value/currency for a conversion event.
+          $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaConversionEventDefaultConversionValue'
+        eventName:
+          description: 'Immutable. The event name for this conversion event. Examples: ''click'', ''purchase'''
+          type: string
+        createTime:
+          format: google-datetime
+          description: Output only. Time when this conversion event was created in the property.
+          type: string
+        name:
+          description: 'Identifier. Resource name of this conversion event. Format: properties/{property}/conversionEvents/{conversion_event}'
+          type: string
+        custom:
+          description: Output only. If set to true, this conversion event refers to a custom event. If
+            set to false, this conversion event refers to a default event in GA. Default events typically
+            have special meaning in GA. Default events are usually created for you by the GA system, but
+            in some cases can be created by property admins. Custom events count towards the maximum number
+            of custom conversion events that may be created per property.
+          type: boolean
+        deletable:
+          description: Output only. If set, this event can currently be deleted with DeleteConversionEvent.
+          type: boolean
+      description: A conversion event in a Google Analytics property.
+      type: object
+    GoogleAnalyticsAdminV1betaDataRetentionSettings:
+      description: Settings values for data retention. This is a singleton resource.
+      type: object
+      properties:
+        userDataRetention:
+          enum:
+          - RETENTION_DURATION_UNSPECIFIED
+          - TWO_MONTHS
+          - FOURTEEN_MONTHS
+          - TWENTY_SIX_MONTHS
+          - THIRTY_EIGHT_MONTHS
+          - FIFTY_MONTHS
+          x-enumDescriptions:
+          - Data retention time duration is not specified.
+          - The data retention time duration is 2 months.
+          - The data retention time duration is 14 months.
+          - The data retention time duration is 26 months. Available to 360 properties only. Available
+            for event data only.
+          - The data retention time duration is 38 months. Available to 360 properties only. Available
+            for event data only.
+          - The data retention time duration is 50 months. Available to 360 properties only. Available
+            for event data only.
+          description: Required. The length of time that user-level data is retained.
+          type: string
+        resetUserDataOnNewActivity:
+          description: If true, reset the retention period for the user identifier with every event from
+            that user.
+          type: boolean
+        name:
+          description: 'Identifier. Resource name for this DataRetentionSetting resource. Format: properties/{property}/dataRetentionSettings'
+          type: string
+        eventDataRetention:
+          enum:
+          - RETENTION_DURATION_UNSPECIFIED
+          - TWO_MONTHS
+          - FOURTEEN_MONTHS
+          - TWENTY_SIX_MONTHS
+          - THIRTY_EIGHT_MONTHS
+          - FIFTY_MONTHS
+          x-enumDescriptions:
+          - Data retention time duration is not specified.
+          - The data retention time duration is 2 months.
+          - The data retention time duration is 14 months.
+          - The data retention time duration is 26 months. Available to 360 properties only. Available
+            for event data only.
+          - The data retention time duration is 38 months. Available to 360 properties only. Available
+            for event data only.
+          - The data retention time duration is 50 months. Available to 360 properties only. Available
+            for event data only.
+          description: Required. The length of time that event-level data is retained.
+          type: string
+    GoogleAnalyticsAdminV1betaListAccountsResponse:
+      description: Request message for ListAccounts RPC.
+      type: object
+      properties:
+        nextPageToken:
+          description: A token, which can be sent as `page_token` to retrieve the next page. If this field
+            is omitted, there are no subsequent pages.
+          type: string
+        accounts:
+          description: Results that were accessible to the caller.
+          type: array
+          items:
+            $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaAccount'
+    GoogleAnalyticsAdminV1betaListMeasurementProtocolSecretsResponse:
+      properties:
+        measurementProtocolSecrets:
+          description: A list of secrets for the parent stream specified in the request.
+          type: array
+          items:
+            $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaMeasurementProtocolSecret'
+        nextPageToken:
+          description: A token, which can be sent as `page_token` to retrieve the next page. If this field
+            is omitted, there are no subsequent pages.
+          type: string
+      description: Response message for ListMeasurementProtocolSecret RPC
+      type: object
+    GoogleAnalyticsAdminV1betaAccessStringFilter:
+      properties:
+        value:
+          description: The string value used for the matching.
+          type: string
+        matchType:
+          x-enumDescriptions:
+          - Unspecified
+          - Exact match of the string value.
+          - Begins with the string value.
+          - Ends with the string value.
+          - Contains the string value.
+          - Full match for the regular expression with the string value.
+          - Partial match for the regular expression with the string value.
+          description: The match type for this filter.
+          type: string
+          enum:
+          - MATCH_TYPE_UNSPECIFIED
+          - EXACT
+          - BEGINS_WITH
+          - ENDS_WITH
+          - CONTAINS
+          - FULL_REGEXP
+          - PARTIAL_REGEXP
+        caseSensitive:
+          description: If true, the string value is case sensitive.
+          type: boolean
+      description: The filter for strings.
+      type: object
+    GoogleAnalyticsAdminV1betaRunAccessReportRequest:
+      description: The request for a Data Access Record Report.
+      type: object
+      properties:
+        offset:
+          format: int64
+          description: The row count of the start row. The first row is counted as row 0. If offset is
+            unspecified, it is treated as 0. If offset is zero, then this method will return the first
+            page of results with `limit` entries. To learn more about this pagination parameter, see [Pagination](https://developers.google.com/analytics/devguides/reporting/data/v1/basics#pagination).
+          type: string
+        metrics:
+          description: The metrics requested and displayed in the response. Requests are allowed up to
+            10 metrics.
+          type: array
+          items:
+            $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaAccessMetric'
+        metricFilter:
+          description: Metric filters allow you to restrict report response to specific metric values
+            which match the filter. Metric filters are applied after aggregating the report's rows, similar
+            to SQL having-clause. Dimensions cannot be used in this filter.
+          $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaAccessFilterExpression'
+        includeAllUsers:
+          description: Optional. Determines whether to include users who have never made an API call in
+            the response. If true, all users with access to the specified property or account are included
+            in the response, regardless of whether they have made an API call or not. If false, only the
+            users who have made an API call will be included.
+          type: boolean
+        limit:
+          description: The number of rows to return. If unspecified, 10,000 rows are returned. The API
+            returns a maximum of 100,000 rows per request, no matter how many you ask for. `limit` must
+            be positive. The API may return fewer rows than the requested `limit`, if there aren't as
+            many remaining rows as the `limit`. For instance, there are fewer than 300 possible values
+            for the dimension `country`, so when reporting on only `country`, you can't get more than
+            300 rows, even if you set `limit` to a higher value. To learn more about this pagination parameter,
+            see [Pagination](https://developers.google.com/analytics/devguides/reporting/data/v1/basics#pagination).
+          type: string
+          format: int64
+        timeZone:
+          description: This request's time zone if specified. If unspecified, the property's time zone
+            is used. The request's time zone is used to interpret the start & end dates of the report.
+            Formatted as strings from the IANA Time Zone database (https://www.iana.org/time-zones); for
+            example "America/New_York" or "Asia/Tokyo".
+          type: string
+        returnEntityQuota:
+          description: Toggles whether to return the current state of this Analytics Property's quota.
+            Quota is returned in [AccessQuota](#AccessQuota). For account-level requests, this field must
+            be false.
+          type: boolean
+        orderBys:
+          description: Specifies how rows are ordered in the response.
+          type: array
+          items:
+            $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaAccessOrderBy'
+        expandGroups:
+          description: Optional. Decides whether to return the users within user groups. This field works
+            only when include_all_users is set to true. If true, it will return all users with access
+            to the specified property or account. If false, only the users with direct access will be
+            returned.
+          type: boolean
+        dimensionFilter:
+          description: Dimension filters let you restrict report response to specific dimension values
+            which match the filter. For example, filtering on access records of a single user. To learn
+            more, see [Fundamentals of Dimension Filters](https://developers.google.com/analytics/devguides/reporting/data/v1/basics#dimension_filters)
+            for examples. Metrics cannot be used in this filter.
+          $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaAccessFilterExpression'
+        dimensions:
+          description: The dimensions requested and displayed in the response. Requests are allowed up
+            to 9 dimensions.
+          type: array
+          items:
+            $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaAccessDimension'
+        dateRanges:
+          description: Date ranges of access records to read. If multiple date ranges are requested, each
+            response row will contain a zero based date range index. If two date ranges overlap, the access
+            records for the overlapping days is included in the response rows for both date ranges. Requests
+            are allowed up to 2 date ranges.
+          type: array
+          items:
+            $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaAccessDateRange'
+    GoogleAnalyticsAdminV1betaAccessOrderBy:
+      properties:
+        metric:
+          description: Sorts results by a metric's values.
+          $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaAccessOrderByMetricOrderBy'
+        desc:
+          description: If true, sorts by descending order. If false or unspecified, sorts in ascending
+            order.
+          type: boolean
+        dimension:
+          description: Sorts results by a dimension's values.
+          $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaAccessOrderByDimensionOrderBy'
+      description: Order bys define how rows will be sorted in the response. For example, ordering rows
+        by descending access count is one ordering, and ordering rows by the country string is a different
+        ordering.
+      type: object
+    GoogleAnalyticsAdminV1betaGoogleAdsLink:
+      description: A link between a Google Analytics property and a Google Ads account.
+      type: object
+      properties:
+        adsPersonalizationEnabled:
+          description: Enable personalized advertising features with this integration. Automatically publish
+            my Google Analytics audience lists and Google Analytics remarketing events/parameters to the
+            linked Google Ads account. If this field is not set on create/update, it will be defaulted
+            to true.
+          type: boolean
+        creatorEmailAddress:
+          description: Output only. Email address of the user that created the link. An empty string will
+            be returned if the email address can't be retrieved.
+          type: string
+        createTime:
+          description: Output only. Time when this link was originally created.
+          type: string
+          format: google-datetime
+        updateTime:
+          description: Output only. Time when this link was last updated.
+          type: string
+          format: google-datetime
+        name:
+          description: 'Identifier. Format: properties/{propertyId}/googleAdsLinks/{googleAdsLinkId} Note:
+            googleAdsLinkId is not the Google Ads customer ID.'
+          type: string
+        customerId:
+          description: Immutable. Google Ads customer ID.
+          type: string
+        canManageClients:
+          description: Output only. If true, this link is for a Google Ads manager account.
+          type: boolean
+    GoogleAnalyticsAdminV1betaChangeHistoryEvent:
+      properties:
+        id:
+          description: ID of this change history event. This ID is unique across Google Analytics.
+          type: string
+        userActorEmail:
+          description: Email address of the Google account that made the change. This will be a valid
+            email address if the actor field is set to USER, and empty otherwise. Google accounts that
+            have been deleted will cause an error.
+          type: string
+        changes:
+          description: A list of changes made in this change history event that fit the filters specified
+            in SearchChangeHistoryEventsRequest.
+          type: array
+          items:
+            $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaChangeHistoryChange'
+        changeTime:
+          format: google-datetime
+          description: Time when change was made.
+          type: string
+        changesFiltered:
+          description: If true, then the list of changes returned was filtered, and does not represent
+            all changes that occurred in this event.
+          type: boolean
+        actorType:
+          description: The type of actor that made this change.
+          type: string
+          x-enumDescriptions:
+          - Unknown or unspecified actor type.
+          - Changes made by the user specified in actor_email.
+          - Changes made by the Google Analytics system.
+          - Changes made by Google Analytics support team staff.
+          enum:
+          - ACTOR_TYPE_UNSPECIFIED
+          - USER
+          - SYSTEM
+          - SUPPORT
+      description: A set of changes within a Google Analytics account or its child properties that resulted
+        from the same cause. Common causes would be updates made in the Google Analytics UI, changes from
+        customer support, or automatic Google Analytics system changes.
+      type: object
+    GoogleAnalyticsAdminV1betaDataStreamAndroidAppStreamData:
+      properties:
+        packageName:
+          description: 'Immutable. The package name for the app being measured. Example: "com.example.myandroidapp"'
+          type: string
+        firebaseAppId:
+          description: Output only. ID of the corresponding Android app in Firebase, if any. This ID can
+            change if the Android app is deleted and recreated.
+          type: string
+      description: Data specific to Android app streams.
+      type: object
+    GoogleAnalyticsAdminV1betaAccessOrderByMetricOrderBy:
+      properties:
+        metricName:
+          description: A metric name in the request to order by.
+          type: string
+      description: Sorts by metric values.
+      type: object
+    GoogleAnalyticsAdminV1betaAccessFilterExpressionList:
+      properties:
+        expressions:
+          description: A list of filter expressions.
+          type: array
+          items:
+            $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaAccessFilterExpression'
+      description: A list of filter expressions.
+      type: object
+    GoogleAnalyticsAdminV1betaListKeyEventsResponse:
+      properties:
+        nextPageToken:
+          description: A token, which can be sent as `page_token` to retrieve the next page. If this field
+            is omitted, there are no subsequent pages.
+          type: string
+        keyEvents:
+          description: The requested Key Events
+          type: array
+          items:
+            $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaKeyEvent'
+      description: Response message for ListKeyEvents RPC.
+      type: object
+    GoogleAnalyticsAdminV1betaAccessMetricValue:
+      properties:
+        value:
+          description: The measurement value. For example, this value may be '13'.
+          type: string
+      description: The value of a metric.
+      type: object
+    GoogleAnalyticsAdminV1betaAccountSummary:
+      description: A virtual resource representing an overview of an account and all its child Google
+        Analytics properties.
+      type: object
+      properties:
+        displayName:
+          description: Display name for the account referred to in this account summary.
+          type: string
+        propertySummaries:
+          description: List of summaries for child accounts of this account.
+          type: array
+          items:
+            $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaPropertySummary'
+        name:
+          description: 'Identifier. Resource name for this account summary. Format: accountSummaries/{account_id}
+            Example: "accountSummaries/1000"'
+          type: string
+        account:
+          description: 'Resource name of account referred to by this account summary Format: accounts/{account_id}
+            Example: "accounts/1000"'
+          type: string
+    GoogleAnalyticsAdminV1betaNumericValue:
+      description: To represent a number.
+      type: object
+      properties:
+        int64Value:
+          description: Integer value
+          type: string
+          format: int64
+        doubleValue:
+          format: double
+          description: Double value
+          type: number
+    GoogleAnalyticsAdminV1betaAccessMetric:
+      description: The quantitative measurements of a report. For example, the metric `accessCount` is
+        the total number of data access records.
+      type: object
+      properties:
+        metricName:
+          description: The API name of the metric. See [Data Access Schema](https://developers.google.com/analytics/devguides/config/admin/v1/access-api-schema)
+            for the list of metrics supported in this API. Metrics are referenced by name in `metricFilter`
+            & `orderBys`.
+          type: string
+    GoogleAnalyticsAdminV1betaProvisionAccountTicketResponse:
+      description: Response message for ProvisionAccountTicket RPC.
+      type: object
+      properties:
+        accountTicketId:
+          description: The param to be passed in the ToS link.
+          type: string
+    GoogleAnalyticsAdminV1betaFirebaseLink:
+      properties:
+        name:
+          description: 'Identifier. Example format: properties/1234/firebaseLinks/5678'
+          type: string
+        project:
+          description: 'Immutable. Firebase project resource name. When creating a FirebaseLink, you may
+            provide this resource name using either a project number or project ID. Once this resource
+            has been created, returned FirebaseLinks will always have a project_name that contains a project
+            number. Format: ''projects/{project number}'' Example: ''projects/1234'''
+          type: string
+        createTime:
+          description: Output only. Time when this FirebaseLink was originally created.
+          type: string
+          format: google-datetime
+      description: A link between a Google Analytics property and a Firebase project.
+      type: object
+    GoogleAnalyticsAdminV1betaProvisionAccountTicketRequest:
+      description: Request message for ProvisionAccountTicket RPC.
+      type: object
+      properties:
+        account:
+          description: The account to create.
+          $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaAccount'
+        redirectUri:
+          description: Redirect URI where the user will be sent after accepting Terms of Service. Must
+            be configured in Cloud Console as a Redirect URI.
+          type: string
+    GoogleAnalyticsAdminV1betaArchiveCustomMetricRequest:
+      properties: {}
+      description: Request message for ArchiveCustomMetric RPC.
+      type: object
+    GoogleAnalyticsAdminV1betaListAccountSummariesResponse:
+      description: Response message for ListAccountSummaries RPC.
+      type: object
+      properties:
+        accountSummaries:
+          description: Account summaries of all accounts the caller has access to.
+          type: array
+          items:
+            $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaAccountSummary'
+        nextPageToken:
+          description: A token, which can be sent as `page_token` to retrieve the next page. If this field
+            is omitted, there are no subsequent pages.
+          type: string
+    GoogleAnalyticsAdminV1betaChangeHistoryChangeChangeHistoryResource:
+      description: A snapshot of a resource as before or after the result of a change in change history.
+      type: object
+      properties:
+        googleAdsLink:
+          $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaGoogleAdsLink'
+          description: A snapshot of a GoogleAdsLink resource in change history.
+        conversionEvent:
+          $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaConversionEvent'
+          description: A snapshot of a ConversionEvent resource in change history.
+        property:
+          description: A snapshot of a Property resource in change history.
+          $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaProperty'
+        account:
+          $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaAccount'
+          description: A snapshot of an Account resource in change history.
+        measurementProtocolSecret:
+          $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaMeasurementProtocolSecret'
+          description: A snapshot of a MeasurementProtocolSecret resource in change history.
+        dataRetentionSettings:
+          $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaDataRetentionSettings'
+          description: A snapshot of a data retention settings resource in change history.
+        dataStream:
+          description: A snapshot of a DataStream resource in change history.
+          $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaDataStream'
+        firebaseLink:
+          $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaFirebaseLink'
+          description: A snapshot of a FirebaseLink resource in change history.
+    GoogleAnalyticsAdminV1betaListGoogleAdsLinksResponse:
+      description: Response message for ListGoogleAdsLinks RPC.
+      type: object
+      properties:
+        nextPageToken:
+          description: A token, which can be sent as `page_token` to retrieve the next page. If this field
+            is omitted, there are no subsequent pages.
+          type: string
+        googleAdsLinks:
+          description: List of GoogleAdsLinks.
+          type: array
+          items:
+            $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaGoogleAdsLink'
+    GoogleAnalyticsAdminV1betaAccessMetricHeader:
+      description: Describes a metric column in the report. Visible metrics requested in a report produce
+        column entries within rows and MetricHeaders. However, metrics used exclusively within filters
+        or expressions do not produce columns in a report; correspondingly, those metrics do not produce
+        headers.
+      type: object
+      properties:
+        metricName:
+          description: The metric's name; for example 'accessCount'.
+          type: string
+    GoogleAnalyticsAdminV1betaListCustomDimensionsResponse:
+      description: Response message for ListCustomDimensions RPC.
+      type: object
+      properties:
+        customDimensions:
+          description: List of CustomDimensions.
+          type: array
+          items:
+            $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaCustomDimension'
+        nextPageToken:
+          description: A token, which can be sent as `page_token` to retrieve the next page. If this field
+            is omitted, there are no subsequent pages.
+          type: string
+    GoogleAnalyticsAdminV1betaListDataStreamsResponse:
+      properties:
+        dataStreams:
+          description: List of DataStreams.
+          type: array
+          items:
+            $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaDataStream'
+        nextPageToken:
+          description: A token, which can be sent as `page_token` to retrieve the next page. If this field
+            is omitted, there are no subsequent pages.
+          type: string
+      description: Response message for ListDataStreams RPC.
+      type: object
+    GoogleAnalyticsAdminV1betaAccessQuotaStatus:
+      properties:
+        remaining:
+          format: int32
+          description: Quota remaining after this request.
+          type: integer
+        consumed:
+          description: Quota consumed by this request.
+          type: integer
+          format: int32
+      description: Current state for a particular quota group.
+      type: object
+    GoogleAnalyticsAdminV1betaAcknowledgeUserDataCollectionRequest:
+      properties:
+        acknowledgement:
+          description: 'Required. An acknowledgement that the caller of this method understands the terms
+            of user data collection. This field must contain the exact value: "I acknowledge that I have
+            the necessary privacy disclosures and rights from my end users for the collection and processing
+            of their data, including the association of such data with the visitation information Google
+            Analytics collects from my site and/or app property."'
+          type: string
+      description: Request message for AcknowledgeUserDataCollection RPC.
+      type: object
+    GoogleAnalyticsAdminV1betaAccessInListFilter:
+      description: The result needs to be in a list of string values.
+      type: object
+      properties:
+        values:
+          description: The list of string values. Must be non-empty.
+          type: array
+          items:
+            type: string
+        caseSensitive:
+          description: If true, the string value is case sensitive.
+          type: boolean
+    GoogleAnalyticsAdminV1betaDataStream:
+      description: A resource message representing a data stream.
+      type: object
+      properties:
+        type:
+          enum:
+          - DATA_STREAM_TYPE_UNSPECIFIED
+          - WEB_DATA_STREAM
+          - ANDROID_APP_DATA_STREAM
+          - IOS_APP_DATA_STREAM
+          description: Required. Immutable. The type of this DataStream resource.
+          type: string
+          x-enumDescriptions:
+          - Type unknown or not specified.
+          - Web data stream.
+          - Android app data stream.
+          - iOS app data stream.
+        displayName:
+          description: Human-readable display name for the Data Stream. Required for web data streams.
+            The max allowed display name length is 255 UTF-16 code units.
+          type: string
+        webStreamData:
+          $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaDataStreamWebStreamData'
+          description: Data specific to web streams. Must be populated if type is WEB_DATA_STREAM.
+        androidAppStreamData:
+          description: Data specific to Android app streams. Must be populated if type is ANDROID_APP_DATA_STREAM.
+          $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaDataStreamAndroidAppStreamData'
+        iosAppStreamData:
+          description: Data specific to iOS app streams. Must be populated if type is IOS_APP_DATA_STREAM.
+          $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaDataStreamIosAppStreamData'
+        name:
+          description: 'Identifier. Resource name of this Data Stream. Format: properties/{property_id}/dataStreams/{stream_id}
+            Example: "properties/1000/dataStreams/2000"'
+          type: string
+        createTime:
+          description: Output only. Time when this stream was originally created.
+          type: string
+          format: google-datetime
+        updateTime:
+          format: google-datetime
+          description: Output only. Time when stream payload fields were last updated.
+          type: string
+    GoogleAnalyticsAdminV1betaAccessDimensionValue:
+      description: The value of a dimension.
+      type: object
+      properties:
+        value:
+          description: The dimension value. For example, this value may be 'France' for the 'country'
+            dimension.
+          type: string
+    GoogleRpcStatus:
+      type: object
+      description: Canonical google.rpc.Status error payload returned by Google APIs.
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        details:
+          type: array
+          items:
+            type: object
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      description: Google OAuth 2.0. Scopes are the short form of the full https://www.googleapis.com/auth/<scope>
+        identifier.
+      flows:
+        authorizationCode:
+          authorizationUrl: https://accounts.google.com/o/oauth2/v2/auth
+          tokenUrl: https://oauth2.googleapis.com/token
+          scopes:
+            analytics.edit: Edit Google Analytics management entities
+            analytics.readonly: See and download your Google Analytics data
+    BearerAuth:
+      type: http
+      scheme: bearer
+      description: Google OAuth 2.0 access token presented as a bearer token.

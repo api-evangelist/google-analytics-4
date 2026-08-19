@@ -1,0 +1,84 @@
+generated: '2026-08-13'
+method: searched
+source:
+  - https://developers.google.com/tag-platform/gtagjs/install
+  - https://developers.google.com/analytics/devguides/collection/ga4
+  - https://firebase.google.com/docs/analytics
+  - openapi/google-analytics-4-admin-v1alpha-openapi.yml
+note: >-
+  GA4's client-side collection layer is a genuine embeddable-component surface, distinct from
+  the server-side client libraries in packages/. It is CDN-distributed and unpinned — the
+  gtag.js loader always resolves to the current build, so a consumer cannot state which
+  version of the collection library their site is running. The Admin API exposes the snippet
+  itself as a readable resource, which is unusual and worth recording.
+families:
+  - name: Google tag (gtag.js)
+    kind: javascript-loader
+    description: >-
+      The single web collection tag for GA4. Loaded as a script tag from
+      googletagmanager.com and configured with the data stream's Measurement ID (G-XXXXXXX).
+      Exposes the global gtag() function for config, event and consent calls.
+    loader: https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX
+    registry: cdn
+    version: null
+    version_note: >-
+      Unpinned. The loader URL carries no version segment and floats to whatever Google is
+      currently serving, so neither we nor the site owner can state which build is running.
+    docs: https://developers.google.com/tag-platform/gtagjs
+    api_readable:
+      resource: GlobalSiteTag
+      operation: properties_dataStreams_getGlobalSiteTag
+      spec: openapi/google-analytics-4-admin-v1alpha-openapi.yml
+      note: >-
+        The Admin API returns the exact snippet to embed for a given web data stream, which
+        makes tag deployment automatable.
+  - name: Google Tag Manager
+    kind: container-loader
+    description: >-
+      Tag container that can deploy and configure the GA4 tag without editing site code.
+      Separate product, but the canonical deployment path for GA4 on the web.
+    loader: https://www.googletagmanager.com/gtm.js?id=GTM-XXXXXXX
+    registry: cdn
+    version: null
+    version_note: Unpinned; floats to latest.
+    docs: https://support.google.com/tagmanager
+  - name: Consent Mode
+    kind: javascript-api
+    description: >-
+      gtag('consent', ...) API for signalling ad_storage / analytics_storage / ad_user_data /
+      ad_personalization consent state before and after a user decision. Required for EEA
+      traffic under the Google EU User Consent Policy.
+    docs: https://developers.google.com/tag-platform/security/guides/consent
+    examples: https://github.com/googleanalytics/gtm-consent-mode-examples
+  - name: Firebase SDK for Google Analytics (Android)
+    kind: mobile-sdk
+    description: >-
+      GA4 mobile app collection ships through Firebase, not through a standalone Analytics
+      SDK. App streams are created in GA4 but instrumented with the Firebase Analytics SDK.
+    docs: https://firebase.google.com/docs/analytics/get-started?platform=android
+    registry: maven
+    package: com.google.firebase:firebase-analytics
+  - name: Firebase SDK for Google Analytics (iOS)
+    kind: mobile-sdk
+    docs: https://firebase.google.com/docs/analytics/get-started?platform=ios
+    registry: cocoapods
+    package: FirebaseAnalytics
+hosted_surfaces:
+  - name: GA4 Query Explorer
+    url: https://ga-dev-tools.google/ga4/query-explorer/
+    description: Hosted Data API request builder and runner.
+  - name: GA4 Event Builder
+    url: https://ga-dev-tools.google/ga4/event-builder/
+    description: Hosted Measurement Protocol event builder wired to the validation endpoint.
+  - name: Dimensions and Metrics Explorer
+    url: https://ga-dev-tools.google/ga4/dimensions-metrics-explorer/
+  - name: Google Analytics console
+    url: https://analytics.google.com/
+    description: The product UI. Not embeddable.
+embeddable_dashboards:
+  supported: false
+  note: >-
+    GA4 retired the Embed API that Universal Analytics offered. There is no first-party
+    embeddable reporting widget for GA4; embedding is done via Looker Studio, a separate
+    product, using the GA4 connector.
+  successor: https://lookerstudio.google.com/

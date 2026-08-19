@@ -1,0 +1,92 @@
+generated: '2026-08-13'
+method: searched
+status: published
+source: https://github.com/googleanalytics/google-analytics-mcp
+note: >-
+  Official Google Analytics MCP server, published by the googleanalytics GitHub organization
+  (the same org that publishes the Node.js Admin API client and the GA dev tools) and
+  distributed on PyPI as analytics-mcp. It wraps the Google Analytics Admin API
+  (analyticsadmin.googleapis.com) and the Google Analytics Data API
+  (analyticsdata.googleapis.com). Tool names and descriptions below are transcribed
+  verbatim from the repository README; input schemas were NOT harvested because the server
+  is stdio-only and requires local Google Application Default Credentials to introspect —
+  tools/list cannot be called anonymously over the network.
+deployment:
+  mode: local-stdio
+  install: pipx run analytics-mcp
+  package: https://pypi.org/project/analytics-mcp/
+  auth: oauth
+  verified: searched
+server:
+  name: analytics-mcp
+  transport: stdio
+  repository: https://github.com/googleanalytics/google-analytics-mcp
+  package: analytics-mcp
+  registry: pypi
+  version: 0.7.0
+  published: '2026-07-29'
+  runtime: Python 3.10+
+  license_source: https://github.com/googleanalytics/google-analytics-mcp
+authentication:
+  model: Google Application Default Credentials (ADC)
+  scopes:
+    - https://www.googleapis.com/auth/analytics.readonly
+    - https://www.googleapis.com/auth/cloud-platform
+  required_apis:
+    - analyticsadmin.googleapis.com
+    - analyticsdata.googleapis.com
+  note: >-
+    The server runs as the human operator's own Google identity via ADC; there is no
+    machine-to-machine credential and no hosted endpoint an agent can reach on its own.
+client_config:
+  gemini_cli: |
+    {
+      "mcpServers": {
+        "analytics-mcp": {
+          "command": "pipx",
+          "args": ["run", "analytics-mcp"]
+        }
+      }
+    }
+  claude_code: "claude mcp add -- pipx run analytics-mcp"
+tools:
+  - name: get_account_summaries
+    category: account-and-property
+    description: Retrieves information about the user's Google Analytics accounts and properties.
+    backing_api: Google Analytics Admin API
+  - name: get_property_details
+    category: account-and-property
+    description: Returns details about a property.
+    backing_api: Google Analytics Admin API
+  - name: list_google_ads_links
+    category: account-and-property
+    description: Returns a list of links to Google Ads accounts for a property.
+    backing_api: Google Analytics Admin API
+  - name: run_report
+    category: core-reporting
+    description: Runs a Google Analytics report using the Data API.
+    backing_api: Google Analytics Data API
+  - name: run_funnel_report
+    category: core-reporting
+    description: Runs a Google Analytics funnel report using the Data API.
+    backing_api: Google Analytics Data API
+  - name: get_custom_dimensions_and_metrics
+    category: core-reporting
+    description: Retrieves the custom dimensions and metrics for a specific property.
+    backing_api: Google Analytics Data API
+  - name: run_realtime_report
+    category: realtime-reporting
+    description: Runs a Google Analytics realtime report using the Data API.
+    backing_api: Google Analytics Data API
+x-evidence:
+  fetched: '2026-08-13'
+  repository_api: https://api.github.com/repos/googleanalytics/google-analytics-mcp
+  http_status: 200
+  stars: 2949
+  archived: false
+  registry: https://pypi.org/pypi/analytics-mcp/json
+  registry_status: 200
+  remote_endpoint_probe: >-
+    No hosted MCP endpoint is published or advertised. The README documents only the stdio
+    transport via pipx; no https URL an MCP client could POST to appears anywhere in the
+    repository or in Google's Analytics developer documentation.

@@ -4,98 +4,194 @@ schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main
 provider: Google Analytics 4
 providerId: google-analytics-4
 created: '2026-05-04'
-modified: '2026-05-04'
+modified: '2026-08-13'
+generated: '2026-08-13'
+method: searched
+source:
+  - https://developers.google.com/analytics/devguides/reporting/data/v1/quotas
+  - https://developers.google.com/analytics/devguides/config/admin/v1/quotas
+  - https://developers.google.com/analytics/devguides/reporting/data/v1/errors
+note: >-
+  Replaces a 2026-05-04 bulk-sweep scaffold that asserted a 10 req/min free tier, a 1,000
+  req/month quota and X-RateLimit-* response headers. None of those were real. Google
+  publishes an explicit, tiered, token-based quota model and does NOT return
+  X-RateLimit-* or RateLimit-* headers on any GA4 API; the only runtime signal is the
+  HTTP 429 / RESOURCE_EXHAUSTED error and the optional in-body quota block described below.
+  Every number here is transcribed from the two quota pages above.
 tags:
   - Analytics
-  - Data Collection
-  - Marketing
-  - Measurement
-  - Mobile Analytics
-  - Reporting
-  - Web Analytics
-  - Rate Limiting
   - Quotas
+  - Rate Limiting
   - Throttling
-description: Machine-readable rate limit definitions for the Google Analytics 4 API surface. Captures
-  per-tier quotas, burst behavior, response signaling, and recovery semantics. Defaults are scaffold values
-  to be replaced with published provider limits.
-headers:
-  limit: X-RateLimit-Limit
-  remaining: X-RateLimit-Remaining
-  reset: X-RateLimit-Reset
-  retryAfter: Retry-After
-  policy: RateLimit-Policy
+description: >-
+  Published quota limits for the Google Analytics 4 API surface. The Data API meters by
+  consumed tokens per property per day/hour plus concurrency and server-error ceilings, and
+  applies the same numbers independently to each of its three quota categories (Core,
+  Realtime, Funnel). The Admin API meters by requests and writes per minute. Standard
+  properties and Analytics 360 properties get different ceilings.
+signaling:
+  headers:
+    limit: null
+    remaining: null
+    reset: null
+    retryAfter: null
+    policy: null
+  note: >-
+    No rate-limit response headers are documented or observed. An agent cannot read its
+    remaining budget from response headers.
+  in_band:
+    field: returnPropertyQuota
+    where: Data API request body (boolean)
+    returns: PropertyQuota block in the response with consumed/remaining for each quota category
+    docs: https://developers.google.com/analytics/devguides/reporting/data/v1/quotas
+  snapshot_operation:
+    operationId: properties_getPropertyQuotasSnapshot
+    spec: openapi/google-analytics-4-data-v1alpha-openapi.yml
+    note: v1alpha only; returns a current snapshot of all property quotas by category.
 responseCodes:
   throttled: 429
   quotaExceeded: 429
+  canonicalCode: RESOURCE_EXHAUSTED
   serviceUnavailable: 503
+  serverError: 500
+recovery:
+  strategy: exponential backoff
+  note: >-
+    Google documents exponential backoff for 500/INTERNAL and 503/UNAVAILABLE, and warns
+    that unbounded retries will burn the "Server Errors Per Project Per Property Per Hour"
+    quota (10 standard / 50 for 360), which then locks the property out.
+limit_count: 15
 limits:
-  - tier: free
-    name: Free Tier Default
-    scope: api-key
-    metric: requests_per_minute
+  # ---- Data API: applied independently to each of Core, Realtime and Funnel ----
+  - api: Google Analytics Data API
+    tier: standard
+    name: Tokens Per Property Per Day
+    scope: per-property
+    metric: tokens
+    limit: 200000
+    timeFrame: day
+    applies: [Core, Realtime, Funnel]
+    resets: midnight Pacific Time
+  - api: Google Analytics Data API
+    tier: analytics-360
+    name: Tokens Per Property Per Day
+    scope: per-property
+    metric: tokens
+    limit: 2000000
+    timeFrame: day
+    applies: [Core, Realtime, Funnel]
+    resets: midnight Pacific Time
+  - api: Google Analytics Data API
+    tier: standard
+    name: Tokens Per Property Per Hour
+    scope: per-property
+    metric: tokens
+    limit: 40000
+    timeFrame: hour
+    applies: [Core, Realtime, Funnel]
+  - api: Google Analytics Data API
+    tier: analytics-360
+    name: Tokens Per Property Per Hour
+    scope: per-property
+    metric: tokens
+    limit: 400000
+    timeFrame: hour
+    applies: [Core, Realtime, Funnel]
+  - api: Google Analytics Data API
+    tier: standard
+    name: Tokens Per Project Per Property Per Hour
+    scope: per-project-per-property
+    metric: tokens
+    limit: 14000
+    timeFrame: hour
+    applies: [Core, Realtime, Funnel]
+  - api: Google Analytics Data API
+    tier: analytics-360
+    name: Tokens Per Project Per Property Per Hour
+    scope: per-project-per-property
+    metric: tokens
+    limit: 140000
+    timeFrame: hour
+    applies: [Core, Realtime, Funnel]
+  - api: Google Analytics Data API
+    tier: standard
+    name: Concurrent Requests Per Property
+    scope: per-property
+    metric: concurrent_requests
     limit: 10
-    burst: 20
-    timeFrame: minute
+    timeFrame: instant
+    applies: [Core, Realtime, Funnel]
+  - api: Google Analytics Data API
+    tier: analytics-360
+    name: Concurrent Requests Per Property
+    scope: per-property
+    metric: concurrent_requests
+    limit: 50
+    timeFrame: instant
+    applies: [Core, Realtime, Funnel]
+  - api: Google Analytics Data API
+    tier: standard
+    name: Server Errors Per Project Per Property Per Hour
+    scope: per-project-per-property
+    metric: server_errors
+    limit: 10
+    timeFrame: hour
+    applies: [Core, Realtime, Funnel]
+  - api: Google Analytics Data API
+    tier: analytics-360
+    name: Server Errors Per Project Per Property Per Hour
+    scope: per-project-per-property
+    metric: server_errors
+    limit: 50
+    timeFrame: hour
+    applies: [Core, Realtime, Funnel]
+  - api: Google Analytics Data API
+    tier: all
+    name: Potentially Thresholded Requests Per Hour
+    scope: per-property
+    metric: requests
+    limit: 120
+    timeFrame: hour
     applies:
-      - Google Analytics Data API
-      - Google Analytics Admin API
-      - Google Analytics Measurement Protocol
-  - tier: free
-    name: Free Tier Monthly Quota
-    scope: api-key
-    metric: requests_per_month
-    limit: 1000
-    timeFrame: month
-    applies:
-      - Google Analytics Data API
-      - Google Analytics Admin API
-      - Google Analytics Measurement Protocol
-  - tier: professional
-    name: Professional Tier Default
-    scope: api-key
+      - requests using userAgeBracket, userGender, brandingInterest, audienceId or audienceName
+  # ---- Admin API ----
+  - api: Google Analytics Admin API
+    tier: all
+    name: Requests Per Minute
+    scope: per-project
     metric: requests_per_minute
-    limit: 100
-    burst: 200
+    limit: 1200
     timeFrame: minute
-    applies:
-      - Google Analytics Data API
-      - Google Analytics Admin API
-      - Google Analytics Measurement Protocol
-  - tier: professional
-    name: Professional Tier Monthly Quota
-    scope: api-key
-    metric: requests_per_month
-    limit: 100000
-    timeFrame: month
-    applies:
-      - Google Analytics Data API
-      - Google Analytics Admin API
-      - Google Analytics Measurement Protocol
-  - tier: enterprise
-    name: Enterprise Negotiated Limit
-    scope: contract
+  - api: Google Analytics Admin API
+    tier: all
+    name: Requests Per Minute Per User
+    scope: per-user
     metric: requests_per_minute
-    limit: 1000
-    burst: 5000
+    limit: 600
     timeFrame: minute
-    applies:
-      - Google Analytics Data API
-      - Google Analytics Admin API
-      - Google Analytics Measurement Protocol
-policies:
-  - name: Backoff Strategy
-    description: Clients should implement exponential backoff with jitter, honoring the Retry-After header
-      when present.
-  - name: Burst Handling
-    description: Short bursts above the steady-state limit are tolerated up to the documented burst ceiling
-      before throttling engages.
-  - name: Quota Reset
-    description: Monthly quotas reset at the start of each calendar month in UTC. Per-minute and per-second
-      windows reset on a sliding-window basis.
-  - name: Fair Use
-    description: Even on uncapped enterprise tiers, sustained usage that materially impacts shared infrastructure
-      may be subject to fair-use throttling.
-maintainers:
-  - FN: Kin Lane
-    email: kin@apievangelist.com
+  - api: Google Analytics Admin API
+    tier: all
+    name: Writes Per Minute
+    scope: per-project
+    metric: writes_per_minute
+    limit: 600
+    timeFrame: minute
+    applies: [create, patch, update, delete, archive]
+  - api: Google Analytics Admin API
+    tier: all
+    name: Writes Per Minute Per User
+    scope: per-user
+    metric: writes_per_minute
+    limit: 180
+    timeFrame: minute
+    applies: [create, patch, update, delete, archive]
+token_model:
+  note: >-
+    Data API requests are metered in tokens, not calls. A typical request costs 10 tokens or
+    fewer; cost rises with row count, number of dimensions and metrics, filter complexity,
+    date-range length, data cardinality and property event volume. There is no published
+    formula, so a consumer cannot compute cost ahead of a call — only observe it via
+    returnPropertyQuota.
+undocumented:
+  - Measurement Protocol (www.google-analytics.com/mp/collect) publishes no rate limit.
+    Google documents event/parameter size caps instead, not a request rate.

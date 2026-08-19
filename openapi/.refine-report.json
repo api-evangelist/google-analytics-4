@@ -1,14 +1,27 @@
 {
   "provider": "google-analytics-4",
   "sources": [
-    "google-analytics-4-v1beta-api-openapi.yml"
+    "_original/google-analytics-4-data-v1beta-discovery.json",
+    "_original/google-analytics-4-data-v1alpha-discovery.json",
+    "_original/google-analytics-4-admin-v1beta-discovery.json",
+    "_original/google-analytics-4-admin-v1alpha-discovery.json"
   ],
   "outputs": [
-    "google-analytics-4-v1beta-api-openapi.yml"
+    "google-analytics-4-data-v1beta-openapi.yml",
+    "google-analytics-4-data-v1alpha-openapi.yml",
+    "google-analytics-4-admin-v1beta-openapi.yml",
+    "google-analytics-4-admin-v1alpha-openapi.yml"
   ],
   "archived": [],
+  "removed": [
+    "google-analytics-4-v1beta-api-openapi.yml",
+    "_original/google-analytics-4-openapi.yml"
+  ],
   "errors": [],
   "warnings": [],
-  "notes": [],
+  "notes": [
+    "2026-08-13 enrichment pass: the previous openapi/ contents were a hand-authored 8-operation scaffold with 2 schemas and placeholder 'type: object' request bodies. They were superseded by faithful mechanical conversions of Google's own API Discovery documents, fetched HTTP 200 from analyticsdata.googleapis.com/$discovery/rest and analyticsadmin.googleapis.com/$discovery/rest and saved verbatim to _original/. Result: 247 operations, 402 schemas, zero dangling $refs, every operation carrying a summary, tags and a unique operationId.",
+    "Not produced by refine-openapis.py. These files are one-per-API-version rather than one-per-tag; a subsequent refine run may split them by tag."
+  ],
   "skipped": []
 }

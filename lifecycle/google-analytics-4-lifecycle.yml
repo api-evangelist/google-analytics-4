@@ -1,0 +1,117 @@
+generated: '2026-08-13'
+method: searched
+source:
+  - https://developers.google.com/analytics/devguides/reporting/data/v1/changelog
+  - https://developers.google.com/analytics/devguides/config/admin/v1/changelog
+  - https://status.cloud.google.com/
+  - https://www.google.com/appsstatus/dashboard/
+  - openapi/google-analytics-4-admin-v1beta-openapi.yml
+versioning:
+  scheme: uri-path
+  current: v1beta
+  channels:
+    - version: v1beta
+      status: beta
+      apis: [Google Analytics Data API, Google Analytics Admin API]
+      docs: https://developers.google.com/analytics/devguides/reporting/data/v1
+    - version: v1alpha
+      status: alpha
+      apis: [Google Analytics Data API, Google Analytics Admin API]
+  note: >-
+    There is no v1 GA channel. After six years the most stable GA4 API channel is still
+    v1beta, and the alpha channel carries the majority of the surface — 166 of the 221
+    Admin API operations exist only in v1alpha. Consumers of funnel reports, report tasks,
+    subproperty sync, reporting data annotations and property quota snapshots are on alpha
+    terms whether they realise it or not.
+  revision_stamps:
+    data: '20260812'
+    admin: '20260810'
+    note: >-
+      Google stamps each Discovery document with a revision date, which is the closest thing
+      to a machine-readable version marker on this API. Both were current within three days
+      of this harvest.
+deprecation:
+  policy_url: null
+  ga4_policy_page: none
+  ga4_policy_evidence: >-
+    No GA4-scoped deprecation policy exists. Both
+    https://developers.google.com/analytics/devguides/reporting/data/v1/deprecations and
+    https://developers.google.com/analytics/devguides/config/admin/v1/deprecations returned
+    404 on 2026-08-13. No Deprecation pointer is emitted in apis.yml for that reason —
+    crediting Google Cloud's policy to GA4 would over-state the commitment.
+  nearest_general_policy: https://cloud.google.com/terms/deprecation
+  policy_note: >-
+    GA4's APIs are governed by Google's general deprecation posture: beta and alpha channels
+    carry no deprecation guarantee, and the one-year notice in the Google Cloud deprecation
+    policy applies to GA (v1) services, which GA4 does not have. Deprecations are announced
+    in the per-API changelog, not via a machine-readable channel.
+  sunset_header: false
+  deprecation_header: false
+  rfc8594: false
+  evidence: >-
+    No Sunset or Deprecation response header is documented, and none appears in any of the
+    four Discovery documents.
+  announced_via: https://developers.google.com/analytics/devguides/config/admin/v1/changelog
+deprecated_operations:
+  - spec: openapi/google-analytics-4-admin-v1beta-openapi.yml
+    operations:
+      - properties_conversionEvents_create
+      - properties_conversionEvents_get
+      - properties_conversionEvents_list
+      - properties_conversionEvents_patch
+      - properties_conversionEvents_delete
+    superseded_by: properties_keyEvents_* (same resource shape, renamed)
+    note: >-
+      Flagged deprecated: true in Google's own Discovery document. Part of the 2025 rename of
+      "conversions" to "key events" (Data API side announced 2024-05-06, where isConversionEvent
+      was replaced by isKeyEvent).
+  - spec: openapi/google-analytics-4-admin-v1alpha-openapi.yml
+    operations:
+      - properties_conversionEvents_create
+      - properties_conversionEvents_get
+      - properties_conversionEvents_list
+      - properties_conversionEvents_patch
+      - properties_conversionEvents_delete
+    superseded_by: properties_keyEvents_*
+deprecation_history:
+  - date: '2025-03-07'
+    version: v1beta
+    item: sharingWithGoogleAnySalesEnabled
+    detail: >-
+      Deprecated; always returns false. Google scheduled removal for June 2025 — the field is
+      still present in the 20260810 Discovery revision.
+  - date: '2025-08-20'
+    version: v1alpha
+    item: Universal Analytics methods
+    detail: Legacy Universal Analytics methods removed from the Admin API.
+  - date: '2024-08-01'
+    version: v1alpha
+    item: createSubproperty
+    detail: Renamed to provisionSubproperty. Breaking change, announced in the changelog only.
+  - date: '2024-05-06'
+    version: v1beta and v1alpha
+    item: isConversionEvent dimension, conversions metrics
+    detail: >-
+      Replaced by isKeyEvent and keyEvents. Conversion metrics renamed across the reporting
+      schema.
+sla:
+  url: null
+  uptime_target: null
+  note: >-
+    No SLA is published for the standard (free) Analytics tier. Analytics 360 service terms
+    are contractual and not publicly posted; no numeric uptime target for the GA4 APIs
+    appears on any public Google page.
+status_page: https://www.google.com/appsstatus/dashboard/
+status_page_secondary: https://status.cloud.google.com/
+status_page_note: >-
+  Google Analytics does not run a dedicated GA4 API status page. Analytics incidents are
+  posted on the Google Workspace Status Dashboard; the Google Cloud Service Health dashboard
+  covers the googleapis.com serving infrastructure the two API hosts sit behind. Both are
+  Google-operated and both return HTTP 200. Neither is GA4-scoped, which is a real gap: an
+  agent cannot determine whether analyticsdata.googleapis.com specifically is degraded.
+changelog: changelog/google-analytics-4-changelog.yml
+support:
+  community: https://developers.google.com/analytics/community
+  discord: https://discord.com/channels/971845904002871346/1398002598665257060
+  discord_note: The #analytics-mcp channel on Google's developer Discord, linked from the MCP repo.
+  help_center: https://support.google.com/analytics

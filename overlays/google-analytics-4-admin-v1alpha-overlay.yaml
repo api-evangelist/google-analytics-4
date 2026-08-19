@@ -1,0 +1,41 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for Google Analytics Admin API (admin-v1alpha)
+  version: 1.0.0
+extends: openapi/google-analytics-4-admin-v1alpha-openapi.yml
+x-generated: '2026-08-13'
+x-method: generated
+x-source: Derived from the Google Discovery document harvested to openapi/_original/google-analytics-4-admin-v1alpha-discovery.json
+x-note: Records what API Evangelist added on top of the provider contract. Google publishes a Discovery
+  document, not OpenAPI, so the base file in openapi/ is already a mechanical conversion; this overlay
+  carries only the annotations that are ours, never a change to Google's semantics.
+actions:
+- target: $.info
+  update:
+    x-apievangelist-provider: google-analytics-4
+    x-apievangelist-contract-source: https://analyticsadmin.googleapis.com/$discovery/rest?version=v1alpha
+    x-apievangelist-discovery-revision: '20260810'
+    x-apievangelist-operations: 166
+    x-apievangelist-artifacts:
+      authentication: authentication/google-analytics-4-authentication.yml
+      scopes: scopes/google-analytics-4-scopes.yml
+      errors: errors/google-analytics-4-problem-types.yml
+      conventions: conventions/google-analytics-4-conventions.yml
+      rate_limits: rate-limits/google-analytics-4-rate-limits.yml
+      lifecycle: lifecycle/google-analytics-4-lifecycle.yml
+      data_model: data-model/google-analytics-4-data-model.yml
+      mcp: mcp/google-analytics-4-mcp.yml
+- target: $
+  update:
+    x-apievangelist-conventions:
+      idempotency: false
+      pagination: cursor (pageSize/pageToken) on list operations; limit/offset in the body on Data API
+        reports
+      partial_update: updateMask field mask
+      error_envelope: google.rpc.Status under a top-level error key
+      rate_limit_headers: null
+- target: $.info
+  update:
+    x-apievangelist-stability: alpha
+    x-apievangelist-stability-note: Alpha channel. No deprecation guarantee; features here frequently
+      never graduate to v1beta.

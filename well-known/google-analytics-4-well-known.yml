@@ -1,0 +1,104 @@
+generated: '2026-08-13'
+method: probed
+source: live GET of /.well-known/* on every apis.yml host and every OpenAPI servers[] host
+note: >-
+  Neither GA4 API host serves any /.well-known/ document — analyticsdata.googleapis.com and
+  analyticsadmin.googleapis.com return the standard Google 404 HTML page for all five paths,
+  as do www.google-analytics.com, developers.google.com and analytics.google.com. The
+  documents that do exist sit on Google's corporate and identity hosts: the RFC 9116
+  security.txt on www.google.com, and OIDC/OAuth 2.0 Authorization Server Metadata on
+  accounts.google.com, which is the actual authorization server for every GA4 API call
+  (its authorization_endpoint and token_endpoint are the exact URLs carried in the
+  securitySchemes of all four harvested OpenAPI files). Both hits are Google-controlled
+  hosts and are therefore recorded as this provider's well-known surface.
+hosts_probed:
+  - analyticsdata.googleapis.com
+  - analyticsadmin.googleapis.com
+  - www.google-analytics.com
+  - developers.google.com
+  - analytics.google.com
+  - google.com
+  - www.google.com
+  - accounts.google.com
+documents:
+  - host: https://www.google.com
+    path: /.well-known/security.txt
+    status: 200
+    content_type: text/plain
+    file: google-analytics-4-security.txt
+    spec: RFC 9116
+    note: >-
+      google.com/.well-known/security.txt 301-redirects to www.google.com, which serves the
+      real document. Expires 2030-04-01.
+  - host: https://accounts.google.com
+    path: /.well-known/openid-configuration
+    status: 200
+    content_type: application/json
+    file: google-analytics-4-openid-configuration.json
+    spec: OpenID Connect Discovery 1.0
+    issuer: https://accounts.google.com
+  - host: https://accounts.google.com
+    path: /.well-known/oauth-authorization-server
+    status: 200
+    content_type: application/json
+    file: google-analytics-4-oauth-authorization-server.json
+    spec: RFC 8414
+    issuer: https://accounts.google.com
+  - host: https://analyticsdata.googleapis.com
+    path: /.well-known/security.txt
+    status: 404
+  - host: https://analyticsdata.googleapis.com
+    path: /.well-known/openid-configuration
+    status: 404
+  - host: https://analyticsdata.googleapis.com
+    path: /.well-known/oauth-authorization-server
+    status: 404
+  - host: https://analyticsdata.googleapis.com
+    path: /.well-known/api-catalog
+    status: 404
+  - host: https://analyticsdata.googleapis.com
+    path: /.well-known/ai-plugin.json
+    status: 404
+  - host: https://analyticsadmin.googleapis.com
+    path: /.well-known/security.txt
+    status: 404
+  - host: https://analyticsadmin.googleapis.com
+    path: /.well-known/openid-configuration
+    status: 404
+  - host: https://analyticsadmin.googleapis.com
+    path: /.well-known/oauth-authorization-server
+    status: 404
+  - host: https://analyticsadmin.googleapis.com
+    path: /.well-known/api-catalog
+    status: 404
+  - host: https://analyticsadmin.googleapis.com
+    path: /.well-known/ai-plugin.json
+    status: 404
+  - host: https://www.google-analytics.com
+    path: /.well-known/security.txt
+    status: 404
+  - host: https://www.google-analytics.com
+    path: /.well-known/api-catalog
+    status: 404
+  - host: https://developers.google.com
+    path: /.well-known/api-catalog
+    status: 404
+  - host: https://developers.google.com
+    path: /.well-known/security.txt
+    status: 404
+  - host: https://analytics.google.com
+    path: /.well-known/api-catalog
+    status: 404
+absent:
+  - path: /.well-known/api-catalog
+    note: >-
+      RFC 9727 API catalog is not served on any host. Google's machine-readable API index is
+      the Discovery service instead — https://analyticsdata.googleapis.com/$discovery/rest?version=v1beta
+      and https://analyticsadmin.googleapis.com/$discovery/rest?version=v1beta, both HTTP 200,
+      both harvested verbatim into openapi/_original/.
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    note: 404 on all eight hosts. No A2A agent card exists; a2a/ is deliberately empty.
+  - path: /.well-known/agent.json
+    note: 404 on all eight hosts (legacy pre-0.3 path).

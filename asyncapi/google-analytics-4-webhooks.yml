@@ -1,0 +1,96 @@
+generated: '2026-08-13'
+method: derived
+source:
+  - openapi/_original/google-analytics-4-data-v1alpha-discovery.json
+  - openapi/google-analytics-4-data-v1alpha-openapi.yml
+  - https://developers.google.com/analytics/devguides/reporting/data/v1/audience-list-basics
+spec_type: Webhooks
+asyncapi_published: false
+asyncapi_note: >-
+  Google publishes no AsyncAPI document for any GA4 surface. /asyncapi.yaml, /asyncapi.json
+  and the googleanalytics GitHub organization were all checked. This artifact captures the
+  real webhook surface instead, derived verbatim from the WebhookNotification schema in
+  Google's own v1alpha Discovery document — it is not a fabricated event spec.
+note: >-
+  GA4 has exactly one push surface, and it is narrow: long-running Audience Export
+  operations can notify a caller-supplied HTTPS endpoint when their state changes. There is
+  no event bus, no property-level event subscription and no webhook for reporting,
+  configuration changes or data-stream activity. Everything else in GA4 is pull-only. The
+  Measurement Protocol is inbound ingest, not an event surface, and is deliberately excluded
+  here.
+surface:
+  kind: long-running-operation-callback
+  api: Google Analytics Data API
+  version: v1alpha
+  configured_on:
+    - resource: AudienceList
+      field: webhookNotification
+      operations:
+        - properties_audienceLists_create
+        - properties_audienceLists_get
+    - resource: RecurringAudienceList
+      field: webhookNotification
+      operations:
+        - properties_recurringAudienceLists_create
+  gated: false
+  subscription_model: >-
+    Per-resource, per-GCP-project. The notification config is attached when the long-running
+    operation resource is created and is only visible to the project that attached it;
+    different projects may attach different webhooks to the same resource.
+delivery:
+  transport: HTTPS POST
+  direction: Google to consumer
+  body: >-
+    A JSON representation of the long-running operation resource, plus a sentTimestamp field
+    (unix microseconds since epoch) that lets a consumer identify replayed notifications.
+  trigger: state change of the long-running operation resource
+  expected_response: HTTP 200
+  response_deadline_seconds: 5
+  replay: >-
+    Replays are possible and are the consumer's problem to detect — sentTimestamp is the only
+    de-duplication signal offered. There is no delivery id, no signature and no retry policy
+    published.
+security:
+  authentication: Google-issued OIDC ID token in the Authorization bearer header
+  service_account: google-analytics-audience-export@system.gserviceaccount.com
+  verification_secret:
+    field: channelToken
+    type: string
+    max_length: 64
+    description: >-
+      Arbitrary caller-supplied string echoed back so the consumer can verify the source of a
+      notification.
+  signature: none
+  note: >-
+    Two independent verification mechanisms are offered — the ID token (for Cloud Run / Cloud
+    Functions IAM) and the channelToken (for arbitrary servers). Google states the ID token
+    may be ignored by non-Google-Cloud webhook servers that do not need it.
+constraints:
+  uri_scheme: https
+  uri_max_length: 128
+  uri_charset: allowlisted characters from RFC 1738
+  tls: valid SSL certificate required on the receiving server
+events:
+  - name: audienceList.stateChanged
+    resource: AudienceList
+    description: >-
+      Fired as an audience export moves through its lifecycle. State is carried on the
+      resource's `state` field; `percentageCompleted`, `rowCount` and `errorMessage` carry
+      progress and failure detail.
+    payload_schema: openapi/google-analytics-4-data-v1alpha-openapi.yml#/components/schemas/AudienceList
+  - name: recurringAudienceList.stateChanged
+    resource: RecurringAudienceList
+    description: >-
+      Fired as a recurring audience list produces new AudienceList instances;
+      `activeDaysRemaining` and `audienceLists` carry the schedule state.
+    payload_schema: openapi/google-analytics-4-data-v1alpha-openapi.yml#/components/schemas/RecurringAudienceList
+history:
+  - date: '2024-01-30'
+    change: >-
+      Webhook notification support introduced on AudienceList.webhookNotification and
+      RecurringAudienceList.webhookNotification (Data API v1alpha changelog).
+gaps:
+  - No AsyncAPI or other machine-readable event contract is published.
+  - Alpha-channel only; the stable v1beta Data API has no webhook surface at all.
+  - No delivery retry policy, no delivery id, no HMAC signature, no dead-letter behaviour published.
+  - No webhook for Admin API configuration changes, key events, or data-stream health.

@@ -1,8 +1,15 @@
-generated: '2026-07-11'
-method: derived
-source: openapi/google-analytics-4-openapi.yml
+generated: '2026-08-13'
+method: searched
+docs:
+  - https://developers.google.com/analytics/devguides/reporting/data/v1/basics#authentication
+  - https://developers.google.com/analytics/devguides/config/admin/v1/rest
+  - https://developers.google.com/analytics/devguides/collection/protocol/ga4
+  - https://cloud.google.com/docs/authentication/provide-credentials-adc
+source: openapi/google-analytics-4-admin-v1alpha-openapi.yml, openapi/google-analytics-4-admin-v1beta-openapi.yml,
+  openapi/google-analytics-4-data-v1alpha-openapi.yml, openapi/google-analytics-4-data-v1beta-openapi.yml
 summary:
   types:
+  - http
   - oauth2
   oauth2_flows:
   - authorizationCode
@@ -13,6 +20,75 @@ schemes:
   - flow: authorizationCode
     authorizationUrl: https://accounts.google.com/o/oauth2/v2/auth
     tokenUrl: https://oauth2.googleapis.com/token
-    scopes: 2
+    scopes: 4
+  description: Google OAuth 2.0. Scopes are the short form of the full https://www.googleapis.com/auth/<scope>
+    identifier.
   sources:
-  - openapi/google-analytics-4-openapi.yml
+  - openapi/google-analytics-4-admin-v1alpha-openapi.yml
+  - openapi/google-analytics-4-admin-v1beta-openapi.yml
+  - openapi/google-analytics-4-data-v1alpha-openapi.yml
+  - openapi/google-analytics-4-data-v1beta-openapi.yml
+- name: BearerAuth
+  type: http
+  scheme: bearer
+  description: Google OAuth 2.0 access token presented as a bearer token.
+  sources:
+  - openapi/google-analytics-4-admin-v1alpha-openapi.yml
+  - openapi/google-analytics-4-admin-v1beta-openapi.yml
+  - openapi/google-analytics-4-data-v1alpha-openapi.yml
+  - openapi/google-analytics-4-data-v1beta-openapi.yml
+credential_types:
+  - type: oauth2-user
+    description: Three-legged OAuth for acting as an end user with access to a property.
+    grant: authorization_code
+  - type: service-account
+    description: >-
+      The standard machine-to-machine path. A Google service account is granted a role on the
+      GA4 property, then authenticates with the jwt-bearer grant. This is what Application
+      Default Credentials resolves to in a server or CI environment, and what Google's own
+      client libraries and the official MCP server use.
+    grant: urn:ietf:params:oauth:grant-type:jwt-bearer
+    docs: https://cloud.google.com/docs/authentication/provide-credentials-adc
+  - type: api-key
+    supported: false
+    description: >-
+      Google API keys do NOT work against the Data or Admin API. Both require an OAuth
+      identity; a key-only request returns 401 UNAUTHENTICATED.
+measurement_protocol:
+  host: https://www.google-analytics.com
+  path: /mp/collect
+  eu_host: https://region1.google-analytics.com
+  scheme: shared-secret in query string
+  parameters:
+    - name: api_secret
+      in: query
+      required: true
+      description: >-
+        Server-side secret minted per data stream via
+        properties_dataStreams_measurementProtocolSecrets_create on the Admin API. Not
+        retrievable in plaintext from the console afterwards.
+    - name: measurement_id
+      in: query
+      required_for: web data streams
+    - name: firebase_app_id
+      in: query
+      required_for: app data streams
+  oauth: false
+  note: >-
+    The Measurement Protocol is the one GA4 surface that does not use OAuth at all. It is not
+    represented in any Discovery document or OpenAPI file, so it does not appear in the
+    schemes list above - this block is the record of it.
+project_prerequisite:
+  note: >-
+    Beyond credentials, the calling Google Cloud project must have the relevant API enabled or
+    every call returns 403 PERMISSION_DENIED regardless of property access.
+  apis:
+    - analyticsdata.googleapis.com
+    - analyticsadmin.googleapis.com
+authorization_server:
+  issuer: https://accounts.google.com
+  authorization_endpoint: https://accounts.google.com/o/oauth2/v2/auth
+  token_endpoint: https://oauth2.googleapis.com/token
+  metadata: well-known/google-analytics-4-oauth-authorization-server.json
+  oidc_discovery: well-known/google-analytics-4-openid-configuration.json
+scopes: scopes/google-analytics-4-scopes.yml

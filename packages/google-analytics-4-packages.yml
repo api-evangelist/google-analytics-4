@@ -1,0 +1,180 @@
+generated: '2026-08-13'
+method: searched
+source: >-
+  https://developers.google.com/analytics/devguides/reporting/data/v1/client-libraries
+  plus live registry metadata endpoints (registry.npmjs.org, pypi.org, rubygems.org,
+  search.maven.org, api.nuget.org, repo.packagist.org, proxy.golang.org)
+note: >-
+  Google publishes first-party generated client libraries for both GA4 API surfaces — the
+  Analytics Data API (analyticsdata.googleapis.com) and the Analytics Admin API
+  (analyticsadmin.googleapis.com) — under the googleapis GitHub organization. Every entry
+  below was resolved against the registry's own metadata endpoint on 2026-08-13. The
+  Measurement Protocol (www.google-analytics.com/mp/collect) ships no client library; it is
+  a plain HTTPS POST and Google documents it as such.
+packages:
+  - language: javascript
+    registry: npm
+    name: "@google-analytics/data"
+    url: https://www.npmjs.com/package/@google-analytics/data
+    install: npm install @google-analytics/data
+    official: true
+    api: Google Analytics Data API
+    source_code: https://github.com/googleapis/google-cloud-node/tree/main/packages/google-analytics-data
+    version: 7.0.0
+    published: '2026-08-05'
+  - language: javascript
+    registry: npm
+    name: "@google-analytics/admin"
+    url: https://www.npmjs.com/package/@google-analytics/admin
+    install: npm install @google-analytics/admin
+    official: true
+    api: Google Analytics Admin API
+    source_code: https://github.com/googleanalytics/nodejs-analyticsadmin
+    version: 10.0.0
+    published: '2026-08-05'
+  - language: python
+    registry: pypi
+    name: google-analytics-data
+    url: https://pypi.org/project/google-analytics-data/
+    install: pip install google-analytics-data
+    official: true
+    api: Google Analytics Data API
+    version: 0.23.0
+    published: '2026-06-03'
+  - language: python
+    registry: pypi
+    name: google-analytics-admin
+    url: https://pypi.org/project/google-analytics-admin/
+    install: pip install google-analytics-admin
+    official: true
+    api: Google Analytics Admin API
+    version: 0.30.1
+    published: '2026-06-25'
+  - language: python
+    registry: pypi
+    name: analytics-mcp
+    url: https://pypi.org/project/analytics-mcp/
+    install: pipx run analytics-mcp
+    official: true
+    api: Google Analytics MCP Server
+    source_code: https://github.com/googleanalytics/google-analytics-mcp
+    note: >-
+      Official Google Analytics MCP server, published by the googleanalytics GitHub
+      organization. Distributed as a local stdio server, not a hosted endpoint.
+      See mcp/google-analytics-4-mcp.yml.
+    version: 0.7.0
+    published: '2026-07-29'
+  - language: java
+    registry: maven
+    name: com.google.analytics:google-analytics-data
+    url: https://central.sonatype.com/artifact/com.google.analytics/google-analytics-data
+    install: "implementation 'com.google.analytics:google-analytics-data:0.104.0'"
+    official: true
+    api: Google Analytics Data API
+    version: 0.104.0
+    published: '2026-06-04'
+  - language: java
+    registry: maven
+    name: com.google.analytics:google-analytics-admin
+    url: https://central.sonatype.com/artifact/com.google.analytics/google-analytics-admin
+    install: "implementation 'com.google.analytics:google-analytics-admin:0.103.0'"
+    official: true
+    api: Google Analytics Admin API
+    version: 0.103.0
+    published: '2026-06-04'
+  - language: ruby
+    registry: rubygems
+    name: google-analytics-data
+    url: https://rubygems.org/gems/google-analytics-data
+    install: gem install google-analytics-data
+    official: true
+    api: Google Analytics Data API
+    version: 0.9.1
+    published: '2026-08-05'
+  - language: ruby
+    registry: rubygems
+    name: google-analytics-admin
+    url: https://rubygems.org/gems/google-analytics-admin
+    install: gem install google-analytics-admin
+    official: true
+    api: Google Analytics Admin API
+    version: 0.8.1
+    published: '2026-08-05'
+  - language: ruby
+    registry: rubygems
+    name: google-analytics-data-v1beta
+    url: https://rubygems.org/gems/google-analytics-data-v1beta
+    install: gem install google-analytics-data-v1beta
+    official: true
+    api: Google Analytics Data API v1beta
+    note: Version-pinned sibling of the google-analytics-data wrapper gem.
+    version: 0.22.1
+    published: '2026-08-05'
+  - language: php
+    registry: packagist
+    name: google/analytics-data
+    url: https://packagist.org/packages/google/analytics-data
+    install: composer require google/analytics-data
+    official: true
+    api: Google Analytics Data API
+    version: v0.25.0
+    published: '2026-08-10'
+  - language: php
+    registry: packagist
+    name: google/analytics-admin
+    url: https://packagist.org/packages/google/analytics-admin
+    install: composer require google/analytics-admin
+    official: true
+    api: Google Analytics Admin API
+    version: v0.34.0
+    published: '2026-08-10'
+  - language: go
+    registry: go
+    name: cloud.google.com/go/analytics
+    url: https://pkg.go.dev/cloud.google.com/go/analytics
+    install: go get cloud.google.com/go/analytics
+    official: true
+    api: Google Analytics Data API + Admin API
+    source_code: https://github.com/googleapis/google-cloud-go/tree/main/analytics
+    version: v0.36.1
+    published: '2026-07-30'
+  - language: dotnet
+    registry: nuget
+    name: Google.Analytics.Data.V1Beta
+    url: https://www.nuget.org/packages/Google.Analytics.Data.V1Beta
+    install: dotnet add package Google.Analytics.Data.V1Beta
+    official: true
+    api: Google Analytics Data API v1beta
+    note: >-
+      Latest published release is still a pre-release (2.0.0-beta10) and is the oldest
+      first-party GA4 client release in this catalog — over nine months behind the npm,
+      RubyGems, Packagist and Go libraries.
+    version: 2.0.0-beta10
+    published: '2025-11-04'
+  - language: dotnet
+    registry: nuget
+    name: Google.Analytics.Admin.V1Beta
+    url: https://www.nuget.org/packages/Google.Analytics.Admin.V1Beta
+    install: dotnet add package Google.Analytics.Admin.V1Beta
+    official: true
+    api: Google Analytics Admin API v1beta
+    version: 1.0.0-beta11
+    published: '2026-06-22'
+  - language: dotnet
+    registry: nuget
+    name: Google.Analytics.Admin.V1Alpha
+    url: https://www.nuget.org/packages/Google.Analytics.Admin.V1Alpha
+    install: dotnet add package Google.Analytics.Admin.V1Alpha
+    official: true
+    api: Google Analytics Admin API v1alpha
+    version: 2.0.0-alpha30
+    published: '2026-06-22'
+currency:
+  checked: '2026-08-13'
+  freshest: '2026-08-10'
+  stalest: '2025-11-04'
+  note: >-
+    Twelve of the sixteen first-party packages published within the last ten weeks, which
+    tracks the Discovery document revisions (analyticsdata rev 20260812, analyticsadmin rev
+    20260810). The .NET Data API client is the outlier at 2025-11-04 and is still labelled
+    beta.

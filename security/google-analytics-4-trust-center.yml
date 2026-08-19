@@ -1,0 +1,76 @@
+generated: '2026-08-13'
+method: searched
+probe: true
+source: https://support.google.com/analytics/answer/6004245
+note: >-
+  Google runs no trust portal scoped to Google Analytics. trust.google.com,
+  security.analytics.google.com and the usual /trust and /compliance paths do not resolve to
+  a GA4-specific trust center. What Google does publish is a Google-Analytics-specific data
+  privacy and security article that names one certification explicitly and enumerates the
+  data-processing regimes GA4 operates under. Only claims Google makes about Google Analytics
+  by name are recorded here — Google Cloud's much larger certification catalogue is a
+  different product and is deliberately NOT credited to GA4.
+url: https://support.google.com/analytics/answer/6004245
+certifications:
+  - name: ISO 27001
+    scope: >-
+      "Google has earned ISO 27001 certification for the systems, applications, people,
+      technology, processes, and data centers serving a number of Google products, including
+      Google Analytics."
+    named_for_ga4: true
+    source: https://support.google.com/analytics/answer/6004245
+compliance_programs:
+  - name: GDPR
+    role: data processor
+    instrument: Google Ads Data Processing Terms
+    source: https://support.google.com/analytics/answer/3379636
+  - name: LGPD (Brazil)
+    role: data processor
+    instrument: Google Ads Data Processing Terms
+  - name: U.S. State Privacy Laws
+    role: service provider / processor
+    instrument: U.S. State Privacy Laws Service Provider and Processor Addendum
+  - name: Google EU User Consent Policy
+    role: publisher obligation
+    applies_to: Google Analytics Advertising Features
+not_claimed_for_ga4:
+  certifications:
+    - SOC 1
+    - SOC 2
+    - SOC 3
+    - PCI DSS
+    - HIPAA
+    - FedRAMP
+  note: >-
+    None of these are asserted for Google Analytics on any Google page located during this
+    pass. Google Cloud Platform holds all of them, but GCP is a separate product with a
+    separate certification scope and crediting them here would misattribute another product's
+    posture.
+data_handling:
+  privacy_policy: https://policies.google.com/privacy
+  data_processing_terms: https://support.google.com/analytics/answer/3379636
+  cookies: https://policies.google.com/technologies/cookies
+  data_retention_api:
+    resource: DataRetentionSettings
+    operations:
+      - properties_dataRetentionSettings_get
+      - properties_dataRetentionSettings_patch
+    spec: openapi/google-analytics-4-admin-v1beta-openapi.yml
+    note: >-
+      Data retention is programmatically readable and writable, including the userDataRetention
+      field added 2025-01-20. Notable for compliance automation.
+  data_redaction_api:
+    resource: DataRedactionSettings
+    channel: v1alpha
+    note: Per-data-stream redaction of email addresses and URL query parameters.
+  user_deletion_quota:
+    limit: 500
+    scope: per property per day
+    source: https://developers.google.com/analytics/devguides/config/admin/v1/quotas
+evidence:
+  - source: https://support.google.com/analytics/answer/6004245
+    http_status: 200
+    keywords: [iso 27001, gdpr, lgpd, data processing terms, data processor]
+  - source: https://support.google.com/analytics/answer/3407084
+    http_status: 200
+    kind: Google Analytics data privacy and security
