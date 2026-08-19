@@ -30,7 +30,7 @@ image: https://www.gstatic.com/analytics-suite/header/suite/v2/ic_analytics.svg
 url: https://raw.githubusercontent.com/api-evangelist/google-analytics-4/refs/heads/main/apis.yml
 created: '2024-01-01'
 modified: '2026-08-13'
-specificationVersion: '0.19'
+specificationVersion: '0.23'
 tags:
   - Analytics
   - Data Collection
