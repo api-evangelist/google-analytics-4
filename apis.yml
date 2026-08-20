@@ -35,6 +35,17 @@ tags:
   - Analytics
   - Data Collection
   - Marketing
+  - Measurements
+  - Mobile Analytics
+  - Reporting
+  - Web Analytics
+  - Attribution
+  - Audiences
+  - Event Tracking
+tags_raw:
+  - Analytics
+  - Data Collection
+  - Marketing
   - Measurement
   - Mobile Analytics
   - Reporting
@@ -54,6 +65,11 @@ apis:
   humanURL: https://developers.google.com/analytics/devguides/collection/protocol/ga4
   baseURL: https://www.google-analytics.com/mp/collect
   tags:
+  - Data Collection
+  - Event
+  - Server-Side
+  - Tracking
+  tags_raw:
   - Data Collection
   - Events
   - Server-Side
