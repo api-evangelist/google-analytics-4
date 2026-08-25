@@ -1,0 +1,14 @@
+{
+  "repo": "google-analytics-4",
+  "feeds": [
+    {
+      "source": "https://developers.google.com/analytics/community",
+      "feed_url": "https://developers.google.com/analytics/community",
+      "title": "",
+      "saved": 0,
+      "method": "none"
+    }
+  ],
+  "post_count": 0,
+  "fetched": "2026-08-22T20:20:02Z"
+}
