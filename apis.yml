@@ -13,6 +13,18 @@ description: >-
   service definitions in the googleapis repository. Authentication is Google OAuth 2.0 only
   for the Data and Admin APIs; the Measurement Protocol uses a per-stream shared secret.
 type: Index
+deliveryModel:
+  model: saas
+  open_source: false
+  commercial: true
+  callable_host: true
+  label: Hosted service · you call their endpoint
+  confidence: high
+  source:
+  - openapi
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 accessModel:
   pricing: freemium
   onboarding: self-serve
