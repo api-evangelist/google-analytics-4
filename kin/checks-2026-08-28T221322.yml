@@ -2,14 +2,14 @@
 kin_checks:
   slug: google-analytics-4
   schema_version: 0.15.1
-  scored_at: '2026-08-27'
-  run_ts: 2026-08-27T140727
+  scored_at: '2026-08-28'
+  run_ts: 2026-08-28T221322
   note: Actionable checks only (missed + partial). earned/na are every other check
     in rubric/scoring-0.15.1.yml; counts below let you verify that.
   counts:
     total: 130
-    earned: 58
-    partial: 11
+    earned: 57
+    partial: 12
     missed: 37
     na: 24
   checks:
@@ -19,21 +19,21 @@ kin_checks:
     status: missed
   - id: openapi_3_2
     status: missed
-    detail: 0 of 1 openapi documents pass
+    detail: 0 of 3 openapi documents pass
   - id: openapi_3_0
     status: missed
-    detail: 0 of 1 openapi documents pass
+    detail: 0 of 3 openapi documents pass
+  - id: operations_operation_ids
+    status: missed
+    detail: 0 of 3 openapi documents pass
   - id: error_responses_documented
     status: missed
-    detail: 0 of 1 openapi documents pass
+    detail: 0 of 3 openapi documents pass
   - id: examples_present
     status: missed
-  - id: security_schemes_defined
-    status: missed
-    detail: 0 of 1 openapi documents pass
   - id: webhooks_or_callbacks
     status: missed
-    detail: 0 of 1 openapi documents pass
+    detail: 0 of 3 openapi documents pass
   - id: json_schema_present
     status: missed
   - id: json_schema_per_resource
@@ -94,6 +94,10 @@ kin_checks:
     status: missed
   - id: agentic_commerce
     status: missed
+  - id: info_complete
+    status: partial
+    earned: 2.67
+    detail: 2 of 3 openapi documents pass
   - id: conformance_declared
     status: partial
     earned: 1.5
