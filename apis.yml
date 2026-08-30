@@ -104,6 +104,8 @@ apis:
   humanURL: https://developers.google.com/analytics/devguides/collection/protocol/ga4
   baseURL: https://www.google-analytics.com/mp/collect
   tags:
+  - Account
+  tags_raw:
   - accounts
   properties:
   - type: OpenAPI
@@ -148,7 +150,8 @@ apis:
   description: The accountSummaries API from Google Analytics 4 — 2 operation(s) for accountsummaries.
   humanURL: https://developers.google.com/analytics/devguides/collection/protocol/ga4
   baseURL: https://www.google-analytics.com/mp/collect
-  tags:
+  tags: []
+  tags_raw:
   - accountSummaries
   properties:
   - type: OpenAPI
@@ -194,6 +197,8 @@ apis:
   humanURL: https://developers.google.com/analytics/devguides/collection/protocol/ga4
   baseURL: https://www.google-analytics.com/mp/collect
   tags:
+  - Properties
+  tags_raw:
   - properties
   properties:
   - type: OpenAPI
