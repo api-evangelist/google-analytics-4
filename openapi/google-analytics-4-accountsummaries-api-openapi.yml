@@ -1,0 +1,254 @@
+openapi: 3.2.0
+info:
+  title: Google Analytics 4 Account Summaries API
+  contact:
+    name: Google
+    url: http://code.google.com/apis/analytics/docs/mgmt/home.html
+  x-discovery-revision: '20260810'
+  version: '1.0'
+  description: 'Operations tagged accountSummaries across 2 of this provider''s published API definitions: google-analytics-4-admin-v1alpha-openapi.yml, google-analytics-4-admin-v1beta-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://analyticsadmin.googleapis.com
+  description: Google Analytics Admin API
+security:
+- BearerAuth: []
+tags:
+- name: accountSummaries
+paths:
+  /v1alpha/accountSummaries:
+    get:
+      operationId: accountSummaries_list
+      summary: Returns summaries of all accounts accessible by the caller
+      tags:
+      - accountSummaries
+      description: Returns summaries of all accounts accessible by the caller.
+      parameters:
+      - name: pageSize
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+        description: Optional. The maximum number of AccountSummary resources to return. The service may return fewer than this value, even if there are additional pages. If unspecified, at most 50 resources will be returned. The maximum value is 200; (higher values will be coerced to the maximum)
+      - name: pageToken
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Optional. A page token, received from a previous `ListAccountSummaries` call. Provide this to retrieve the subsequent page. When paginating, all other parameters provided to `ListAccountSummaries` must match the call that provided the page token.
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoogleAnalyticsAdminV1alphaListAccountSummariesResponse'
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoogleRpcStatus'
+      security:
+      - OAuth2:
+        - analytics.edit
+        - analytics.readonly
+      - BearerAuth: []
+    servers:
+    - url: https://analyticsadmin.googleapis.com
+      description: Google Analytics Admin API
+  /v1beta/accountSummaries:
+    get:
+      operationId: accountSummaries_list
+      summary: Returns summaries of all accounts accessible by the caller
+      tags:
+      - accountSummaries
+      description: Returns summaries of all accounts accessible by the caller.
+      parameters:
+      - name: pageToken
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Optional. A page token, received from a previous `ListAccountSummaries` call. Provide this to retrieve the subsequent page. When paginating, all other parameters provided to `ListAccountSummaries` must match the call that provided the page token.
+      - name: pageSize
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+        description: Optional. The maximum number of AccountSummary resources to return. The service may return fewer than this value, even if there are additional pages. If unspecified, at most 50 resources will be returned. The maximum value is 200; (higher values will be coerced to the maximum)
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaListAccountSummariesResponse'
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoogleRpcStatus'
+      security:
+      - OAuth2:
+        - analytics.edit
+        - analytics.readonly
+      - BearerAuth: []
+    servers:
+    - url: https://analyticsadmin.googleapis.com
+      description: Google Analytics Admin API
+components:
+  schemas:
+    GoogleAnalyticsAdminV1alphaPropertySummary:
+      type: object
+      description: A virtual resource representing metadata for a Google Analytics property.
+      properties:
+        property:
+          type: string
+          description: 'Resource name of property referred to by this property summary Format: properties/{property_id} Example: "properties/1000"'
+        canEdit:
+          description: If true, then the user has a Google Analytics role that permits them to edit the property.
+          type: boolean
+        parent:
+          description: 'Resource name of this property''s logical parent. Note: The Property-Moving UI can be used to change the parent. Format: accounts/{account}, properties/{property} Example: "accounts/100", "properties/200"'
+          type: string
+        displayName:
+          description: Display name for the property referred to in this property summary.
+          type: string
+        propertyType:
+          type: string
+          x-enumDescriptions:
+          - Unknown or unspecified property type
+          - Ordinary Google Analytics property
+          - Google Analytics subproperty
+          - Google Analytics rollup property
+          description: The property's property type.
+          enum:
+          - PROPERTY_TYPE_UNSPECIFIED
+          - PROPERTY_TYPE_ORDINARY
+          - PROPERTY_TYPE_SUBPROPERTY
+          - PROPERTY_TYPE_ROLLUP
+    GoogleAnalyticsAdminV1alphaListAccountSummariesResponse:
+      description: Response message for ListAccountSummaries RPC.
+      properties:
+        accountSummaries:
+          description: Account summaries of all accounts the caller has access to.
+          type: array
+          items:
+            $ref: '#/components/schemas/GoogleAnalyticsAdminV1alphaAccountSummary'
+        nextPageToken:
+          description: A token, which can be sent as `page_token` to retrieve the next page. If this field is omitted, there are no subsequent pages.
+          type: string
+      type: object
+    GoogleAnalyticsAdminV1alphaAccountSummary:
+      description: A virtual resource representing an overview of an account and all its child Google Analytics properties.
+      properties:
+        account:
+          description: 'Resource name of account referred to by this account summary Format: accounts/{account_id} Example: "accounts/1000"'
+          type: string
+        name:
+          description: 'Identifier. Resource name for this account summary. Format: accountSummaries/{account_id} Example: "accountSummaries/1000"'
+          type: string
+        displayName:
+          description: Display name for the account referred to in this account summary.
+          type: string
+        propertySummaries:
+          type: array
+          items:
+            $ref: '#/components/schemas/GoogleAnalyticsAdminV1alphaPropertySummary'
+          description: List of summaries for child accounts of this account.
+      type: object
+    GoogleRpcStatus:
+      type: object
+      description: Canonical google.rpc.Status error payload returned by Google APIs.
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        details:
+          type: array
+          items:
+            type: object
+    GoogleAnalyticsAdminV1betaAccountSummary:
+      description: A virtual resource representing an overview of an account and all its child Google Analytics properties.
+      type: object
+      properties:
+        displayName:
+          description: Display name for the account referred to in this account summary.
+          type: string
+        propertySummaries:
+          description: List of summaries for child accounts of this account.
+          type: array
+          items:
+            $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaPropertySummary'
+        name:
+          description: 'Identifier. Resource name for this account summary. Format: accountSummaries/{account_id} Example: "accountSummaries/1000"'
+          type: string
+        account:
+          description: 'Resource name of account referred to by this account summary Format: accounts/{account_id} Example: "accounts/1000"'
+          type: string
+    GoogleAnalyticsAdminV1betaListAccountSummariesResponse:
+      description: Response message for ListAccountSummaries RPC.
+      type: object
+      properties:
+        accountSummaries:
+          description: Account summaries of all accounts the caller has access to.
+          type: array
+          items:
+            $ref: '#/components/schemas/GoogleAnalyticsAdminV1betaAccountSummary'
+        nextPageToken:
+          description: A token, which can be sent as `page_token` to retrieve the next page. If this field is omitted, there are no subsequent pages.
+          type: string
+    GoogleAnalyticsAdminV1betaPropertySummary:
+      description: A virtual resource representing metadata for a Google Analytics property.
+      type: object
+      properties:
+        displayName:
+          description: Display name for the property referred to in this property summary.
+          type: string
+        property:
+          description: 'Resource name of property referred to by this property summary Format: properties/{property_id} Example: "properties/1000"'
+          type: string
+        parent:
+          description: 'Resource name of this property''s logical parent. Note: The Property-Moving UI can be used to change the parent. Format: accounts/{account}, properties/{property} Example: "accounts/100", "properties/200"'
+          type: string
+        canEdit:
+          description: If true, then the user has a Google Analytics role that permits them to edit the property.
+          type: boolean
+        propertyType:
+          enum:
+          - PROPERTY_TYPE_UNSPECIFIED
+          - PROPERTY_TYPE_ORDINARY
+          - PROPERTY_TYPE_SUBPROPERTY
+          - PROPERTY_TYPE_ROLLUP
+          x-enumDescriptions:
+          - Unknown or unspecified property type
+          - Ordinary Google Analytics property
+          - Google Analytics subproperty
+          - Google Analytics rollup property
+          description: The property's property type.
+          type: string
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      description: Google OAuth 2.0. Scopes are the short form of the full https://www.googleapis.com/auth/<scope> identifier.
+      flows:
+        authorizationCode:
+          authorizationUrl: https://accounts.google.com/o/oauth2/v2/auth
+          tokenUrl: https://oauth2.googleapis.com/token
+          scopes:
+            analytics.edit: Edit Google Analytics management entities
+            analytics.manage.users: Manage Google Analytics Account users by email address
+            analytics.manage.users.readonly: View Google Analytics user permissions
+            analytics.readonly: See and download your Google Analytics data
+    BearerAuth:
+      type: http
+      scheme: bearer
+      description: Google OAuth 2.0 access token presented as a bearer token.
+x-refined-from:
+- google-analytics-4-admin-v1alpha-openapi.yml
+- google-analytics-4-admin-v1beta-openapi.yml
