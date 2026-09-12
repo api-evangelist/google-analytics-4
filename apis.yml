@@ -239,6 +239,8 @@ apis:
   - type: ChangeLog
     url: https://developers.google.com/analytics/devguides/config/admin/v1/changelog
 common:
+  - type: Website
+    url: https://www.google.com/
   - type: Overlay
     url: overlays/google-analytics-4-data-v1beta-overlay.yaml
   - type: Overlay
@@ -346,3 +348,5 @@ x-enrichment:
   pass: local-v1
 x-coverage:
   state: covered
+x-parent: google
+x-relationship: product
