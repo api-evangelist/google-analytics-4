@@ -101,6 +101,24 @@ paths:
       description: Google Analytics Admin API
 components:
   schemas:
+    GoogleAnalyticsAdminV1alphaAccountSummary:
+      description: A virtual resource representing an overview of an account and all its child Google Analytics properties.
+      properties:
+        account:
+          description: 'Resource name of account referred to by this account summary Format: accounts/{account_id} Example: "accounts/1000"'
+          type: string
+        name:
+          description: 'Identifier. Resource name for this account summary. Format: accountSummaries/{account_id} Example: "accountSummaries/1000"'
+          type: string
+        displayName:
+          description: Display name for the account referred to in this account summary.
+          type: string
+        propertySummaries:
+          type: array
+          items:
+            $ref: '#/components/schemas/GoogleAnalyticsAdminV1alphaPropertySummary'
+          description: List of summaries for child accounts of this account.
+      type: object
     GoogleAnalyticsAdminV1alphaPropertySummary:
       type: object
       description: A virtual resource representing metadata for a Google Analytics property.
@@ -141,24 +159,6 @@ components:
         nextPageToken:
           description: A token, which can be sent as `page_token` to retrieve the next page. If this field is omitted, there are no subsequent pages.
           type: string
-      type: object
-    GoogleAnalyticsAdminV1alphaAccountSummary:
-      description: A virtual resource representing an overview of an account and all its child Google Analytics properties.
-      properties:
-        account:
-          description: 'Resource name of account referred to by this account summary Format: accounts/{account_id} Example: "accounts/1000"'
-          type: string
-        name:
-          description: 'Identifier. Resource name for this account summary. Format: accountSummaries/{account_id} Example: "accountSummaries/1000"'
-          type: string
-        displayName:
-          description: Display name for the account referred to in this account summary.
-          type: string
-        propertySummaries:
-          type: array
-          items:
-            $ref: '#/components/schemas/GoogleAnalyticsAdminV1alphaPropertySummary'
-          description: List of summaries for child accounts of this account.
       type: object
     GoogleRpcStatus:
       type: object

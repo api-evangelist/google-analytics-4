@@ -1,25 +1,21 @@
 {
   "provider": "google-analytics-4",
   "sources": [
-    "google-analytics-4-admin-v1alpha-openapi.yml",
-    "google-analytics-4-admin-v1beta-openapi.yml",
-    "google-analytics-4-data-v1alpha-openapi.yml",
-    "google-analytics-4-data-v1beta-openapi.yml"
+    "_original/google-analytics-4-admin-v1alpha-openapi.yml",
+    "_original/google-analytics-4-admin-v1beta-openapi.yml",
+    "_original/google-analytics-4-data-v1alpha-openapi.yml",
+    "_original/google-analytics-4-data-v1beta-openapi.yml"
   ],
   "outputs": [
     "google-analytics-4-accountsummaries-api-openapi.yml",
     "google-analytics-4-accounts-api-openapi.yml",
     "google-analytics-4-properties-api-openapi.yml"
   ],
-  "archived": [
-    "archived openapi/google-analytics-4-admin-v1alpha-openapi.yml",
-    "archived openapi/google-analytics-4-admin-v1beta-openapi.yml",
-    "archived openapi/google-analytics-4-data-v1alpha-openapi.yml",
-    "archived openapi/google-analytics-4-data-v1beta-openapi.yml"
-  ],
+  "archived": [],
   "errors": [],
   "warnings": [],
   "notes": [
+    "sourced from openapi/_original/ (4 archived document(s)); previously refined output at the top level was skipped rather than re-split",
     "google-analytics-4-admin-v1alpha-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
     "google-analytics-4-admin-v1beta-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
     "google-analytics-4-data-v1alpha-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
@@ -27,7 +23,11 @@
     "tag 'accountSummaries' spans 2 source specs (google-analytics-4-admin-v1alpha-openapi.yml, google-analytics-4-admin-v1beta-openapi.yml): per-path servers applied",
     "tag 'accounts' spans 2 source specs (google-analytics-4-admin-v1alpha-openapi.yml, google-analytics-4-admin-v1beta-openapi.yml): per-path servers applied",
     "tag 'properties' spans 4 source specs (google-analytics-4-admin-v1alpha-openapi.yml, google-analytics-4-admin-v1beta-openapi.yml, google-analytics-4-data-v1alpha-openapi.yml, google-analytics-4-data-v1beta-openapi.yml): per-path servers applied",
-    "apis.yml register: written (+3 apis, 4 total)"
+    "apis.yml register: already-registered"
   ],
-  "skipped": []
+  "skipped": [
+    "google-analytics-4-accounts-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "google-analytics-4-accountsummaries-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "google-analytics-4-properties-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
 }
